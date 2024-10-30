@@ -59,11 +59,11 @@ onMounted(() => {
                 :text-content="user.phone"
                 container-class="flex-col-ic-jc"
             />
-            <TextBlock
+            <!-- <TextBlock
                 label="Created"
                 :text-content="handleFormat(user.created_at, 'date', false)"
                 container-class="flex-col-ic-jc"
-            />
+            /> -->
         </section>
     </Card>
 </template>

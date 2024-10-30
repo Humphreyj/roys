@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 // Components
 import Avatar from '@/components/UI/Avatar.vue'
 import Card from '@/components/UI/Card.vue'
@@ -16,7 +16,7 @@ import { useWindowSize } from '@vueuse/core'
 // const emit = defineEmits()
 
 const { userProfiles } = storeToRefs(useProfileStore())
-const { handleUserSelect } = useProfileStore()
+const { handleUserSelect, getProfileList } = useProfileStore()
 const { profileFormModal } = storeToRefs(useModalStore())
 
 const handleNavigation = async (user) => {
@@ -26,6 +26,10 @@ const handleNavigation = async (user) => {
 const { height } = useWindowSize()
 
 const listContainerHeight = computed(() => height.value * 0.6)
+
+onBeforeMount(async () => {
+    await getProfileList()
+})
 </script>
 
 <template>

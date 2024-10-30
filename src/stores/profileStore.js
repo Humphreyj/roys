@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 // Mock Data
 import { userProfileMocks } from './mockData'
@@ -13,7 +14,18 @@ export const useProfileStore = defineStore('profiles', () => {
     const handleUserSelect = (user) => {
         selectedUser.value = user
     }
-    
+
+    const getProfileList = () => {
+        axios
+            .get('http://127.0.0.1:8080/api/profile')
+            .then((res) => {
+                userProfiles.value = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     const getProfileById = (id) => {
         let found = userProfiles.value.find((profile) => profile.id === id)
         selectedUser.value = found
@@ -22,12 +34,33 @@ export const useProfileStore = defineStore('profiles', () => {
     const createNewProfile = (newUser) => {
         newUser.id = uuidv4()
         userProfiles.value.unshift(newUser)
+
+        axios
+            .post('http://127.0.0.1:8080/api/profile/create', newUser)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+    const updateSelectedProfile = (selectedProfile) => {
+        axios
+            .put(`http://127.0.0.1:8080/api/profile/update`, selectedProfile)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const actions = {
         createNewProfile,
         handleUserSelect,
         getProfileById,
+        updateSelectedProfile,
+        getProfileList,
     }
     const values = {
         selectedUser,

@@ -1,19 +1,25 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
 import Sidedrawer from '@/components/UI/Sidedrawer.vue'
 import AppHeader from '@/components/UI/AppHeader.vue'
 import ModalContainer from '@/components/UI/ModalContainer.vue'
+
+const route = useRoute()
+
+const routeNames = ['invoice']
+const showHeader = computed(() => !routeNames.includes(route.name))
 </script>
 
 <template>
     <div
         class="overflow-y-auto h-dvh bg-appBackground dark:bg-appBackgroundDark flex-is-js"
     >
-        <Sidedrawer />
+        <Sidedrawer v-if="showHeader" />
         <ModalContainer />
 
         <section class="w-full overflow-y-scroll">
-            <AppHeader />
+            <AppHeader v-if="showHeader" />
             <RouterView v-slot="{ Component, route }">
                 <!-- Use a custom transition or fallback to `fade` -->
                 <!-- <transition :name="route.meta.transition || 'fade'"> -->

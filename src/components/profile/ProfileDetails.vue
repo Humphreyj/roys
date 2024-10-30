@@ -13,16 +13,20 @@ import { useToggle } from '@vueuse/core'
 const route = useRoute()
 
 const { selectedUser } = storeToRefs(useProfileStore())
-const { getProfileById } = useProfileStore()
+const { getProfileById, updateSelectedProfile } = useProfileStore()
 
 onBeforeMount(() => {
     if (!selectedUser.value) {
         getProfileById(route.params.id)
     }
 })
-
 const isEditingProfile = ref(false)
 const toggleEditingProfile = useToggle(isEditingProfile)
+
+const submitEditing = async (selectedUser) => {
+    await updateSelectedProfile(selectedUser)
+    isEditingProfile.value = false
+}
 </script>
 
 <template>
@@ -31,7 +35,7 @@ const toggleEditingProfile = useToggle(isEditingProfile)
             <BasicForm
                 form-title="Edit Profile"
                 :data="selectedUser"
-                @handle-submit="() => (isEditingProfile = false)"
+                @handle-submit="submitEditing(selectedUser)"
             />
         </div>
         <ProfileDetailsCard
