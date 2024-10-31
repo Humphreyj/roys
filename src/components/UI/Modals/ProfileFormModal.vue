@@ -6,14 +6,16 @@ import BasicForm from '@/components/forms/BasicForm.vue'
 // const props = defineProps({})
 // const emit = defineEmits()
 const newUser = ref({
-    name: '',
-    address_line_1: '',
-    city: '',
-    state: '',
-    zip: '',
-    email: '',
-    phone: '',
-    created_at: '',
+    address_line_1: '123 Test Dr',
+    city: 'Testville',
+    state: 'tx',
+    zip: '55343',
+    email: 'jimothy@mail.com',
+    phone: '832-283-5446',
+    created_at: '2024-10-30T17:05:27.138Z',
+    first_name: 'Jimothy',
+    last_name: 'James',
+    address_line_2: 'Default Text',
 })
 // Pinia
 import { storeToRefs } from 'pinia'
@@ -27,14 +29,15 @@ const handleCreateProfile = (newProfileData) => {
     createNewProfile(newProfileData)
     profileFormModal.value.hide()
     newUser.value = {
-        name: '',
+        first_name: '',
+        last_name: '',
         address_line_1: '',
+        address_line_2: '',
         city: '',
         state: '',
         zip: '',
         email: '',
         phone: '',
-        created_at: '',
     }
 }
 // Utils

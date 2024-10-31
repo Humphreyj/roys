@@ -42,6 +42,9 @@
     .flex-col-ie-js {
         @apply flex flex-col items-end justify-start;
     }
+    .flex-col-ie-jc {
+        @apply flex flex-col items-end justify-center;
+    }
     .flex-col-is-jc {
         @apply flex flex-col items-start justify-center;
     }

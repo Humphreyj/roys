@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 // Components
 import Avatar from '@/components/UI/Avatar.vue'
 import Card from '@/components/UI/Card.vue'
@@ -16,16 +16,20 @@ import { useWindowSize } from '@vueuse/core'
 // const emit = defineEmits()
 
 const { userProfiles } = storeToRefs(useProfileStore())
-const { handleUserSelect } = useProfileStore()
+const { handleUserSelect, getProfileList } = useProfileStore()
 const { profileFormModal } = storeToRefs(useModalStore())
 
 const handleNavigation = async (user) => {
-    handleUserSelect(user)
+    await handleUserSelect(user)
     await router.push({ name: 'Profile Details', params: { id: user.id } })
 }
 const { height } = useWindowSize()
 
 const listContainerHeight = computed(() => height.value * 0.6)
+
+onBeforeMount(async () => {
+    await getProfileList()
+})
 </script>
 
 <template>
@@ -55,8 +59,13 @@ const listContainerHeight = computed(() => height.value * 0.6)
                             class="gap-2 cursor-pointer flex-ic-js"
                             @click="handleNavigation(user)"
                         >
-                            <Avatar :username="user.name" size="15" />
-                            <p class="font-bold">{{ user.name }}</p>
+                            <Avatar
+                                :username="`${user.first_name} ${user.last_name}`"
+                                size="15"
+                            />
+                            <p class="font-bold">
+                                {{ `${user.first_name} ${user.last_name}` }}
+                            </p>
                         </div>
 
                         <ChevronDoubleRightIcon

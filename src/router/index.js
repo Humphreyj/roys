@@ -26,6 +26,16 @@ const routes = [
         },
     },
     {
+        path: '/invoice',
+        component: () => import('@/components/invoice/TestInvoice.vue'),
+        name: 'invoice',
+        meta: {
+            transition: 'fade',
+            order: 1,
+            viewLoaded: false,
+        },
+    },
+    {
         path: '/orders',
         component: () => import('@/views/OrdersView.vue'),
         name: 'Orders',

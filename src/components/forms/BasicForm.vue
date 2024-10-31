@@ -34,15 +34,26 @@ const handleSubmit = (e) => {
         <section class="w-full gap-1 p-4 mx-auto flex-col-ic-js">
             <h4 class="my-2 title-text">{{ formTitle }}</h4>
             <TextInput
-                v-model="userData.name"
-                data-test="username"
-                label="User Name"
+                v-model="userData.first_name"
+                data-test="first-name"
+                label="First Name"
+                input-class="min-w-60"
+            />
+            <TextInput
+                v-model="userData.last_name"
+                data-test="last-name"
+                label="Last Name"
                 input-class="min-w-60"
             />
             <TextInput
                 v-model="userData.address_line_1"
                 data-test="address_line_1"
                 label="Street Address"
+            />
+            <TextInput
+                v-model="userData.address_line_2"
+                data-test="address_line_2"
+                label="Apt/Suite"
             />
             <TextInput
                 v-model="userData.city"
