@@ -66,7 +66,10 @@ const confirmDelete = async (id) => {
                                 button-class="bg-red-500"
                                 @click="confirmDelete(selectedUser.id)"
                             />
-                            <Button text="No" @click="toggleDelete" />
+                            <Button
+                                text="No"
+                                @click="() => (showDelete = false)"
+                            />
                         </div>
                     </section>
                 </Card>

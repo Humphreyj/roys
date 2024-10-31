@@ -20,7 +20,7 @@ const { handleUserSelect, getProfileList } = useProfileStore()
 const { profileFormModal } = storeToRefs(useModalStore())
 
 const handleNavigation = async (user) => {
-    handleUserSelect(user)
+    await handleUserSelect(user)
     await router.push({ name: 'Profile Details', params: { id: user.id } })
 }
 const { height } = useWindowSize()
@@ -59,8 +59,13 @@ onBeforeMount(async () => {
                             class="gap-2 cursor-pointer flex-ic-js"
                             @click="handleNavigation(user)"
                         >
-                            <Avatar :username="user.name" size="15" />
-                            <p class="font-bold">{{ user.name }}</p>
+                            <Avatar
+                                :username="`${user.first_name} ${user.last_name}`"
+                                size="15"
+                            />
+                            <p class="font-bold">
+                                {{ `${user.first_name} ${user.last_name}` }}
+                            </p>
                         </div>
 
                         <ChevronDoubleRightIcon
