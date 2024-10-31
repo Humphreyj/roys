@@ -36,9 +36,12 @@ onMounted(() => {
             @click="emit('toggle-editing')"
         />
         <section class="w-full gap-2 flex-col-ic-jc">
-            <Avatar :username="user.name" avatar-class="text-xl size-20" />
+            <Avatar
+                :username="`${user.first_name} ${user.last_name}`"
+                avatar-class="text-xl size-20"
+            />
             <TextBlock
-                :text-content="user.name"
+                :text-content="`${user.first_name} ${user.last_name}`"
                 container-class="flex-col-ic-jc"
                 content-class="my-2 text-2xl"
             />

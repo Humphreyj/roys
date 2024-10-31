@@ -27,8 +27,15 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const getProfileById = (id) => {
-        let found = userProfiles.value.find((profile) => profile.id === id)
-        selectedUser.value = found
+        axios
+            .get(`http://127.0.0.1:8080/api/profile/${id}`)
+            .then((res) => {
+                console.log(res.data)
+                selectedUser.value = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const createNewProfile = (newUser) => {
@@ -55,12 +62,24 @@ export const useProfileStore = defineStore('profiles', () => {
             })
     }
 
+    const deleteSelectedProfile = (id) => {
+        axios
+            .delete(`http://127.0.0.1:8080/api/profile/delete/${id}`)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     const actions = {
         createNewProfile,
         handleUserSelect,
         getProfileById,
         updateSelectedProfile,
         getProfileList,
+        deleteSelectedProfile,
     }
     const values = {
         selectedUser,
