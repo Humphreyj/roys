@@ -2,6 +2,9 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
+// Pinia
+import { storeToRefs } from 'pinia'
+import { useRuntimeStore } from './runtimeStore'
 // Mock Data
 import { userProfileMocks } from './mockData'
 import { v4 as uuidv4 } from 'uuid'
@@ -10,6 +13,7 @@ export const useProfileStore = defineStore('profiles', () => {
     const selectedUser = ref(null)
     const userProfiles = ref(userProfileMocks)
     const currentUser = ref('c847868d-dffb-4d1e-a385-74dd578c46a7')
+    const { apiRoot } = storeToRefs(useRuntimeStore())
 
     const handleUserSelect = (user) => {
         selectedUser.value = user
@@ -17,7 +21,7 @@ export const useProfileStore = defineStore('profiles', () => {
 
     const getProfileList = () => {
         axios
-            .get('http://127.0.0.1:8080/api/profile')
+            .get(`${apiRoot.value}/profile`)
             .then((res) => {
                 userProfiles.value = res.data
             })
@@ -28,9 +32,8 @@ export const useProfileStore = defineStore('profiles', () => {
 
     const getProfileById = (id) => {
         axios
-            .get(`http://127.0.0.1:8080/api/profile/${id}`)
+            .get(`${apiRoot.value}/profile/${id}`)
             .then((res) => {
-                console.log(res.data)
                 selectedUser.value = res.data
             })
             .catch((err) => {
@@ -43,9 +46,9 @@ export const useProfileStore = defineStore('profiles', () => {
         userProfiles.value.unshift(newUser)
 
         axios
-            .post('http://127.0.0.1:8080/api/profile/create', newUser)
+            .post(`${apiRoot.value}/profile/create`, newUser)
             .then((res) => {
-                console.log(res.data)
+                res.data
             })
             .catch((err) => {
                 console.log(err)
@@ -53,10 +56,8 @@ export const useProfileStore = defineStore('profiles', () => {
     }
     const updateSelectedProfile = (selectedProfile) => {
         axios
-            .put(`http://127.0.0.1:8080/api/profile/update`, selectedProfile)
-            .then((res) => {
-                console.log(res.data)
-            })
+            .put(`${apiRoot.value}/profile/update`, selectedProfile)
+            .then((res) => {})
             .catch((err) => {
                 console.log(err)
             })
@@ -64,10 +65,8 @@ export const useProfileStore = defineStore('profiles', () => {
 
     const deleteSelectedProfile = (id) => {
         axios
-            .delete(`http://127.0.0.1:8080/api/profile/delete/${id}`)
-            .then((res) => {
-                console.log(res.data)
-            })
+            .delete(`${apiRoot.value}/profile/delete/${id}`)
+            .then((res) => {})
             .catch((err) => {
                 console.log(err)
             })

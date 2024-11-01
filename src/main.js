@@ -16,7 +16,9 @@ const initializeApp = async () => {
     createApp(App).use(pinia).use(router).use(VueApexCharts).mount('#app')
 
     // Set config vars after app is initialized.
-    const { configOptions } = storeToRefs(useRuntimeStore())
+    const { configOptions, apiRoot } = storeToRefs(useRuntimeStore())
+
+    apiRoot.value = configJson.apiRoot
     configOptions.value = configJson
 }
 

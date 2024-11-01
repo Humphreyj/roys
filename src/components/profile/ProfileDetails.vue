@@ -26,7 +26,7 @@ watchEffect(() => {
     }
 })
 const isEditingProfile = ref(false)
-const toggleEditingProfile = useToggle(isEditingProfile.value)
+const toggleEditingProfile = useToggle(isEditingProfile)
 
 const submitEditing = async (selectedUser) => {
     await updateSelectedProfile(selectedUser)
@@ -51,7 +51,6 @@ const confirmDelete = async (id) => {
                 container-class="w-1/4 transform -translate-x-1/2 bg-transparent border-none left-1/2 top-24"
                 backdrop-class="absolute top-0 left-0 w-screen h-screen bg-black opacity-50"
                 :show-modal="showDelete"
-                :toggle-modal="toggleDelete"
             >
                 <Card>
                     <section class="flex-col-ic-je">

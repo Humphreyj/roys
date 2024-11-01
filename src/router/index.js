@@ -108,4 +108,8 @@ router.afterEach((to, from) => {
     to.meta.transition = transition
 })
 
+router.onError((error) => {
+    console.error('Navigation failure:', error)
+})
+
 export default router

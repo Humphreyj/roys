@@ -1,17 +1,19 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+// Pinia
+import { storeToRefs } from 'pinia'
+import { useRuntimeStore } from './runtimeStore'
 
 // Mock Data
 
 export const useInvoiceStore = defineStore('invoiceStore', () => {
+    const { apiRoot } = storeToRefs(useRuntimeStore())
     const invoiceData = ref()
-
     const getInvoiceById = (id) => {
         axios
-            .get(`http://127.0.0.1:8080/api/invoice/${id}`)
+            .get(`${apiRoot.value}/invoice/${id}`)
             .then((res) => {
-                console.log(res.data)
                 invoiceData.value = res.data
             })
             .catch((err) => {
@@ -25,9 +27,8 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             clientId: clientId,
             ...invoiceData,
         }
-        console.log('in store', body)
         axios
-            .post('http://127.0.0.1:8080/api/invoice/create', body)
+            .post(`${apiRoot.value}/invoice/create`, body)
             .then((res) => {
                 console.log(res.data)
             })
