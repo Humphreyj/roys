@@ -6,7 +6,7 @@ import Card from '@/components/UI/Card.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useInvoiceStore } from '@/stores/invoiceStore'
-// import { useModalStore } from '@/stores/modalStore'
+import { useModalStore } from '@/stores/modalStore'
 // Assets
 import { ChevronDoubleRightIcon } from '@heroicons/vue/24/solid'
 // Utils
@@ -16,13 +16,18 @@ import { handleFormat } from '@/utils/formatText'
 // const emit = defineEmits()
 
 const { invoiceList } = storeToRefs(useInvoiceStore())
+const { setSelectedInvoice } = useInvoiceStore()
 
-// const { profileFormModal } = storeToRefs(useModalStore())
+const { invoicePreviewModal } = storeToRefs(useModalStore())
 
 // const handleNavigation = async (user) => {
 //     await handleUserSelect(user)
 //     await router.push({ name: 'Profile Details', params: { id: user.id } })
 // }
+const handleInvoicePreview = (invoice) => {
+    setSelectedInvoice(invoice)
+    invoicePreviewModal.value.show()
+}
 </script>
 
 <template>
@@ -59,7 +64,10 @@ const { invoiceList } = storeToRefs(useInvoiceStore())
                         {{ handleFormat(invoice.dueDate, 'date') }}
                     </p>
 
-                    <ChevronDoubleRightIcon class="cursor-pointer size-7" />
+                    <ChevronDoubleRightIcon
+                        class="cursor-pointer size-7"
+                        @click="handleInvoicePreview(invoice)"
+                    />
                 </section>
             </div>
         </section>

@@ -1,19 +1,24 @@
 <script setup>
-import { watchEffect } from 'vue'
+import { computed, watchEffect } from 'vue'
 // Components
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useInvoiceStore } from '@/stores/invoiceStore'
 import { useRuntimeStore } from '@/stores/runtimeStore'
-
-// const emit = defineEmits()
 import { handleFormat } from '@/utils/formatText'
-const { invoiceData } = storeToRefs(useInvoiceStore())
-const { getInvoiceById } = useInvoiceStore()
 
+const { selectedInvoice } = storeToRefs(useInvoiceStore())
+const { getInvoiceById } = useInvoiceStore()
 const { configOptions } = storeToRefs(useRuntimeStore())
+
+// const props = defineProps({
+//     previewData: {
+//         type: Object,
+//     },
+// })
+
 watchEffect(async () => {
-    if (!invoiceData.value) {
+    if (!selectedInvoice.value) {
         await getInvoiceById('109d17de-987c-11ef-9b4a-0242ac140002')
     }
 })
@@ -21,7 +26,7 @@ watchEffect(async () => {
 
 <template>
     <main class="w-full px-4 py-6 bg-white md:px-20 flex-col-is-js">
-        <div v-if="!invoiceData">Loading</div>
+        <div v-if="!selectedInvoice">Loading</div>
         <div v-else class="w-full">
             <section class="w-full flex-col-is-js">
                 <div class="w-full gap-3 flex-ic-jb">
@@ -31,7 +36,7 @@ watchEffect(async () => {
                     <h3 class="text-2xl text-center">
                         Invoice
                         <span class="font-bold"
-                            >#{{ invoiceData.invoiceNumber }}</span
+                            >#{{ selectedInvoice.invoiceNumber }}</span
                         >
                     </h3>
                 </div>
@@ -39,12 +44,14 @@ watchEffect(async () => {
                     <div class="gap-1 mt-8 -2 flex-col-is-js">
                         <p class="text-lg font-bold">Bill to:</p>
                         <p class="">
-                            {{ invoiceData.client.full_name }}
+                            {{ selectedInvoice.client.full_name }}
                         </p>
                         <p class="w-3/4">
-                            {{ handleFormat(invoiceData.client, 'address') }}
+                            {{
+                                handleFormat(selectedInvoice.client, 'address')
+                            }}
                         </p>
-                        <p>{{ invoiceData.client.email }}</p>
+                        <p>{{ selectedInvoice.client.email }}</p>
                     </div>
                     <div class="gap-1 mt-8 flex-col-ie-js">
                         <div class="gap-2 flex-ic-js">
@@ -52,7 +59,7 @@ watchEffect(async () => {
                             <p>
                                 {{
                                     handleFormat(
-                                        invoiceData.invoiceDate,
+                                        selectedInvoice.invoiceDate,
                                         'date'
                                     )
                                 }}
@@ -61,7 +68,12 @@ watchEffect(async () => {
                         <div class="gap-2 flex-ic-js">
                             <p>Due Date:</p>
                             <p>
-                                {{ handleFormat(invoiceData.dueDate, 'date') }}
+                                {{
+                                    handleFormat(
+                                        selectedInvoice.dueDate,
+                                        'date'
+                                    )
+                                }}
                             </p>
                         </div>
                     </div>
@@ -78,7 +90,7 @@ watchEffect(async () => {
                     <p class="place-self-end">Total</p>
                 </header>
                 <div
-                    v-for="item in invoiceData.lineItems"
+                    v-for="item in selectedInvoice.lineItems"
                     :key="item.id"
                     class="grid w-full grid-cols-4 gap-2 my-2 md:px-4"
                 >
@@ -103,7 +115,7 @@ watchEffect(async () => {
             <div class="w-full mt-4 flex-ic-jend">
                 <p class="text-xl font-bold text-right">
                     Total:
-                    {{ handleFormat(invoiceData.invoiceTotal, 'currency') }}
+                    {{ handleFormat(selectedInvoice.invoiceTotal, 'currency') }}
                 </p>
             </div>
         </div>
