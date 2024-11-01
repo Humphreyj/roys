@@ -1,9 +1,16 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
 export default {
-    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx,vue}'],
+    content: [
+        './index.html',
+        './src/**/*.{js,ts,jsx,tsx,vue}',
+        './node_modules/vue-tailwind-datepicker/**/*.js',
+    ],
     theme: {
         extend: {
             colors: {
+                'vtd-primary': colors.sky, // Light mode Datepicker color
+                'vtd-secondary': colors.gray, // Dark mode Datepicker color
                 appBackground: '#FFFAFC',
                 appBackgroundDark: '#272d35',
                 sidebarBackground: '#b8d4fc',
@@ -38,5 +45,9 @@ export default {
         },
     },
     darkMode: ['class'],
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/forms')({
+            strategy: 'class',
+        }),
+    ],
 }

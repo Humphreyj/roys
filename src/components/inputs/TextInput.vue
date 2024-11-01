@@ -7,12 +7,14 @@ import { handleFormat } from '@/utils/formatText'
 
 const props = defineProps({
     modelValue: {
-        type: String,
-        default: 'Default Text',
+        type: [String, Date, Number],
+        default: '',
     },
     label: {
         type: String,
-        default: 'Input Label',
+    },
+    placeholder: {
+        type: String,
     },
     format: {
         type: String,
@@ -35,6 +37,10 @@ const props = defineProps({
     inputName: {
         type: String,
         default: 'default-input',
+    },
+    type: {
+        type: String,
+        default: 'text',
     },
 })
 const emit = defineEmits(['update:modelValue'])
@@ -62,11 +68,14 @@ watchEffect(() => {
 
 <template>
     <div :class="classes.containerClass">
-        <label :for="inputName" :class="classes.labelClass">{{ label }}</label>
+        <label v-if="label" :for="inputName" :class="classes.labelClass">{{
+            label
+        }}</label>
         <input
             :name="inputName"
             :value="inputValue"
-            type="text"
+            :placeholder="placeholder"
+            :type="type"
             :maxlength="maxLength"
             :class="classes.inputClass"
             @input="($event) => handleInput($event, format)"

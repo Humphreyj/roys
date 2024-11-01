@@ -41,6 +41,9 @@ const props = defineProps({
         type: String,
         default: 'value',
     },
+    targetType: {
+        type: String,
+    },
 })
 
 const emit = defineEmits(['update:modelValue', 'value', 'resetCleared'])
@@ -62,10 +65,13 @@ const toggleOptions = () => {
 }
 
 const setSelected = (value) => {
-    console.log(props.targetAttr)
-    selectedValue.value = value.label
-
-    emit('update:modelValue', value[props.targetAttr])
+    if (props.targetType === 'object') {
+        selectedValue.value = value[props.targetAttr]
+        emit('update:modelValue', value)
+    } else {
+        selectedValue.value = value.label
+        emit('update:modelValue', value[props.targetAttr])
+    }
     showOptions.value = false
 }
 
@@ -146,7 +152,7 @@ const classes = ref(getStyles(props, 'textInput'))
                     @click="setSelected(option)"
                     @keydown.enter.prevent="setSelected(option)"
                 >
-                    {{ option.label }}
+                    {{ option.label ?? option[`${targetAttr}`] }}
                 </div>
             </div>
         </OnClickOutside>
