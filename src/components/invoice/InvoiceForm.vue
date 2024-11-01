@@ -68,7 +68,6 @@ const submitInvoice = async (e) => {
     newInvoiceData.value.lineItems = lineItems.value
     newInvoiceData.value.invoiceTotal = invoiceTotal.value
     showInvoice.value = true
-    console.log(newInvoiceData.value)
     invoiceData.value = newInvoiceData.value
     await createNewInvoice(invoiceData.value)
     // router.push('/invoice')

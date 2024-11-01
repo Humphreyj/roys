@@ -27,13 +27,20 @@ const routes = [
     },
     {
         path: '/invoice',
-        component: () => import('@/components/invoice/TestInvoice.vue'),
+        component: () => import('@/views/InvoiceView.vue'),
         name: 'invoice',
         meta: {
             transition: 'fade',
             order: 1,
             viewLoaded: false,
         },
+        children: [
+            {
+                path: '',
+                name: 'Invoice List',
+                component: () => import('@/components/invoice/InvoiceList.vue'),
+            },
+        ],
     },
     {
         path: '/orders',

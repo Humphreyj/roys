@@ -20,7 +20,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-    <main class="w-screen h-screen px-4 py-6 bg-white md:px-20 flex-col-is-js">
+    <main class="w-full px-4 py-6 bg-white md:px-20 flex-col-is-js">
         <div v-if="!invoiceData">Loading</div>
         <div v-else class="w-full">
             <section class="w-full flex-col-is-js">

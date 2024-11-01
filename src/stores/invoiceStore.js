@@ -10,6 +10,19 @@ import { useRuntimeStore } from './runtimeStore'
 export const useInvoiceStore = defineStore('invoiceStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
     const invoiceData = ref()
+    const invoiceList = ref([])
+
+    const getInvoiceList = () => {
+        axios
+            .get(`${apiRoot.value}/invoice`)
+            .then((res) => {
+                invoiceList.value = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     const getInvoiceById = (id) => {
         axios
             .get(`${apiRoot.value}/invoice/${id}`)
@@ -38,10 +51,12 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     }
 
     const actions = {
+        getInvoiceList,
         getInvoiceById,
         createNewInvoice,
     }
     const values = {
+        invoiceList,
         invoiceData,
     }
     return { ...actions, ...values }

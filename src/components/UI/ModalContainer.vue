@@ -3,7 +3,8 @@
 import MemberSettingsModal from '@/components/UI/Modals/MemberSettingsModal.vue'
 import ProfileFormModal from './Modals/ProfileFormModal.vue'
 import AvatarModal from './Modals/AvatarModal.vue'
-import NotificationModal from './Modals/NotificationModal.vue';
+import NotificationModal from './Modals/NotificationModal.vue'
+import InvoicePreviewModal from '@/components/invoice/InvoicePreviewModal.vue'
 // Pinia
 
 // const props = defineProps({})
@@ -18,6 +19,7 @@ import NotificationModal from './Modals/NotificationModal.vue';
             <ProfileFormModal />
             <AvatarModal />
             <NotificationModal />
+            <InvoicePreviewModal />
         </Teleport>
     </div>
 </template>
