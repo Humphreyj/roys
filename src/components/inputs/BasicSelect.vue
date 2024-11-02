@@ -94,21 +94,20 @@ const classes = ref(getStyles(props, 'textInput'))
 <template>
     <section :class="classes.containerClass">
         <label
+            v-if="label"
             ref="select-label"
             data-test="select-label"
             :class="classes.labelClass"
             >{{ label }}</label
         >
-        <OnClickOutside
-            class="relative w-full mt-1"
-            @trigger="showOptions = false"
-        >
+        <OnClickOutside class="relative w-full" @trigger="showOptions = false">
             <input
                 ref="select-input"
                 v-bind="$attrs"
                 v-model="selectedValue"
                 :class="classes.inputClass"
                 type="text"
+                :placeholder="placeholder"
                 data-test="select-input"
                 tabindex="0"
                 @keydown.enter.prevent="toggleOptions"
@@ -121,11 +120,6 @@ const classes = ref(getStyles(props, 'textInput'))
                 size="14"
             />
             <span v-if="selectedValue">{{ selectedValue.label }}</span>
-            <span
-                v-else-if="!selectedValue && props.placeholder"
-                class="text-gray-400 dark:text-gray-600"
-                >{{ props.placeholder }}</span
-            >
 
             <div v-show="`${error ? 'inline-flex' : 'invisible'}`" class="mt-1">
                 <div

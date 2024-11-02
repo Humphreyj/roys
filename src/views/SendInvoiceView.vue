@@ -92,14 +92,14 @@ watchEffect(async () => {
                 <div
                     v-for="item in selectedInvoice.lineItems"
                     :key="item.id"
-                    class="grid w-full grid-cols-5 gap-2 my-2 md:px-4"
+                    class="grid w-full grid-cols-4 gap-2 my-2 md:px-4"
                 >
                     <p class="">{{ item.description }}</p>
                     <p class="place-self-center">
                         {{ `${item.quantity}` }}
                     </p>
                     <p class="place-self-center">
-                        {{ `${item.unitType}` }}
+                        {{ `${item.unit}` }}
                     </p>
 
                     <p class="place-self-center">

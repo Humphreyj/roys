@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
 import HomeView from '@/views/HomeView.vue'
-import ProjectsView from '@/views/ProjectsView.vue'
 import ProfilesView from '@/views/ProfilesView.vue'
 
 const routes = [
@@ -12,16 +11,6 @@ const routes = [
         meta: {
             transition: 'fade',
             order: 0,
-            viewLoaded: false,
-        },
-    },
-    {
-        path: '/projects',
-        component: ProjectsView,
-        name: 'projects',
-        meta: {
-            transition: 'fade',
-            order: 1,
             viewLoaded: false,
         },
     },
@@ -43,6 +32,11 @@ const routes = [
         ],
     },
     {
+        path: '/send-invoice/:id',
+        component: () => import('@/views/SendInvoiceView.vue'),
+        name: 'send invoice',
+    },
+    {
         path: '/orders',
         component: () => import('@/views/OrdersView.vue'),
         name: 'Orders',
@@ -61,7 +55,7 @@ const routes = [
     },
     {
         path: '/profiles',
-        component: ProfilesView,
+        component: () => import('@/views/ProfilesView.vue'),
         name: 'Profiles',
         children: [
             {

@@ -30,6 +30,7 @@ const lineItems = ref([
         id: uuidv4(),
         description: '',
         quantity: 1,
+        unitType: '',
         unitPrice: 0,
         lineItemTotal: 0,
     },
@@ -40,6 +41,7 @@ const addLineItem = () => {
         id: uuidv4(),
         description: '',
         quantity: 1,
+        unitType: '',
         unitPrice: 0,
         lineItemTotal: 0,
     })

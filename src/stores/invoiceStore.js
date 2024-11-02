@@ -29,7 +29,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             })
     }
 
-    const getInvoiceById = (id) => {
+    const getInvoiceById = async (id) => {
         axios
             .get(`${apiRoot.value}/invoice/${id}`)
             .then((res) => {
@@ -40,7 +40,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             })
     }
 
-    const createNewInvoice = (invoiceData) => {
+    const createNewInvoice = async (invoiceData) => {
         const clientId = invoiceData.client.id
         const body = {
             clientId: clientId,

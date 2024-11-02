@@ -7,7 +7,7 @@ import ModalContainer from '@/components/UI/ModalContainer.vue'
 
 const route = useRoute()
 
-const routeNames = ['invoice']
+const routeNames = ['send invoice']
 const showHeader = computed(() => !routeNames.includes(route.name))
 </script>
 
