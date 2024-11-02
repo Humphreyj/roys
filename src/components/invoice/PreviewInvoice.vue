@@ -8,25 +8,21 @@ import { useRuntimeStore } from '@/stores/runtimeStore'
 // Utils
 import { handleFormat } from '@/utils/formatText'
 // Routing
-import { useRoute } from 'vue-router'
 
 const { selectedInvoice } = storeToRefs(useInvoiceStore())
-const { getInvoiceById } = useInvoiceStore()
+
 const { configOptions } = storeToRefs(useRuntimeStore())
 
-const route = useRoute()
+// const route = useRoute()
 
 watchEffect(async () => {
-    if (!selectedInvoice.value) {
-        await getInvoiceById(route.params.id)
-    }
+    console.log(selectedInvoice.value)
 })
 </script>
 
 <template>
     <main class="w-full px-4 py-6 bg-white md:px-20 flex-col-is-js">
-        <div v-if="!selectedInvoice">Loading</div>
-        <div v-else class="w-full">
+        <div class="w-full">
             <section class="w-full flex-col-is-js">
                 <div class="w-full gap-3 flex-ic-jb">
                     <h3 class="text-3xl font-semibold text-center">
@@ -69,7 +65,7 @@ watchEffect(async () => {
                             <p>
                                 {{
                                     handleFormat(
-                                        selectedInvoice.dueDate,
+                                        selectedInvoice.invoiceDueDate,
                                         'date'
                                     )
                                 }}

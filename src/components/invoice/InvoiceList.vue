@@ -1,5 +1,4 @@
 <script setup>
-import { computed, onBeforeMount } from 'vue'
 // Components
 import Avatar from '@/components/UI/Avatar.vue'
 import Card from '@/components/UI/Card.vue'
@@ -9,6 +8,8 @@ import { useInvoiceStore } from '@/stores/invoiceStore'
 import { useModalStore } from '@/stores/modalStore'
 // Assets
 import { ChevronDoubleRightIcon } from '@heroicons/vue/24/solid'
+// Routing
+import { RouterLink } from 'vue-router'
 // Utils
 import { handleFormat } from '@/utils/formatText'
 
@@ -18,7 +19,7 @@ import { handleFormat } from '@/utils/formatText'
 const { invoiceList } = storeToRefs(useInvoiceStore())
 const { setSelectedInvoice } = useInvoiceStore()
 
-const { invoicePreviewModal } = storeToRefs(useModalStore())
+const { invoicePreviewModal, invoiceFormModal } = storeToRefs(useModalStore())
 
 // const handleNavigation = async (user) => {
 //     await handleUserSelect(user)
@@ -38,12 +39,12 @@ const handleInvoicePreview = (invoice) => {
                     Manage Invoices
                 </h4>
                 <!-- <RouterLink to="/profiles/new" class="border-none"> -->
-                <h2
+                <RouterLink
                     class="border-gray-700 cursor-pointer hover:border-b"
-                    @click="profileFormModal.show"
+                    :to="{ name: 'Create New Invoice' }"
                 >
                     Create Invoice
-                </h2>
+                </RouterLink>
                 <!-- </RouterLink> -->
             </header>
             <div class="w-full gap-2 py-3 flex-col-ic-js">

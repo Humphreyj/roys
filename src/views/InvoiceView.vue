@@ -1,10 +1,6 @@
 <script setup>
 import { onBeforeMount } from 'vue'
 // Components
-import MetricCard from '@/components/cards/MetricCard.vue'
-import Button from '@/components/UI/Button.vue'
-import Card from '@/components/UI/Card.vue'
-import InvoiceForm from '@/components/invoice/InvoiceForm.vue'
 // Routing
 import { RouterView } from 'vue-router'
 // Pinia
@@ -27,7 +23,6 @@ onBeforeMount(async () => {
     <section
         class="w-full max-w-[75rem] mx-auto primary-text px-2 font-display flex-col-ic-js"
     >
-        <Button text="Create Invoice" />
         <!-- <InvoiceForm /> -->
         <RouterView />
     </section>

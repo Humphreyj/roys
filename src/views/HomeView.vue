@@ -16,9 +16,6 @@ import InvoiceForm from '@/components/invoice/InvoiceForm.vue'
     <section
         class="w-full max-w-[75rem] mx-auto primary-text px-2 font-display flex-col-ic-js"
     >
-        <Button text="Create Invoice" />
-        <InvoiceForm />
-
         <section
             class="grid w-full grid-cols-2 gap-2 mt-8 md:grid-cols-4"
         ></section>

@@ -29,6 +29,12 @@ const routes = [
                 name: 'Invoice List',
                 component: () => import('@/components/invoice/InvoiceList.vue'),
             },
+            {
+                path: 'create',
+                name: 'Create New Invoice',
+                component: () =>
+                    import('@/components/invoice/CreateNewInvoice.vue'),
+            },
         ],
     },
     {

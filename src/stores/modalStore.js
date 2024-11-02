@@ -26,6 +26,8 @@ export const useModalStore = defineStore('modalStore', () => {
     const notificationModal = ref(handleModal(false))
     const profileFormModal = ref(handleModal(false))
     const avatarModal = ref(handleModal(false))
+    // Invoice Modals
+    const invoiceFormModal = ref(handleModal(false))
     const invoicePreviewModal = ref(handleModal(false))
 
     // Array of objects to pass into the Modal component so that it can stay dynamic
@@ -69,8 +71,9 @@ export const useModalStore = defineStore('modalStore', () => {
         notificationModal,
         profileFormModal,
         avatarModal,
-        invoicePreviewModal,
         selectedTeamMember,
+        invoicePreviewModal,
+        invoiceFormModal,
     }
     return { ...actions, ...values }
 })
