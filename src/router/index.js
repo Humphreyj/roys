@@ -39,7 +39,7 @@ const routes = [
     },
     {
         path: '/send-invoice/:id',
-        component: () => import('@/views/SendInvoiceView.vue'),
+        component: import('@/components/invoice/PreviewInvoice.vue'),
         name: 'send invoice',
     },
     {

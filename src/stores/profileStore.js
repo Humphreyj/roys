@@ -1,13 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 // Mock Data
 import { userProfileMocks } from './mockData'
 import { v4 as uuidv4 } from 'uuid'
+// Utils
 
 export const useProfileStore = defineStore('profiles', () => {
     const selectedUser = ref(null)
@@ -19,7 +19,7 @@ export const useProfileStore = defineStore('profiles', () => {
         selectedUser.value = user
     }
 
-    const getProfileList = () => {
+    const getProfileList = async () => {
         axios
             .get(`${apiRoot.value}/profile`)
             .then((res) => {
@@ -30,7 +30,7 @@ export const useProfileStore = defineStore('profiles', () => {
             })
     }
 
-    const getProfileById = (id) => {
+    const getProfileById = async (id) => {
         axios
             .get(`${apiRoot.value}/profile/${id}`)
             .then((res) => {
@@ -41,7 +41,7 @@ export const useProfileStore = defineStore('profiles', () => {
             })
     }
 
-    const createNewProfile = (newUser) => {
+    const createNewProfile = async (newUser) => {
         newUser.id = uuidv4()
         userProfiles.value.unshift(newUser)
 
@@ -54,7 +54,7 @@ export const useProfileStore = defineStore('profiles', () => {
                 console.log(err)
             })
     }
-    const updateSelectedProfile = (selectedProfile) => {
+    const updateSelectedProfile = async (selectedProfile) => {
         axios
             .put(`${apiRoot.value}/profile/update`, selectedProfile)
             .then((res) => {})
@@ -63,7 +63,7 @@ export const useProfileStore = defineStore('profiles', () => {
             })
     }
 
-    const deleteSelectedProfile = (id) => {
+    const deleteSelectedProfile = async (id) => {
         axios
             .delete(`${apiRoot.value}/profile/delete/${id}`)
             .then((res) => {})

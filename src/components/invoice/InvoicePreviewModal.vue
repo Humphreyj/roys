@@ -2,7 +2,7 @@
 // Components
 import Card from '@/components/UI/Card.vue'
 import Modal from '@/components/UI/Modal.vue'
-import TestInvoice from './PreviewInvoice.vue'
+import PreviewInvoice from './PreviewInvoice.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useModalStore } from '@/stores/modalStore'
@@ -21,7 +21,7 @@ const { invoiceData } = storeToRefs(useInvoiceStore())
         :toggle-modal="invoicePreviewModal.hide"
     >
         <section class="w-full mx-auto md:w-11/12">
-            <TestInvoice />
+            <PreviewInvoice />
         </section>
     </Modal>
 </template>

@@ -8,22 +8,26 @@ import { useRuntimeStore } from '@/stores/runtimeStore'
 // Utils
 import { handleFormat } from '@/utils/formatText'
 // Routing
+import { useRoute } from 'vue-router'
 
 const { selectedInvoice } = storeToRefs(useInvoiceStore())
-
+const { getInvoiceById } = useInvoiceStore()
 const { configOptions } = storeToRefs(useRuntimeStore())
 
-// const route = useRoute()
+const route = useRoute()
 
 watchEffect(async () => {
-    console.log(selectedInvoice.value)
+    if (!selectedInvoice.value) {
+        await getInvoiceById(route.params.id)
+    }
 })
 </script>
 
 <template>
-    <main class="w-full px-4 py-6 bg-white md:px-20 flex-col-is-js">
-        <div class="w-full">
-            <section class="w-full flex-col-is-js">
+    <main class="w-full py-6 bg-white flex-col-is-js">
+        <div v-if="!selectedInvoice">Loading</div>
+        <div v-else class="w-full">
+            <section class="w-full px-4 flex-col-is-js">
                 <div class="w-full gap-3 flex-ic-jb">
                     <h3 class="text-3xl font-semibold text-center">
                         {{ configOptions.clientName }}
@@ -41,7 +45,7 @@ watchEffect(async () => {
                         <p class="">
                             {{ selectedInvoice.client.full_name }}
                         </p>
-                        <p class="w-3/4">
+                        <p class="w-max">
                             {{
                                 handleFormat(selectedInvoice.client, 'address')
                             }}
@@ -49,7 +53,7 @@ watchEffect(async () => {
                         <p>{{ selectedInvoice.client.email }}</p>
                     </div>
                     <div class="gap-1 mt-8 flex-col-ie-js">
-                        <div class="gap-2 flex-ic-js">
+                        <div class="gap-2 flex-is-js">
                             <p>Date:</p>
                             <p>
                                 {{
@@ -65,7 +69,7 @@ watchEffect(async () => {
                             <p>
                                 {{
                                     handleFormat(
-                                        selectedInvoice.invoiceDueDate,
+                                        selectedInvoice.dueDate,
                                         'date'
                                     )
                                 }}
@@ -76,7 +80,7 @@ watchEffect(async () => {
             </section>
             <section class="w-full mx-auto mt-6 flex-col-ic-js">
                 <header
-                    class="grid w-full grid-cols-5 gap-2 font-semibold text-white border-b md:px-4 bg-slate-600"
+                    class="grid w-full grid-cols-5 gap-2 px-4 font-semibold text-white border-b md:px-4 bg-slate-600"
                 >
                     <p>Description</p>
                     <p class="place-self-center">Quantity</p>
@@ -88,7 +92,7 @@ watchEffect(async () => {
                 <div
                     v-for="item in selectedInvoice.lineItems"
                     :key="item.id"
-                    class="grid w-full grid-cols-5 gap-2 my-2 md:px-4"
+                    class="grid w-full grid-cols-5 gap-2 px-4 my-2 md:px-4"
                 >
                     <p class="">{{ item.description }}</p>
                     <p class="place-self-center">
@@ -111,7 +115,7 @@ watchEffect(async () => {
                     </p>
                 </div>
             </section>
-            <div class="w-full mt-4 flex-ic-jend">
+            <div class="w-full pr-4 mt-4 flex-ic-jend">
                 <p class="text-xl font-bold text-right">
                     Total:
                     {{ handleFormat(selectedInvoice.invoiceTotal, 'currency') }}

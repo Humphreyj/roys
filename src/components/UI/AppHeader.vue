@@ -1,6 +1,5 @@
 <script setup>
 import { watch, onMounted } from 'vue'
-import { getStyles } from '@/composables/getStyles'
 
 import { useDark, useToggle, useWindowSize } from '@vueuse/core'
 // Components
@@ -29,7 +28,7 @@ const toggleDark = useToggle(isDark)
 const { showSidebar } = storeToRefs(usePrimaryStore())
 const { toggleSidebar } = usePrimaryStore()
 const { width } = useWindowSize()
-const { clientName, configOptions } = storeToRefs(useRuntimeStore())
+const { configOptions } = storeToRefs(useRuntimeStore())
 
 watch(width, (newWidth) => {
     if (newWidth > 768) {
@@ -49,10 +48,6 @@ onMounted(() => {
 
 import { useModalStore } from '@/stores/modalStore'
 const { avatarModal } = storeToRefs(useModalStore())
-const { notificationModalContent, notificationModal } = storeToRefs(
-    useModalStore()
-)
-const classes = getStyles(props, 'notificationModal')
 </script>
 
 <template>
@@ -62,22 +57,14 @@ const classes = getStyles(props, 'notificationModal')
         </h3>
         <div class="gap-2 flex-ie-jend">
             <Button v-if="width < 768" @click="toggleSidebar()" text="Bar" />
-            <section class="relative">
-                <Button text="&#128276;" @click="notificationModal.show" />
-                <span
-                    v-if="notificationModalContent.length > 0"
-                    :class="classes.iconClass"
-                >
-                    {{ notificationModalContent.length }}
-                </span>
-            </section>
-            <Avatar
-                avatar-class="cursor-pointer size-10"
-                @click="avatarModal.toggle"
-            />
+
             <Button
                 @click="toggleDark()"
                 :text="isDark ? '&#9788;' : '&#9789;'"
+            />
+            <Avatar
+                avatar-class="cursor-pointer size-10"
+                @click="avatarModal.toggle"
             />
         </div>
     </section>

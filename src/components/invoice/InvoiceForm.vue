@@ -56,8 +56,8 @@ const newInvoiceData = ref({
     client: null,
     invoiceNumber: '001',
     invoiceDate: null,
-    invoiceDueDate: null,
-    status: 'unpaid',
+    dueDate: null,
+    status: 'draft',
     lineItems: [],
     invoiceTotal: 0,
 })

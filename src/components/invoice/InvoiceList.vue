@@ -51,7 +51,7 @@ const handleInvoicePreview = (invoice) => {
                 <section
                     v-for="invoice in invoiceList"
                     :key="invoice.id"
-                    class="grid justify-between w-full grid-cols-4 gap-4 py-2 shadow dark:shadow-slate-600 dark:shadow-sm"
+                    class="grid justify-between w-full grid-cols-4 gap-4 p-2 shadow dark:shadow-slate-600 dark:shadow-sm"
                 >
                     <div class="gap-2 cursor-pointer flex-ic-js">
                         <p class="font-bold">
