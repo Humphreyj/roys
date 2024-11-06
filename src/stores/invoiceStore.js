@@ -56,11 +56,23 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             })
     }
 
+    const sendInvoice = async (id) => {
+        axios
+            .get(`${apiRoot.value}/pdf2/${id}`)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     const actions = {
         getInvoiceList,
         getInvoiceById,
         createNewInvoice,
         setSelectedInvoice,
+        sendInvoice,
     }
     const values = {
         invoiceList,
