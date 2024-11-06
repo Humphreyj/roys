@@ -19,7 +19,8 @@ import { handleFormat } from '@/utils/formatText'
 
 const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
-const { createNewInvoice, setSelectedInvoice } = useInvoiceStore()
+const { createNewInvoice, setSelectedInvoice, updateInvoice } =
+    useInvoiceStore()
 
 const { invoicePreviewModal } = storeToRefs(useModalStore())
 
@@ -36,6 +37,10 @@ const props = defineProps({
             lineItems: [],
             invoiceTotal: 0,
         },
+    },
+    newInvoice: {
+        type: Boolean,
+        default: true,
     },
 })
 
@@ -83,7 +88,11 @@ const submitInvoice = async (e) => {
     invoiceData.value.lineItems = lineItems.value
     invoiceData.value.invoiceTotal = invoiceTotal.value
     showInvoice.value = true
-    await createNewInvoice(invoiceData.value)
+    if (props.newInvoice) {
+        await createNewInvoice(invoiceData.value)
+    } else {
+        await updateInvoice(invoiceData.value)
+    }
 }
 const previewInvoice = async (e) => {
     e.preventDefault()

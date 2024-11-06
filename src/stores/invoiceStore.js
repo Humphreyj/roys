@@ -55,10 +55,30 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
                 console.log(err)
             })
     }
-
-    const sendInvoice = async (id) => {
+    const updateInvoice = async (invoiceData) => {
+        const clientId = invoiceData.client.id
+        const body = {
+            clientId: clientId,
+            ...invoiceData,
+        }
         axios
-            .get(`${apiRoot.value}/pdf2/${id}`)
+            .put(`${apiRoot.value}/invoice/update`, body)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const sendInvoice = async (invoice) => {
+        const invoiceRequest = {
+            invoiceId: invoice.id,
+            client: invoice.client,
+            invoiceNumber: invoice.invoiceNumber,
+        }
+        axios
+            .post(`${apiRoot.value}/pdf2/`, invoiceRequest)
             .then((res) => {
                 console.log(res.data)
             })
@@ -73,6 +93,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         createNewInvoice,
         setSelectedInvoice,
         sendInvoice,
+        updateInvoice,
     }
     const values = {
         invoiceList,

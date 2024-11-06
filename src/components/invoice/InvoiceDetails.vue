@@ -3,6 +3,7 @@ import { watchEffect } from 'vue'
 // Components
 import Card from '@/components/UI/Card.vue'
 import InvoiceForm from './InvoiceForm.vue'
+import PreviewInvoice from './PreviewInvoice.vue'
 import TextBlock from '../UI/TextBlock.vue'
 import DateInput from '../inputs/DateInput.vue'
 import Button from '../UI/Button.vue'
@@ -34,12 +35,16 @@ const handleSendInvoice = async (id) => {
         v-if="selectedInvoice"
         container-class="mx-auto my-2 border-none shadow box-shadow"
     >
-        <h1>{{ selectedInvoice.invoiceNumber }}</h1>
-        <p>{{ selectedInvoice.invoiceDate.slice(0, -1) }}</p>
-        <InvoiceForm title="Edit Invoice" :invoice-data="selectedInvoice" />
+        <InvoiceForm
+            v-if="selectedInvoice.status === 'draft'"
+            title="Edit Invoice"
+            :invoice-data="selectedInvoice"
+            :new-invoice="false"
+        />
+        <PreviewInvoice v-else />
         <Button
             text="Send Invoice"
-            @click="handleSendInvoice(selectedInvoice.id)"
+            @click="handleSendInvoice(selectedInvoice)"
         />
     </Card>
 </template>
