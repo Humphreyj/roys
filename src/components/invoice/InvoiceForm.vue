@@ -1,11 +1,12 @@
 <script setup>
 import { ref, computed, onBeforeMount } from 'vue'
 // Components
-import BasicSelect from '../inputs/BasicSelect.vue'
+import SearchableSelect from '@/components/inputs/SearchableSelect.vue'
 import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
 import InvoiceLineItem from './InvoiceLineItem.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
+import DateInput from '../inputs/DateInput.vue'
 
 // Pinia
 import { storeToRefs } from 'pinia'
@@ -23,12 +24,13 @@ const { createNewInvoice, setSelectedInvoice } = useInvoiceStore()
 const { invoicePreviewModal } = storeToRefs(useModalStore())
 
 const props = defineProps({
+    title: { type: String, default: 'New Invoice' },
     invoiceData: {
         type: Object,
         default: {
             client: null,
             invoiceNumber: '001',
-            invoiceDate: '2024-10-10',
+            invoiceDate: '',
             dueDate: null,
             status: 'draft',
             lineItems: [],
@@ -104,12 +106,17 @@ onBeforeMount(async () => {
     <Card
         container-class="w-full gap-1 px-4 mx-auto md:w-10/12 lg:w-3/4 min-w-60"
     >
-        <h4 class="mb-2 title-text">New Invoice</h4>
+        <div class="w-full flex-ic-jb">
+            <h4 class="mb-2 title-text">{{ title }}</h4>
+            <div class="p-1 border rounded-lg">
+                {{ handleFormat(invoiceData.status, 'title') }}
+            </div>
+        </div>
         <section class="w-full gap-1 px-4 mx-auto flex-col-ic-js">
             <div
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
-                <BasicSelect
+                <SearchableSelect
                     v-model="invoiceData.client"
                     label="Client"
                     :options="userProfiles"
@@ -125,15 +132,15 @@ onBeforeMount(async () => {
             <div
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
-                <TextInput
+                <DateInput
                     v-model="invoiceData.invoiceDate"
                     data-test="new-invoice-date"
                     label="Invoice Date"
                     type="date"
                     format="date"
                 />
-                <TextInput
-                    v-model.date="invoiceData.invoiceDueDate"
+                <DateInput
+                    v-model.date="invoiceData.dueDate"
                     data-test="new-invoice-due-date"
                     label="Invoice Due Date"
                     type="date"

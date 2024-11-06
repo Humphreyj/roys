@@ -4,6 +4,7 @@ import { watchEffect } from 'vue'
 import Card from '@/components/UI/Card.vue'
 import InvoiceForm from './InvoiceForm.vue'
 import TextBlock from '../UI/TextBlock.vue'
+import DateInput from '../inputs/DateInput.vue'
 import Button from '../UI/Button.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
@@ -35,6 +36,7 @@ const handleSendInvoice = async (id) => {
     >
         <h1>{{ selectedInvoice.invoiceNumber }}</h1>
         <p>{{ selectedInvoice.invoiceDate.slice(0, -1) }}</p>
+        <InvoiceForm title="Edit Invoice" :invoice-data="selectedInvoice" />
         <Button
             text="Send Invoice"
             @click="handleSendInvoice(selectedInvoice.id)"
