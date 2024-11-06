@@ -35,6 +35,12 @@ const routes = [
                 component: () =>
                     import('@/components/invoice/CreateNewInvoice.vue'),
             },
+            {
+                path: 'details/:id',
+                name: 'Invoice Details',
+                component: () =>
+                    import('@/components/invoice/InvoiceDetails.vue'),
+            },
         ],
     },
     {

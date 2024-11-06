@@ -18,10 +18,24 @@ import { handleFormat } from '@/utils/formatText'
 
 const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
-const { invoiceData } = storeToRefs(useInvoiceStore())
 const { createNewInvoice, setSelectedInvoice } = useInvoiceStore()
 
 const { invoicePreviewModal } = storeToRefs(useModalStore())
+
+const props = defineProps({
+    invoiceData: {
+        type: Object,
+        default: {
+            client: null,
+            invoiceNumber: '001',
+            invoiceDate: '2024-10-10',
+            dueDate: null,
+            status: 'draft',
+            lineItems: [],
+            invoiceTotal: 0,
+        },
+    },
+})
 
 const showInvoice = ref(false)
 
@@ -52,15 +66,7 @@ const deleteLineItem = (id) => {
     lineItems.value.splice(itemIndex, 1)
 }
 
-const newInvoiceData = ref({
-    client: null,
-    invoiceNumber: '001',
-    invoiceDate: null,
-    dueDate: null,
-    status: 'draft',
-    lineItems: [],
-    invoiceTotal: 0,
-})
+const invoiceData = ref(props.invoiceData)
 
 const invoiceTotal = computed(() => {
     let result = 0
@@ -72,22 +78,25 @@ const invoiceTotal = computed(() => {
 
 const submitInvoice = async (e) => {
     e.preventDefault()
-    newInvoiceData.value.lineItems = lineItems.value
-    newInvoiceData.value.invoiceTotal = invoiceTotal.value
+    invoiceData.value.lineItems = lineItems.value
+    invoiceData.value.invoiceTotal = invoiceTotal.value
     showInvoice.value = true
-    await createNewInvoice(newInvoiceData.value)
+    await createNewInvoice(invoiceData.value)
 }
 const previewInvoice = async (e) => {
     e.preventDefault()
-    newInvoiceData.value.lineItems = lineItems.value
-    newInvoiceData.value.invoiceTotal = invoiceTotal.value
+    invoiceData.value.lineItems = lineItems.value
+    invoiceData.value.invoiceTotal = invoiceTotal.value
     showInvoice.value = true
-    setSelectedInvoice(newInvoiceData.value)
+    setSelectedInvoice(invoiceData.value)
     invoicePreviewModal.value.show()
 }
 
 onBeforeMount(async () => {
     await getProfileList()
+    if (invoiceData.value.lineItems.length) {
+        lineItems.value = invoiceData.value.lineItems
+    }
 })
 </script>
 
@@ -101,14 +110,14 @@ onBeforeMount(async () => {
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
                 <BasicSelect
-                    v-model="newInvoiceData.client"
+                    v-model="invoiceData.client"
                     label="Client"
                     :options="userProfiles"
                     target-attr="full_name"
                     target-type="object"
                 />
                 <TextInput
-                    v-model="newInvoiceData.invoiceNumber"
+                    v-model="invoiceData.invoiceNumber"
                     data-test="new-invoice-number"
                     label="Invoice Number"
                 />
@@ -117,13 +126,14 @@ onBeforeMount(async () => {
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
                 <TextInput
-                    v-model="newInvoiceData.invoiceDate"
+                    v-model="invoiceData.invoiceDate"
                     data-test="new-invoice-date"
                     label="Invoice Date"
                     type="date"
+                    format="date"
                 />
                 <TextInput
-                    v-model.date="newInvoiceData.invoiceDueDate"
+                    v-model.date="invoiceData.invoiceDueDate"
                     data-test="new-invoice-due-date"
                     label="Invoice Due Date"
                     type="date"

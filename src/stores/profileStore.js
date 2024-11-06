@@ -5,13 +5,13 @@ import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 // Mock Data
-import { userProfileMocks } from './mockData'
+
 import { v4 as uuidv4 } from 'uuid'
 // Utils
 
 export const useProfileStore = defineStore('profiles', () => {
     const selectedUser = ref(null)
-    const userProfiles = ref(userProfileMocks)
+    const userProfiles = ref([])
     const currentUser = ref('c847868d-dffb-4d1e-a385-74dd578c46a7')
     const { apiRoot } = storeToRefs(useRuntimeStore())
 

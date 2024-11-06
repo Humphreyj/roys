@@ -21,10 +21,6 @@ const { setSelectedInvoice } = useInvoiceStore()
 
 const { invoicePreviewModal, invoiceFormModal } = storeToRefs(useModalStore())
 
-// const handleNavigation = async (user) => {
-//     await handleUserSelect(user)
-//     await router.push({ name: 'Profile Details', params: { id: user.id } })
-// }
 const handleInvoicePreview = (invoice) => {
     setSelectedInvoice(invoice)
     invoicePreviewModal.value.show()
@@ -64,11 +60,14 @@ const handleInvoicePreview = (invoice) => {
                     <p class="font-bold">
                         {{ handleFormat(invoice.dueDate, 'date') }}
                     </p>
-
-                    <ChevronDoubleRightIcon
-                        class="cursor-pointer size-7"
-                        @click="handleInvoicePreview(invoice)"
-                    />
+                    <RouterLink
+                        :to="{
+                            name: 'Invoice Details',
+                            params: { id: invoice.id },
+                        }"
+                    >
+                        <ChevronDoubleRightIcon class="cursor-pointer size-7" />
+                    </RouterLink>
                 </section>
             </div>
         </section>
