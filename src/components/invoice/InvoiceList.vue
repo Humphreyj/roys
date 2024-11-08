@@ -44,10 +44,19 @@ const handleInvoicePreview = (invoice) => {
                 <!-- </RouterLink> -->
             </header>
             <div class="w-full gap-2 py-3 flex-col-ic-js">
+                <thead
+                    class="grid justify-between w-full grid-cols-6 gap-4 p-2 font-semibold shadow dark:shadow-slate-600 dark:shadow-sm"
+                >
+                    <p>Invoice</p>
+                    <p>Client</p>
+                    <p>Due Date</p>
+                    <p>Total</p>
+                    <p>Status</p>
+                </thead>
                 <section
                     v-for="invoice in invoiceList"
                     :key="invoice.id"
-                    class="grid justify-between w-full grid-cols-4 gap-4 p-2 shadow dark:shadow-slate-600 dark:shadow-sm"
+                    class="grid justify-between w-full grid-cols-6 gap-4 p-2 shadow dark:shadow-slate-600 dark:shadow-sm"
                 >
                     <div class="gap-2 cursor-pointer flex-ic-js">
                         <p class="font-bold">
@@ -60,11 +69,19 @@ const handleInvoicePreview = (invoice) => {
                     <p class="font-bold">
                         {{ handleFormat(invoice.dueDate, 'date') }}
                     </p>
+                    <p class="font-bold">
+                        {{ handleFormat(invoice.invoiceTotal, 'currency') }}
+                    </p>
+                    <p class="font-bold">
+                        {{ invoice.status }}
+                    </p>
                     <RouterLink
+                        class="justify-self-end"
                         :to="{
                             name: 'Invoice Details',
                             params: { id: invoice.id },
                         }"
+                        @click="setSelectedInvoice(invoice)"
                     >
                         <ChevronDoubleRightIcon class="cursor-pointer size-7" />
                     </RouterLink>

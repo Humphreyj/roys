@@ -4,6 +4,8 @@ import axios from 'axios'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
+// Routing
+import router from '@/router'
 
 // Mock Data
 
@@ -52,6 +54,11 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             .post(`${apiRoot.value}/invoice/create`, body)
             .then((res) => {
                 console.log(res.data)
+
+                router.push({
+                    name: 'Invoice Details',
+                    params: { id: res.data.id },
+                })
             })
             .catch((err) => {
                 console.log(err)

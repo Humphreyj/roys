@@ -56,9 +56,12 @@ const formattedDate = computed(() => {
 })
 
 const onInput = (event) => {
-    const newDate = event.target.value
-    inputDate.value = newDate
-    emit('update:modelValue', newDate) // Emit the raw date string
+    if (inputDate.value) {
+        const [year, month, day] = inputDate.value.split('-')
+        const utcDate = new Date(Date.UTC(year, month - 1, day))
+        inputDate.value = utcDate.toISOString().split('T')[0]
+        emit('update:modelValue', utcDate.toISOString().split('T')[0])
+    }
 }
 
 watch(
@@ -67,13 +70,6 @@ watch(
         inputDate.value = newValue
     }
 )
-const onBlur = () => {
-    if (inputDate.value) {
-        const [year, month, day] = inputDate.value.split('-')
-        const utcDate = new Date(Date.UTC(year, month - 1, day))
-        emit('update:modelValue', utcDate.toISOString().split('T')[0])
-    }
-}
 </script>
 
 <template>
@@ -89,7 +85,6 @@ const onBlur = () => {
             :maxlength="maxLength"
             :class="classes.inputClass"
             @input="onInput"
-            @blur="onBlur"
         />
     </div>
 </template>

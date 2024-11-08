@@ -1,18 +1,19 @@
 <script setup>
-import { ref, computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount, watchEffect } from 'vue'
 // Components
-import SearchableSelect from '@/components/inputs/SearchableSelect.vue'
 import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
-import InvoiceLineItem from './InvoiceLineItem.vue'
-import TextInput from '@/components/inputs/TextInput.vue'
 import DateInput from '../inputs/DateInput.vue'
+import InvoiceLineItem from './InvoiceLineItem.vue'
+import SearchableSelect from '@/components/inputs/SearchableSelect.vue'
+import TextInput from '@/components/inputs/TextInput.vue'
 
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useProfileStore } from '@/stores/profileStore'
 import { useInvoiceStore } from '@/stores/invoiceStore'
 import { useModalStore } from '@/stores/modalStore'
+import { useSettingsStore } from '@/stores/settingsStore'
 // Utils
 import { v4 as uuidv4 } from 'uuid'
 import { handleFormat } from '@/utils/formatText'
@@ -23,27 +24,29 @@ const { createNewInvoice, setSelectedInvoice, updateInvoice } =
     useInvoiceStore()
 const { invoiceBeingEdited } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal } = storeToRefs(useModalStore())
+const { userSettings } = storeToRefs(useSettingsStore())
 
 const props = defineProps({
     title: { type: String, default: 'New Invoice' },
     invoiceData: {
         type: Object,
-        default: {
-            client: null,
-            invoiceNumber: '001',
-            invoiceDate: '',
-            dueDate: null,
-            status: 'draft',
-            lineItems: [],
-            invoiceTotal: 0,
-        },
     },
     newInvoice: {
         type: Boolean,
         default: true,
     },
 })
-
+const invoiceData = ref(
+    props.invoiceData ?? {
+        client: null,
+        invoiceNumber: userSettings.value.nextInvoiceNumber,
+        invoiceDate: '',
+        dueDate: null,
+        status: 'draft',
+        lineItems: [],
+        invoiceTotal: 0,
+    }
+)
 const showInvoice = ref(false)
 
 const lineItems = ref([
@@ -72,8 +75,6 @@ const deleteLineItem = (id) => {
     let itemIndex = lineItems.value.findIndex((lineItem) => lineItem.id === id)
     lineItems.value.splice(itemIndex, 1)
 }
-
-const invoiceData = ref(props.invoiceData)
 
 const invoiceTotal = computed(() => {
     let result = 0
@@ -106,8 +107,16 @@ const previewInvoice = async (e) => {
 
 onBeforeMount(async () => {
     await getProfileList()
+
     if (invoiceData.value.lineItems.length) {
         lineItems.value = invoiceData.value.lineItems
+    }
+    console.log(userSettings.value)
+})
+
+watchEffect(() => {
+    if (props.newInvoice) {
+        invoiceData.invoiceNumber = userSettings.value.nextInvoiceNumber
     }
 })
 </script>
@@ -135,6 +144,7 @@ onBeforeMount(async () => {
                     v-model="invoiceData.invoiceNumber"
                     data-test="new-invoice-number"
                     label="Invoice Number"
+                    :disabled="true"
                 />
             </div>
             <div

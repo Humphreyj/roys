@@ -42,6 +42,10 @@ const props = defineProps({
         type: String,
         default: 'text',
     },
+    disabled: {
+        type: Boolean,
+        default: false,
+    },
 })
 const emit = defineEmits(['update:modelValue'])
 const classes = ref(getStyles(props, 'textInput'))
@@ -78,6 +82,7 @@ watchEffect(() => {
             :type="type"
             :maxlength="maxLength"
             :class="classes.inputClass"
+            :disabled="disabled"
             @input="($event) => handleInput($event, format)"
         />
     </div>
