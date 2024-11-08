@@ -21,7 +21,7 @@ const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
 const { createNewInvoice, setSelectedInvoice, updateInvoice } =
     useInvoiceStore()
-
+const { invoiceBeingEdited } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal } = storeToRefs(useModalStore())
 
 const props = defineProps({
@@ -50,9 +50,9 @@ const lineItems = ref([
     {
         id: uuidv4(),
         description: '',
-        quantity: 1,
+        quantity: null,
         unitType: '',
-        unitPrice: 0,
+        unitPrice: null,
         lineItemTotal: 0,
     },
 ])
@@ -61,9 +61,9 @@ const addLineItem = () => {
     lineItems.value.push({
         id: uuidv4(),
         description: '',
-        quantity: 1,
+        quantity: null,
         unitType: '',
-        unitPrice: 0,
+        unitPrice: null,
         lineItemTotal: 0,
     })
 }
@@ -92,6 +92,7 @@ const submitInvoice = async (e) => {
         await createNewInvoice(invoiceData.value)
     } else {
         await updateInvoice(invoiceData.value)
+        invoiceBeingEdited.value = false
     }
 }
 const previewInvoice = async (e) => {
@@ -112,9 +113,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-    <Card
-        container-class="w-full gap-1 px-4 mx-auto md:w-10/12 lg:w-3/4 min-w-60"
-    >
+    <Card container-class="w-full gap-1 mx-auto md:w-10/12 lg:w-3/4 min-w-60">
         <div class="w-full flex-ic-jb">
             <h4 class="mb-2 title-text">{{ title }}</h4>
             <div class="p-1 border rounded-lg">
@@ -173,7 +172,10 @@ onBeforeMount(async () => {
         </section>
         <p>{{ handleFormat(invoiceTotal, 'currency') }}</p>
         <div class="w-full flex-ic-jb">
-            <Button text="Submit" @click="($event) => submitInvoice($event)" />
+            <Button
+                :text="newInvoice ? `Submit` : `Save`"
+                @click="($event) => submitInvoice($event)"
+            />
             <Button
                 text="Preview"
                 @click="($event) => previewInvoice($event)"

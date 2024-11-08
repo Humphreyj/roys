@@ -14,11 +14,13 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     const selectedInvoice = ref(null)
     const invoiceList = ref([])
 
+    const invoiceBeingEdited = ref(false)
+
     const setSelectedInvoice = (invoice) => {
         selectedInvoice.value = invoice
     }
 
-    const getInvoiceList = () => {
+    const getInvoiceList = async () => {
         axios
             .get(`${apiRoot.value}/invoice`)
             .then((res) => {
@@ -78,7 +80,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             invoiceNumber: invoice.invoiceNumber,
         }
         axios
-            .post(`${apiRoot.value}/pdf2/`, invoiceRequest)
+            .post(`${apiRoot.value}/invoice/send-invoice`, invoiceRequest)
             .then((res) => {
                 console.log(res.data)
             })
@@ -96,6 +98,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         updateInvoice,
     }
     const values = {
+        invoiceBeingEdited,
         invoiceList,
         selectedInvoice,
         invoiceData,

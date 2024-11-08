@@ -82,11 +82,11 @@ watchEffect(async () => {
                 <header
                     class="grid w-full grid-cols-5 gap-2 px-4 font-semibold text-white border-b md:px-4 bg-slate-600"
                 >
-                    <p>Description</p>
+                    <p>Item</p>
                     <p class="place-self-center">Quantity</p>
 
                     <p class="place-self-center">Unit</p>
-                    <p class="place-self-center">Unit Price</p>
+                    <p class="place-self-center">Price</p>
                     <p class="place-self-end">Total</p>
                 </header>
                 <div

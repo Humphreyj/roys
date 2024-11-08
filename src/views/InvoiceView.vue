@@ -6,7 +6,8 @@ import { RouterView } from 'vue-router'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useInvoiceStore } from '@/stores/invoiceStore'
-// Utils
+// Assets
+
 // const props = defineProps({})
 // const emit = defineEmits()
 
@@ -23,7 +24,6 @@ onBeforeMount(async () => {
     <section
         class="w-full max-w-[75rem] mx-auto primary-text px-2 font-display flex-col-ic-js"
     >
-        <!-- <InvoiceForm /> -->
         <RouterView />
     </section>
 </template>

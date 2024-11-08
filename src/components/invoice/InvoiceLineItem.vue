@@ -15,8 +15,7 @@ const props = defineProps({
     },
 })
 const options = [
-    { label: 'Per Hour', value: 'Per Hour' },
-    { label: 'Per Job', value: 'Per Job' },
+    { label: 'Hours', value: 'Hours' },
     { label: 'Each', value: 'Each' },
 ]
 const lineItem = ref(props.lineItem)
@@ -28,23 +27,32 @@ const lineItemTotal = computed(() => {
 </script>
 
 <template>
-    <div class="grid w-full grid-cols-6 gap-3">
+    <div
+        class="relative grid w-full grid-cols-4 grid-rows-2 gap-3 md:grid-rows-1 md:grid-cols-6"
+    >
         <TextInput
             v-model="lineItem.description"
             placeholder="Description of item"
-            container-class="col-span-2"
+            container-class="col-span-3 md:col-span-2"
         />
         <TextInput v-model.float="lineItem.quantity" placeholder="Qty" />
         <BasicSelect
             v-model="lineItem.unitType"
             :options="options"
             placeholder="Unit"
+            container-class="w-20"
         />
-        <TextInput v-model.float="lineItem.unitPrice" placeholder="Price" />
-        <div class="relative w-full flex-ic-js">
+        <TextInput
+            v-model.float="lineItem.unitPrice"
+            placeholder="Price"
+            container-class="w-20"
+        />
+        <div
+            class="relative w-full col-span-2 gap-2 md:col-span-1 flex-ic-jend"
+        >
             <p class="text-lg">{{ handleFormat(lineItemTotal, 'currency') }}</p>
             <TrashIcon
-                class="absolute right-0 p-1 text-sm bg-gray-200 border border-gray-800 rounded-lg primary-text size-7"
+                class="right-0 gap-1 text-sm bg-gray-200 border border-gray-800 rounded-lg primary-text size-7"
                 @click="emit('delete-line-item', lineItem.id)"
             />
         </div>
