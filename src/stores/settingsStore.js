@@ -8,15 +8,26 @@ import axios from 'axios'
 export const useSettingsStore = defineStore('settingsStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
     const userSettings = ref({
-        nextInvoiceNumber: null,
+        id: '',
+        companyName: '',
+        phone: '',
+        email: '',
+        company_address: {},
+        primary_contact: {},
+        taxRate: {
+            label: 'Travis County - 8.25%',
+            value: 0.0825,
+        },
+        subscription: '',
     })
+    const nextInvoiceNumber = ref(null)
 
     const getUserSettings = async () => {
         axios
             .get(`${apiRoot.value}/settings`)
             .then((res) => {
                 console.log(res.data)
-                userSettings.value = res.data
+                nextInvoiceNumber.value = res.data
             })
             .catch((err) => {
                 console.log(err)

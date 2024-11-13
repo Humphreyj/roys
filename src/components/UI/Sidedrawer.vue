@@ -7,6 +7,7 @@ import { useWindowSize } from '@vueuse/core'
 // Pinia
 import { usePrimaryStore } from '@/stores/primaryStore'
 import { useRuntimeStore } from '@/stores/runtimeStore'
+import { useUserStore } from '@/stores/userStore'
 // Utils
 import { getStyles } from '@/composables/getStyles'
 const props = defineProps({
@@ -41,6 +42,7 @@ const { configOptions } = storeToRefs(useRuntimeStore())
 const { showSidebar } = storeToRefs(usePrimaryStore())
 const { toggleSidebar } = usePrimaryStore()
 const { width } = useWindowSize()
+const { currentUser } = storeToRefs(useUserStore())
 
 // const emit = defineEmits()
 
@@ -86,6 +88,12 @@ const classes = getStyles(props, 'sidebar')
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
                         >Profiles</RouterLink
+                    >
+                    <RouterLink
+                        :to="`/settings/${currentUser.role}`"
+                        :class="classes.navLinkClass"
+                        @click="handleNavigation"
+                        >Settings</RouterLink
                     >
                 </div>
             </section>

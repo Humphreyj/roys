@@ -76,6 +76,19 @@ const routes = [
         ],
     },
     {
+        path: '/settings',
+        component: () => import('@/views/SettingsView.vue'),
+        name: 'Settings',
+        children: [
+            {
+                path: 'admin',
+                name: 'Admin Settings',
+                component: () => import('@/components/user/SettingsForm.vue'),
+            },
+        ],
+        meta: {},
+    },
+    {
         path: '/profiles',
         component: () => import('@/views/ProfilesView.vue'),
         name: 'Profiles',
