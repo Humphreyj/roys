@@ -99,7 +99,7 @@ watch(
     () => props.modelValue,
     (newValue) => {
         selectedValue.value = newValue
-        console.log(newValue)
+        displayedValue.value = newValue.label
     }
 )
 
