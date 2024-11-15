@@ -42,9 +42,9 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const createNewProfile = async (newUser) => {
-        newUser.id = uuidv4()
+        // newUser.id = uuidv4()
         userProfiles.value.unshift(newUser)
-
+        console.log(newUser)
         axios
             .post(`${apiRoot.value}/profile/create`, newUser)
             .then((res) => {

@@ -21,7 +21,7 @@ export const useSettingsStore = defineStore('settingsStore', () => {
         },
         primary_contact: 'f541357d-9d69-11ef-8bf2-0242ac140003',
         taxRate: {
-            label: 'Travis County - 8.25%',
+            label: '8.25%',
             value: 0.0825,
         },
         subscription: '',

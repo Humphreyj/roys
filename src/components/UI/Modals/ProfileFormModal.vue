@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 // Components
+
 import Modal from '../Modal.vue'
 import BasicForm from '@/components/forms/BasicForm.vue'
 // const props = defineProps({})
@@ -8,11 +9,13 @@ import BasicForm from '@/components/forms/BasicForm.vue'
 const newUser = ref({
     first_name: '',
     last_name: '',
-    address_line_1: '',
-    address_line_2: '',
-    city: '',
-    state: '',
-    zip: '',
+    address: {
+        address_line_1: '',
+        address_line_2: '',
+        city: '',
+        state: '',
+        zip: '',
+    },
     email: '',
     phone: '',
     role: 'client',
@@ -31,11 +34,13 @@ const handleCreateProfile = (newProfileData) => {
     newUser.value = {
         first_name: '',
         last_name: '',
-        address_line_1: '',
-        address_line_2: '',
-        city: '',
-        state: '',
-        zip: '',
+        address: {
+            address_line_1: '',
+            address_line_2: '',
+            city: '',
+            state: '',
+            zip: '',
+        },
         email: '',
         phone: '',
         role: 'client',
