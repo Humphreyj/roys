@@ -26,6 +26,9 @@ import { RouterLink } from 'vue-router'
                     <RouterLink :to="{ name: 'Dashboard' }">
                         <Button text="Admin" />
                     </RouterLink>
+                    <RouterLink :to="{ name: 'Sign Up' }">
+                        <Button text="Create Account" />
+                    </RouterLink>
                 </div>
             </section>
         </Card>

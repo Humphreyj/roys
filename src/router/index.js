@@ -15,6 +15,24 @@ const routes = [
         },
     },
     {
+        path: '/account',
+        component: () => import('@/views/SignupView.vue'),
+        name: 'Account View',
+        meta: {},
+        children: [
+            {
+                path: '',
+                name: 'Sign Up',
+                component: () => import('@/components/profile/NewUser.vue'),
+            },
+            {
+                path: ':id',
+                name: 'Account Details',
+                component: () => import('@/components/user/SettingsForm.vue'),
+            },
+        ],
+    },
+    {
         path: '/dashboard',
         component: HomeView,
         name: 'Dashboard',

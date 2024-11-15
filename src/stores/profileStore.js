@@ -4,7 +4,8 @@ import axios from 'axios'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
-// Mock Data
+// Router
+import router from '@/router'
 
 import { v4 as uuidv4 } from 'uuid'
 // Utils
@@ -54,6 +55,7 @@ export const useProfileStore = defineStore('profiles', () => {
                 console.log(err)
             })
     }
+
     const updateSelectedProfile = async (selectedProfile) => {
         axios
             .put(`${apiRoot.value}/profile/update`, selectedProfile)

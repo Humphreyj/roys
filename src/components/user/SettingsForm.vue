@@ -1,14 +1,14 @@
 <script setup>
 // Components
 import AddressFormSection from '../UI/AddressFormSection.vue'
-
+import Button from '../UI/Button.vue'
 import SearchableSelect from '../inputs/SearchableSelect.vue'
 import Card from '../UI/Card.vue'
 // import CompanySettingsForm from '../forms/CompanySettingsForm.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/stores/settingsStore'
+import { useAccountStore } from '@/stores/accountStore'
 import { useUserStore } from '@/stores/userStore'
 
 // const props = defineProps({
@@ -18,7 +18,7 @@ import { useUserStore } from '@/stores/userStore'
 // })
 
 const { currentUser } = storeToRefs(useUserStore())
-const { userSettings } = storeToRefs(useSettingsStore())
+const { currentAccount } = storeToRefs(useAccountStore())
 
 const taxRates = [
     {
@@ -38,12 +38,36 @@ const taxRates = [
             >
                 Company Info
             </h4>
+
             <TextInput
-                v-model="userSettings.companyName"
+                v-model="currentAccount.companyName"
                 container-class="col-span-2"
                 data-test="current-user-first-name "
                 label="Company Name"
             />
+            <div class="w-full gap-6 flex-col-ic-js md:flex-ic-js md:flex-row">
+                <TextInput
+                    v-model="currentAccount.phone"
+                    data-test="current-account-phone"
+                    label="Phone"
+                />
+                <TextInput
+                    v-model="currentAccount.email"
+                    data-test="current-account-email"
+                    label="Email"
+                />
+            </div>
+
+            <section class="w-full flex-col-is-js">
+                <h4
+                    class="my-2 font-bold text-gray-900 dark:text-white dark:opacity-95"
+                >
+                    Business Address
+                </h4>
+                <AddressFormSection
+                    :address-data="currentAccount.companyAddress"
+                />
+            </section>
             <section class="w-full flex-col-is-js">
                 <h4
                     class="my-2 font-bold text-gray-900 dark:text-white dark:opacity-95"
@@ -55,26 +79,16 @@ const taxRates = [
                     class="w-full gap-6 flex-col-ic-js md:flex-ic-js md:flex-row"
                 >
                     <TextInput
-                        v-model="currentUser.first_name"
+                        v-model="currentAccount.primaryContact.first_name"
                         data-test="current-user-first-name"
                         label="First Name"
                     />
                     <TextInput
-                        v-model="currentUser.last_name"
+                        v-model="currentAccount.primaryContact.last_name"
                         data-test="current-user-last-name"
                         label="Last Name"
                     />
                 </div>
-            </section>
-            <section class="w-full flex-col-is-js">
-                <h4
-                    class="my-2 font-bold text-gray-900 dark:text-white dark:opacity-95"
-                >
-                    Business Address
-                </h4>
-                <AddressFormSection
-                    :address-data="userSettings.company_address"
-                />
             </section>
         </section>
 
@@ -86,12 +100,13 @@ const taxRates = [
                     Billing Info
                 </h4>
                 <SearchableSelect
-                    v-model="userSettings.taxRate"
+                    v-model="currentAccount.taxRate"
                     label="Tax Rate"
                     :options="taxRates"
                     target-type="object"
                 />
             </section>
         </section>
+        <Button text="Submit" />
     </main>
 </template>
