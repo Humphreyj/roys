@@ -11,27 +11,7 @@ import axios from 'axios'
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
-    const currentAccount = ref({
-        companyName: ``,
-        phone: '',
-        email: '',
-        companyAddress: {
-            address_line_1: ``,
-            address_line_2: '',
-            city: '',
-            state: '',
-            zip: '',
-        },
-        primaryContact: null,
-
-        subscriptionPlan: '',
-        billingInfo: {
-            taxRate: {
-                label: '8.25%',
-                value: 0.0825,
-            },
-        },
-    })
+    const currentAccount = ref(null)
 
     const getAccountById = async (id) => {
         axios
@@ -45,8 +25,6 @@ export const useAccountStore = defineStore('accountStore', () => {
     }
 
     const createPrimaryContact = async (newUser) => {
-        // newUser.id = uuidv4()
-
         const { currentUser } = storeToRefs(useUserStore())
         axios
             .post(`${apiRoot.value}/profile/create`, newUser)
@@ -67,16 +45,12 @@ export const useAccountStore = defineStore('accountStore', () => {
         axios
             .post(`${apiRoot.value}/account/create`, newAccount)
             .then((res) => {
-                console.log(res.data)
-                // currentUser.value = res.data
                 currentAccount.value = res.data
                 currentAccount.value.primaryContact = currentUser.value
                 router.push({
                     name: 'Account Details',
                     params: { id: currentAccount.value.id },
                 })
-
-                // console.log(currentAccount.value)
             })
             .catch((err) => {
                 console.log(err)
