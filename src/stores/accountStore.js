@@ -11,13 +11,26 @@ import axios from 'axios'
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
-    const currentAccount = ref(null)
+    const currentAccount = ref({
+        companyAddress: {
+            address_line_1: '',
+            address_line_2: '',
+            city: '',
+            state: '',
+            zip: '',
+        },
+    })
 
     const getAccountById = async (id) => {
+        const { currentUser } = storeToRefs(useUserStore())
+        const { getCurrentUser } = useUserStore()
         axios
             .get(`${apiRoot.value}/account/${id}`)
-            .then((res) => {
+            .then(async (res) => {
+                console.log('res', res.data)
                 currentAccount.value = res.data
+
+                await getCurrentUser(currentAccount.value.primaryContact)
             })
             .catch((err) => {
                 console.log(err)
@@ -40,13 +53,18 @@ export const useAccountStore = defineStore('accountStore', () => {
 
     const createAccount = async (newAccount) => {
         const { currentUser } = storeToRefs(useUserStore())
+        const { getCurrentUser } = useUserStore()
         newAccount.primaryContact = currentUser.value.id
         console.log('req,', newAccount)
         axios
             .post(`${apiRoot.value}/account/create`, newAccount)
-            .then((res) => {
+            .then(async (res) => {
                 currentAccount.value = res.data
-                currentAccount.value.primaryContact = currentUser.value
+                console.log(res.data)
+                if (!currentUser.value) {
+                    await getCurrentUser(newAccount.primaryContact)
+                }
+                // currentAccount.value.primaryContact = currentUser.value
                 router.push({
                     name: 'Account Details',
                     params: { id: currentAccount.value.id },
@@ -56,7 +74,25 @@ export const useAccountStore = defineStore('accountStore', () => {
                 console.log(err)
             })
     }
-    const actions = { createPrimaryContact, createAccount, getAccountById }
+
+    const updateAccount = async (updatedAccount) => {
+        let id = updatedAccount.id
+        axios
+            .put(`${apiRoot.value}/account/update/${id}`, updatedAccount)
+            .then((res) => {
+                currentAccount.value = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const actions = {
+        createPrimaryContact,
+        createAccount,
+        getAccountById,
+        updateAccount,
+    }
     const values = {
         currentAccount,
     }

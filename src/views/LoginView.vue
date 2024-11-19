@@ -27,7 +27,10 @@ import { RouterLink } from 'vue-router'
                         <Button text="Admin" />
                     </RouterLink>
                     <RouterLink :to="{ name: 'Sign Up' }">
-                        <Button text="Create Account" />
+                        <Button
+                            text="Create Account"
+                            data-test="create-account"
+                        />
                     </RouterLink>
                 </div>
             </section>

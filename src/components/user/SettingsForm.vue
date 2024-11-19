@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 
 const { currentUser } = storeToRefs(useUserStore())
 const { currentAccount } = storeToRefs(useAccountStore())
-const { getAccountById } = useAccountStore()
+const { getAccountById, updateAccount } = useAccountStore()
 const route = useRoute()
 
 const taxRates = [
@@ -32,10 +32,16 @@ const taxRates = [
     },
 ]
 
+const handleAccountUpdate = async (e, account) => {
+    e.preventDefault()
+    await updateAccount(account)
+}
+
 watchEffect(async () => {
-    if (!currentAccount.value) {
+    if (!currentAccount.value.id) {
         await getAccountById(route.params.id)
     }
+    console.log('currentAccount', currentAccount.value)
 })
 
 // const emit = defineEmits()
@@ -61,12 +67,14 @@ watchEffect(async () => {
                     class="w-full gap-6 flex-col-ic-js md:flex-ic-js md:flex-row"
                 >
                     <TextInput
-                        v-model="currentAccount.phone"
+                        v-model="currentAccount.companyPhone"
                         data-test="current-account-phone"
                         label="Phone"
+                        format="phone"
+                        max-length="12"
                     />
                     <TextInput
-                        v-model="currentAccount.email"
+                        v-model="currentAccount.companyEmail"
                         data-test="current-account-email"
                         label="Email"
                     />
@@ -93,12 +101,12 @@ watchEffect(async () => {
                         class="w-full gap-6 flex-col-ic-js md:flex-ic-js md:flex-row"
                     >
                         <TextInput
-                            v-model="currentAccount.primaryContact.first_name"
+                            v-model="currentUser.first_name"
                             data-test="current-user-first-name"
                             label="First Name"
                         />
                         <TextInput
-                            v-model="currentAccount.primaryContact.last_name"
+                            v-model="currentUser.last_name"
                             data-test="current-user-last-name"
                             label="Last Name"
                         />
@@ -121,8 +129,11 @@ watchEffect(async () => {
                     />
                 </section>
             </section>
-            <Button text="Submit" />
+            <Button
+                text="Submit"
+                @click="($event) => handleAccountUpdate($event, currentAccount)"
+            />
         </div>
-        <div v-else></div>
+        <div v-else>Loading</div>
     </main>
 </template>

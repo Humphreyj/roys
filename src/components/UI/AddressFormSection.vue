@@ -9,6 +9,13 @@ const props = defineProps({
     addressData: {
         type: Object,
         required: true,
+        default: {
+            address_line_1: '',
+            address_line_2: '',
+            city: '',
+            state: '',
+            zip: '',
+        },
     },
 })
 // const emit = defineEmits()
@@ -19,26 +26,26 @@ const props = defineProps({
         <div class="grid items-center w-full grid-cols-1 gap-6 lg:grid-cols-2">
             <TextInput
                 v-model="addressData.address_line_1"
-                data-test="address_line_1"
+                data-test="address-1"
                 label="Street Address"
             />
 
             <TextInput
                 v-model="addressData.city"
-                data-test="address_city"
+                data-test="address-city"
                 label="City"
             />
         </div>
         <div class="grid items-center w-full grid-cols-1 gap-6 lg:grid-cols-2">
             <BasicSelect
                 v-model="addressData.state"
-                data-test="address_state"
+                data-test="address-state"
                 label="State"
                 :options="states"
             />
             <TextInput
                 v-model="addressData.zip"
-                data-test="address_zip"
+                data-test="address-zip"
                 label="Zip"
                 max-length="5"
             />

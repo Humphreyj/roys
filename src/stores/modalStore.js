@@ -44,10 +44,7 @@ export const useModalStore = defineStore('modalStore', () => {
     ])
     const avatarModalContent = ref([
         {
-            content: 'Profile',
-        },
-        {
-            content: 'Settings',
+            content: 'Account',
         },
         {
             content: 'Inbox',
