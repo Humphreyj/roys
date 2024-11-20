@@ -111,7 +111,6 @@ onBeforeMount(async () => {
     if (invoiceData.value.lineItems.length) {
         lineItems.value = invoiceData.value.lineItems
     }
-    console.log(userSettings.value)
 })
 
 watchEffect(() => {

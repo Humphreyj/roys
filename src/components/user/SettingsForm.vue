@@ -41,7 +41,6 @@ watchEffect(async () => {
     if (!currentAccount.value.id) {
         await getAccountById(route.params.id)
     }
-    console.log('currentAccount', currentAccount.value)
 })
 
 // const emit = defineEmits()
@@ -60,7 +59,7 @@ watchEffect(async () => {
                 <TextInput
                     v-model="currentAccount.companyName"
                     container-class="col-span-2"
-                    data-test="current-user-first-name "
+                    data-test="company-name"
                     label="Company Name"
                 />
                 <div
@@ -68,14 +67,14 @@ watchEffect(async () => {
                 >
                     <TextInput
                         v-model="currentAccount.companyPhone"
-                        data-test="current-account-phone"
+                        data-test="company-phone"
                         label="Phone"
                         format="phone"
                         max-length="12"
                     />
                     <TextInput
                         v-model="currentAccount.companyEmail"
-                        data-test="current-account-email"
+                        data-test="company-email"
                         label="Email"
                     />
                 </div>
@@ -102,12 +101,12 @@ watchEffect(async () => {
                     >
                         <TextInput
                             v-model="currentUser.first_name"
-                            data-test="current-user-first-name"
                             label="First Name"
+                            data-test="primary-contact-first-name"
                         />
                         <TextInput
                             v-model="currentUser.last_name"
-                            data-test="current-user-last-name"
+                            data-test="primary-contact-last-name"
                             label="Last Name"
                         />
                     </div>
@@ -130,8 +129,9 @@ watchEffect(async () => {
                 </section>
             </section>
             <Button
-                text="Submit"
+                text="Save"
                 @click="($event) => handleAccountUpdate($event, currentAccount)"
+                data-test="save-settings"
             />
         </div>
         <div v-else>Loading</div>

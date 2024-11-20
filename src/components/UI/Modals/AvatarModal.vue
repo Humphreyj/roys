@@ -28,7 +28,7 @@ const props = defineProps({
 const classes = getStyles(props, 'notificationModal')
 
 const handleNav = () => {
-    router.push(`/account/${currentAccount.value.id}`)
+    router.push(`/account/${currentUser.value.accountId}`)
 }
 </script>
 

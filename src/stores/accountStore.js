@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 import { useUserStore } from './userStore'
+import { useProfileStore } from './profileStore'
 // Routing
 import router from '@/router'
 import axios from 'axios'
@@ -22,7 +23,6 @@ export const useAccountStore = defineStore('accountStore', () => {
     })
 
     const getAccountById = async (id) => {
-        const { currentUser } = storeToRefs(useUserStore())
         const { getCurrentUser } = useUserStore()
         axios
             .get(`${apiRoot.value}/account/${id}`)
@@ -38,13 +38,18 @@ export const useAccountStore = defineStore('accountStore', () => {
     }
 
     const createPrimaryContact = async (newUser) => {
+        const { apiRoot } = storeToRefs(useRuntimeStore())
         const { currentUser } = storeToRefs(useUserStore())
+
         axios
             .post(`${apiRoot.value}/profile/create`, newUser)
             .then(async (res) => {
                 currentUser.value = res.data
-                currentAccount.value.primaryContact = currentUser.value
+                currentAccount.value.primaryContact = currentUser.value.id
                 await createAccount(currentAccount.value)
+                // currentUser.value.accountId = currentAccount.value.id
+
+                // await updateUserProfile(currentUser.value)
             })
             .catch((err) => {
                 console.log(err)
@@ -53,18 +58,20 @@ export const useAccountStore = defineStore('accountStore', () => {
 
     const createAccount = async (newAccount) => {
         const { currentUser } = storeToRefs(useUserStore())
-        const { getCurrentUser } = useUserStore()
+        const { getCurrentUser, updateUserProfile } = useUserStore()
+
         newAccount.primaryContact = currentUser.value.id
-        console.log('req,', newAccount)
         axios
             .post(`${apiRoot.value}/account/create`, newAccount)
             .then(async (res) => {
                 currentAccount.value = res.data
-                console.log(res.data)
-                if (!currentUser.value) {
-                    await getCurrentUser(newAccount.primaryContact)
-                }
-                // currentAccount.value.primaryContact = currentUser.value
+                console.log('currentAccount', currentAccount.value)
+                // if (!currentUser.value) {
+                //     await getCurrentUser(newAccount.primaryContact)
+                // }
+                currentUser.value.accountId = currentAccount.value.id
+                await updateUserProfile(currentUser.value)
+
                 router.push({
                     name: 'Account Details',
                     params: { id: currentAccount.value.id },

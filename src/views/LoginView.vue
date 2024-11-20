@@ -3,13 +3,23 @@
 import Card from '@/components/UI/Card.vue'
 import Button from '@/components/UI/Button.vue'
 import EzPdfLogo from '@/assets/EzPdfLogo.vue'
+import TextInput from '@/components/inputs/TextInput.vue'
 // Pinia
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 // Routing
 import { RouterLink } from 'vue-router'
 
+const { userLogin } = useAuthStore()
+const { authData } = storeToRefs(useAuthStore())
+
 // const props = defineProps({})
 // const emit = defineEmits()
+
+const handleLogin = async (authData) => {
+    await userLogin(authData)
+}
 </script>
 
 <template>
@@ -22,9 +32,23 @@ import { RouterLink } from 'vue-router'
                     <EzPdfLogo class="size-16" />
                     <h1 class="text-xl font-semibold">Login</h1>
                 </div>
-                <div class="gap-4 flex-ic-jc">
+                <div class="gap-4 flex-col-ic-jc">
+                    <TextInput
+                        v-model="authData.email"
+                        label="Email"
+                        type="email"
+                        placeholder="Email"
+                        data-test="email"
+                    />
+                    <TextInput
+                        v-model="authData.password"
+                        label="Password"
+                        type="password"
+                        placeholder="password"
+                        data-test="password"
+                    />
                     <RouterLink :to="{ name: 'Dashboard' }">
-                        <Button text="Admin" />
+                        <Button text="Login" @click="handleLogin(authData)" />
                     </RouterLink>
                     <RouterLink :to="{ name: 'Sign Up' }">
                         <Button
