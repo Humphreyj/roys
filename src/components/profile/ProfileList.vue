@@ -28,9 +28,9 @@ const { height } = useWindowSize()
 const listContainerHeight = computed(() => height.value * 0.6)
 
 onBeforeMount(async () => {
-    if (!userProfiles.value.length) {
-        await getProfileList()
-    }
+    // if (!userProfiles.value.length) {
+    await getProfileList()
+    // }
 })
 </script>
 

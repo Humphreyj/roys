@@ -2,15 +2,24 @@
 // Components
 import Card from '@/components/UI/Card.vue'
 import Button from '@/components/UI/Button.vue'
+import EzPdfLogo from '@/assets/EzPdfLogo.vue'
+import TextInput from '@/components/inputs/TextInput.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
-import { useRuntimeStore } from '@/stores/runtimeStore'
+import { useAuthStore } from '@/stores/authStore'
+
 // Routing
 import { RouterLink } from 'vue-router'
-import router from '@/router'
+
+const { userLogin } = useAuthStore()
+const { authData } = storeToRefs(useAuthStore())
+
 // const props = defineProps({})
 // const emit = defineEmits()
-const { configOptions } = storeToRefs(useRuntimeStore())
+
+const handleLogin = async (authData) => {
+    await userLogin(authData)
+}
 </script>
 
 <template>
@@ -20,16 +29,33 @@ const { configOptions } = storeToRefs(useRuntimeStore())
         >
             <section class="gap-10 flex-col-ic-js">
                 <div class="gap-3 flex-col-ic-js">
-                    <h1 class="text-2xl font-semibold">
-                        {{ configOptions.clientName }}
-                    </h1>
+                    <EzPdfLogo class="size-16" />
                     <h1 class="text-xl font-semibold">Login</h1>
                 </div>
-                <div class="gap-4 flex-ic-jc">
+                <div class="gap-4 flex-col-ic-jc">
+                    <TextInput
+                        v-model="authData.email"
+                        label="Email"
+                        type="email"
+                        placeholder="Email"
+                        data-test="email"
+                    />
+                    <TextInput
+                        v-model="authData.password"
+                        label="Password"
+                        type="password"
+                        placeholder="password"
+                        data-test="password"
+                    />
                     <RouterLink :to="{ name: 'Dashboard' }">
-                        <Button text="Admin" />
+                        <Button text="Login" @click="handleLogin(authData)" />
                     </RouterLink>
-                    <Button text="Client" />
+                    <RouterLink :to="{ name: 'Sign Up' }">
+                        <Button
+                            text="Create Account"
+                            data-test="create-account"
+                        />
+                    </RouterLink>
                 </div>
             </section>
         </Card>

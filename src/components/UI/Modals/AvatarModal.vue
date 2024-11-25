@@ -8,14 +8,14 @@ import TextBlock from '@/components/UI/TextBlock.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useModalStore } from '@/stores/modalStore'
-import { useProfileStore } from '@/stores/profileStore'
+import { useUserStore } from '@/stores/userStore'
+import { useAccountStore } from '@/stores/accountStore'
 
 // Modal Store
 
-const { avatarModalContent, avatarModal } = storeToRefs(
-    useModalStore()
-)
-const {currentUser} = storeToRefs(useProfileStore())
+const { avatarModalContent, avatarModal } = storeToRefs(useModalStore())
+const { currentUser } = storeToRefs(useUserStore())
+const { currentAccount } = storeToRefs(useAccountStore())
 
 // Props
 const props = defineProps({
@@ -27,14 +27,8 @@ const props = defineProps({
 // Utils
 const classes = getStyles(props, 'notificationModal')
 
-// Have this hard coded for now as a proof of concept
-const handleNav = (path) => {
-    console.log(path)
-    if(path === 'Profile'){
-        router.push(`/profiles/details/${currentUser.value}`)
-
-    }
-    
+const handleNav = () => {
+    router.push(`/account/${currentUser.value.accountId}`)
 }
 </script>
 

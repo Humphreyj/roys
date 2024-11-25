@@ -52,9 +52,10 @@ const selectedValue = ref(props.modelValue)
 
 const displayedValue = computed(() => {
     if (selectedValue.value) {
-        return selectedValue.value[props.targetAttr]
+        return selectedValue.value.label
+    } else {
+        return ''
     }
-    return ''
 })
 const showOptions = ref(false)
 
@@ -88,18 +89,12 @@ const messages = computed(() => {
     }
     return []
 })
-onMounted(() => {
-    let found = props.options.find((state) => state.value === props.modelValue)
-    if (found) {
-        console.log(found)
-        selectedValue.value = found.label[props.targetAttr]
-    }
-})
+
 watch(
     () => props.modelValue,
     (newValue) => {
         selectedValue.value = newValue
-        console.log(newValue)
+        console.log('selectedValue', selectedValue.value)
     }
 )
 
@@ -146,7 +141,7 @@ const classes = ref(getStyles(props, 'textInput'))
                 class="absolute mt-2 right-2 top-1 dark:text-white"
                 size="14"
             />
-            <span v-if="selectedValue">{{ selectedValue.label }}</span>
+            <!-- <span v-if="selectedValue">{{ selectedValue.label }}</span> -->
 
             <div v-show="`${error ? 'inline-flex' : 'invisible'}`" class="mt-1">
                 <div

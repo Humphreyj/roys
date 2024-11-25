@@ -1,18 +1,21 @@
 <script setup>
 import { ref } from 'vue'
 // Components
+
 import Modal from '../Modal.vue'
-import BasicForm from '@/components/forms/BasicForm.vue'
+import NewProfileForm from '@/components/forms/NewProfileForm.vue'
 // const props = defineProps({})
 // const emit = defineEmits()
 const newUser = ref({
     first_name: '',
     last_name: '',
-    address_line_1: '',
-    address_line_2: '',
-    city: '',
-    state: '',
-    zip: '',
+    address: {
+        address_line_1: '',
+        address_line_2: '',
+        city: '',
+        state: '',
+        zip: '',
+    },
     email: '',
     phone: '',
     role: 'client',
@@ -21,21 +24,26 @@ const newUser = ref({
 import { storeToRefs } from 'pinia'
 import { useModalStore } from '@/stores/modalStore'
 import { useProfileStore } from '@/stores/profileStore'
+import { useAccountStore } from '@/stores/accountStore'
 
 const { profileFormModal } = storeToRefs(useModalStore())
 const { createNewProfile } = useProfileStore()
+const { currentAccount } = storeToRefs(useAccountStore())
 
 const handleCreateProfile = (newProfileData) => {
+    newProfileData.accountId = currentAccount.value.id
     createNewProfile(newProfileData)
     profileFormModal.value.hide()
     newUser.value = {
         first_name: '',
         last_name: '',
-        address_line_1: '',
-        address_line_2: '',
-        city: '',
-        state: '',
-        zip: '',
+        address: {
+            address_line_1: '',
+            address_line_2: '',
+            city: '',
+            state: '',
+            zip: '',
+        },
         email: '',
         phone: '',
         role: 'client',
@@ -51,7 +59,7 @@ const handleCreateProfile = (newProfileData) => {
         :show-modal="profileFormModal.showing"
         :toggle-modal="profileFormModal.toggle"
     >
-        <BasicForm
+        <NewProfileForm
             form-title="Add User"
             :data="newUser"
             @handle-submit="handleCreateProfile"

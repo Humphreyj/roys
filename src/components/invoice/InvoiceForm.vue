@@ -5,7 +5,7 @@ import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
 import DateInput from '../inputs/DateInput.vue'
 import InvoiceLineItem from './InvoiceLineItem.vue'
-import SearchableSelect from '@/components/inputs/SearchableSelect.vue'
+import BasicSelect from '@/components/inputs/BasicSelect.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
 
 // Pinia
@@ -18,7 +18,7 @@ import { useSettingsStore } from '@/stores/settingsStore'
 import { v4 as uuidv4 } from 'uuid'
 import { handleFormat } from '@/utils/formatText'
 
-const { getProfileList } = useProfileStore()
+const { getSimpleProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
 const { createNewInvoice, setSelectedInvoice, updateInvoice } =
     useInvoiceStore()
@@ -106,12 +106,11 @@ const previewInvoice = async (e) => {
 }
 
 onBeforeMount(async () => {
-    await getProfileList()
+    await getSimpleProfileList()
 
     if (invoiceData.value.lineItems.length) {
         lineItems.value = invoiceData.value.lineItems
     }
-    console.log(userSettings.value)
 })
 
 watchEffect(() => {
@@ -133,12 +132,10 @@ watchEffect(() => {
             <div
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
-                <SearchableSelect
+                <BasicSelect
                     v-model="invoiceData.client"
                     label="Client"
                     :options="userProfiles"
-                    target-attr="full_name"
-                    target-type="object"
                 />
                 <TextInput
                     v-model="invoiceData.invoiceNumber"

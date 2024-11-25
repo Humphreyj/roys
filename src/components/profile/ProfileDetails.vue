@@ -4,7 +4,7 @@ import { ref, watchEffect } from 'vue'
 import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
 import Modal from '@/components/UI/Modal.vue'
-import BasicForm from '@/components/forms/BasicForm.vue'
+import NewProfileForm from '@/components/forms/NewProfileForm.vue'
 import ProfileDetailsCard from '@/components/profile/ProfileDetailsCard.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
@@ -76,7 +76,7 @@ const confirmDelete = async (id) => {
         </Teleport>
         <Button text="Delete" @click="handleDelete(selectedUser.id)" />
         <div v-if="isEditingProfile" class="w-full mx-auto md:w-2/3">
-            <BasicForm
+            <NewProfileForm
                 form-title="Edit Profile"
                 :data="selectedUser"
                 @handle-submit="submitEditing(selectedUser)"

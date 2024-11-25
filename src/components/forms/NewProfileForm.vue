@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 // Components
+import AddressFormSection from '../UI/AddressFormSection.vue'
 import Card from '@/components/UI/Card.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
 import Button from '@/components/UI/Button.vue'
@@ -23,8 +24,6 @@ const emit = defineEmits(['handle-submit'])
 
 const handleSubmit = (e) => {
     e.preventDefault()
-    let currentDate = new Date()
-    userData.value.created_at = currentDate.toISOString()
     emit('handle-submit', userData.value)
 }
 </script>
@@ -45,33 +44,8 @@ const handleSubmit = (e) => {
                 label="Last Name"
                 input-class="min-w-60"
             />
-            <TextInput
-                v-model="userData.address_line_1"
-                data-test="address_line_1"
-                label="Street Address"
-            />
-            <TextInput
-                v-model="userData.address_line_2"
-                data-test="address_line_2"
-                label="Apt/Suite"
-            />
-            <TextInput
-                v-model="userData.city"
-                data-test="address_city"
-                label="City"
-            />
-            <BasicSelect
-                v-model="userData.state"
-                data-test="address_state"
-                label="State"
-                :options="states"
-            />
-            <TextInput
-                v-model="userData.zip"
-                data-test="address_zip"
-                label="Zip"
-                max-length="5"
-            />
+            <AddressFormSection :address-data="userData.address" />
+
             <TextInput
                 v-model="userData.email"
                 data-test="user_email"

@@ -7,7 +7,7 @@ import App from './App.vue'
 // Pinia
 import { useRuntimeStore } from './stores/runtimeStore'
 import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/stores/settingsStore'
+// import { useSettingsStore } from '@/stores/settingsStore'
 
 const initializeApp = async () => {
     // Fetch and parse the config file
@@ -18,10 +18,10 @@ const initializeApp = async () => {
 
     // Set config vars after app is initialized.
     const { configOptions, apiRoot } = storeToRefs(useRuntimeStore())
-    const { getUserSettings } = useSettingsStore()
+    // const { getUserSettings } = useSettingsStore()
     apiRoot.value = configJson.apiRoot
     configOptions.value = configJson
-    await getUserSettings()
+    // await getUserSettings()
 }
 
 initializeApp()

@@ -8,7 +8,10 @@ import Avatar from '@/components/UI/Avatar.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { usePrimaryStore } from '@/stores/primaryStore'
+import { useUserStore } from '@/stores/userStore'
+
 import { useRuntimeStore } from '@/stores/runtimeStore'
+import { useModalStore } from '@/stores/modalStore'
 const props = defineProps({
     textClass: {
         type: String,
@@ -23,12 +26,15 @@ const props = defineProps({
         default: '',
     },
 })
+
+const { avatarModal } = storeToRefs(useModalStore())
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const { showSidebar } = storeToRefs(usePrimaryStore())
 const { toggleSidebar } = usePrimaryStore()
 const { width } = useWindowSize()
 const { configOptions } = storeToRefs(useRuntimeStore())
+const { currentUser } = storeToRefs(useUserStore())
 
 watch(width, (newWidth) => {
     if (newWidth > 768) {
@@ -45,9 +51,6 @@ onMounted(() => {
         showSidebar.value = false
     }
 })
-
-import { useModalStore } from '@/stores/modalStore'
-const { avatarModal } = storeToRefs(useModalStore())
 </script>
 
 <template>
@@ -65,6 +68,7 @@ const { avatarModal } = storeToRefs(useModalStore())
             <Avatar
                 avatar-class="cursor-pointer size-10"
                 @click="avatarModal.toggle"
+                :username="currentUser.full_name"
             />
         </div>
     </section>

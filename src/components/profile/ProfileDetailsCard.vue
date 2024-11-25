@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 // Components
 import Avatar from '@/components/UI/Avatar.vue'
 import Button from '@/components/UI/Button.vue'
@@ -21,10 +21,6 @@ const props = defineProps({
     },
 })
 const emit = defineEmits(['toggle-editing'])
-const address = ref('')
-onMounted(() => {
-    address.value = handleFormat(props.user, 'address')
-})
 </script>
 
 <template>
@@ -47,7 +43,7 @@ onMounted(() => {
             />
             <TextBlock
                 label="Address"
-                :text-content="address"
+                :text-content="handleFormat(user.address, 'address')"
                 container-class="flex-col-ic-jc"
                 content-class="text-center"
             />
