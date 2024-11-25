@@ -13,7 +13,7 @@ export const useUserStore = defineStore('userStore', () => {
         axios
             .get(`${apiRoot.value}/profile/${id}`)
             .then((res) => {
-                currentUser.value = res.data
+                currentUser.value = res.data[0]
             })
             .catch((err) => {
                 console.log(err)

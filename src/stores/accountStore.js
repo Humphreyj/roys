@@ -30,7 +30,7 @@ export const useAccountStore = defineStore('accountStore', () => {
                 console.log('res', res.data)
                 currentAccount.value = res.data
 
-                await getCurrentUser(currentAccount.value.primaryContact)
+                // await getCurrentUser(currentAccount.value.primaryContact)
             })
             .catch((err) => {
                 console.log(err)

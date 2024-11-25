@@ -53,8 +53,9 @@ const selectedValue = ref(props.modelValue)
 const displayedValue = computed(() => {
     if (selectedValue.value) {
         return selectedValue.value.label
+    } else {
+        return ''
     }
-    return ''
 })
 const showOptions = ref(false)
 
@@ -93,6 +94,7 @@ watch(
     () => props.modelValue,
     (newValue) => {
         selectedValue.value = newValue
+        console.log('selectedValue', selectedValue.value)
     }
 )
 

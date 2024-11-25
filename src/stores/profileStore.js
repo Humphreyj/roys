@@ -4,7 +4,7 @@ import axios from 'axios'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
-
+import { useAccountStore } from './accountStore'
 // Utils
 
 export const useProfileStore = defineStore('profiles', () => {
@@ -18,8 +18,25 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const getProfileList = async () => {
+        const { currentAccount } = storeToRefs(useAccountStore())
+        console.log(currentAccount.value)
+        const accountId = currentAccount.value.id
         axios
-            .get(`${apiRoot.value}/profile`)
+            .get(`${apiRoot.value}/profile/list/${accountId}`)
+            .then((res) => {
+                userProfiles.value = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const getSimpleProfileList = async () => {
+        const { currentAccount } = storeToRefs(useAccountStore())
+        console.log(currentAccount.value)
+        const accountId = currentAccount.value.id
+        axios
+            .get(`${apiRoot.value}/profile/list/${accountId}/simple`)
             .then((res) => {
                 userProfiles.value = res.data
             })
@@ -40,6 +57,8 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const createNewProfile = async (newUser) => {
+        const { currentAccount } = storeToRefs(useAccountStore())
+        newUser.accountId = currentAccount.value.id
         axios
             .post(`${apiRoot.value}/profile/create`, newUser)
             .then((res) => {
@@ -74,6 +93,7 @@ export const useProfileStore = defineStore('profiles', () => {
         getProfileById,
         updateSelectedProfile,
         getProfileList,
+        getSimpleProfileList,
         deleteSelectedProfile,
     }
     const values = {

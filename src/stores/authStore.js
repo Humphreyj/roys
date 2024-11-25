@@ -16,20 +16,31 @@ const authData = ref({
 
 export const useAuthStore = defineStore('authStore', (email) => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
-    const { currentAccount } = storeToRefs(useAccountStore())
-    const { getCurrentUser } = useUserStore()
-    const { currentUser } = storeToRefs(useUserStore())
 
     const userLogin = async (email, password) => {
+        const { currentAccount } = storeToRefs(useAccountStore())
+        const { getAccountById } = useAccountStore()
+        const { getCurrentUser } = useUserStore()
+        const { currentUser } = storeToRefs(useUserStore())
         axios
             .post(`${apiRoot.value}/auth/login`, authData.value)
             .then(async (res) => {
-                console.log(res.data)
                 if (!res.data.primaryContact) {
                     currentUser.value = res.data
+                    console.log(
+                        'loggin in with user, fetch account',
+                        currentUser.value
+                    )
+                    await getAccountById(currentUser.value.accountId)
                 } else {
                     currentAccount.value = res.data
+                    console.log(
+                        'loggin in with account, fetch user',
+                        currentAccount.value
+                    )
                     await getCurrentUser(currentAccount.value.primaryContact)
+
+                    console.log('current user', currentUser.value)
                 }
             })
             .catch((err) => {

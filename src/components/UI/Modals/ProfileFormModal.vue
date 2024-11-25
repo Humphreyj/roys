@@ -3,7 +3,7 @@ import { ref } from 'vue'
 // Components
 
 import Modal from '../Modal.vue'
-import BasicForm from '@/components/forms/BasicForm.vue'
+import NewProfileForm from '@/components/forms/NewProfileForm.vue'
 // const props = defineProps({})
 // const emit = defineEmits()
 const newUser = ref({
@@ -59,7 +59,7 @@ const handleCreateProfile = (newProfileData) => {
         :show-modal="profileFormModal.showing"
         :toggle-modal="profileFormModal.toggle"
     >
-        <BasicForm
+        <NewProfileForm
             form-title="Add User"
             :data="newUser"
             @handle-submit="handleCreateProfile"
