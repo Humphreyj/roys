@@ -13,13 +13,20 @@ export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
     const currentAccount = ref({
+        id: '5a4f695e-ab3d-11ef-864a-0242ac140003',
+        primaryContact: '5a4c4323-ab3d-11ef-864a-0242ac140003',
+        companyName: "Elvera's Business",
         companyAddress: {
-            address_line_1: '',
+            zip: '39098',
+            city: 'State College',
+            state: 'ga',
+            address_line_1: '18923 Ash Grove',
             address_line_2: '',
-            city: '',
-            state: '',
-            zip: '',
         },
+        companyPhone: '906-837-0109',
+        companyEmail: 'businessReuben23@hotmail.com',
+        subscriptionPlan: null,
+        billingInfo: null,
     })
 
     const getAccountById = async (id) => {

@@ -73,6 +73,7 @@ const setSelected = (value) => {
         emit('update:modelValue', value[props.targetAttr])
     }
     showOptions.value = false
+    console.log('selectedValue', selectedValue.value)
 }
 
 const messages = computed(() => {
@@ -138,11 +139,11 @@ const classes = ref(getStyles(props, 'textInput'))
             >
                 <div
                     v-for="(option, i) in options"
-                    :key="option.value"
+                    :key="option[`${targetAttr}`]"
                     tabindex="0"
                     :data-test="`select-option-${i}`"
                     :class="classes.optionClass"
-                    :value="option.value"
+                    :value="option[`${targetAttr}`]"
                     @click="setSelected(option)"
                     @keydown.enter.prevent="setSelected(option)"
                 >

@@ -7,6 +7,6 @@ import InvoiceForm from './InvoiceForm.vue'
 
 <template>
     <main class="w-full py-12 flex-is-jc">
-        <InvoiceForm />
+        <InvoiceForm :new-invoice="true" />
     </main>
 </template>

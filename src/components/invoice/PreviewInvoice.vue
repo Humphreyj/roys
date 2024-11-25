@@ -55,25 +55,25 @@ watchEffect(async () => {
                     <div class="gap-1 mt-8 flex-col-ie-js">
                         <div class="gap-2 flex-is-js">
                             <p>Date:</p>
-                            <p>
+                            <!-- <p>
                                 {{
                                     handleFormat(
                                         selectedInvoice.invoiceDate,
                                         'date'
                                     )
                                 }}
-                            </p>
+                            </p> -->
                         </div>
                         <div class="gap-2 flex-ic-js">
                             <p>Due Date:</p>
-                            <p>
+                            <!-- <p>
                                 {{
                                     handleFormat(
                                         selectedInvoice.dueDate,
                                         'date'
                                     )
                                 }}
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                 </section>

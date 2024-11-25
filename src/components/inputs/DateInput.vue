@@ -49,18 +49,21 @@ const classes = ref(getStyles(props, 'textInput'))
 const inputDate = ref(props.modelValue)
 
 const formattedDate = computed(() => {
-    // return inputDate.value ? handleFormat(inputDate.value, 'date') : ''
     return inputDate.value
         ? format(new Date(inputDate.value), 'yyyy-MM-dd')
         : ''
 })
 
 const onInput = (event) => {
-    if (inputDate.value) {
-        const [year, month, day] = inputDate.value.split('-')
-        const utcDate = new Date(Date.UTC(year, month - 1, day))
-        inputDate.value = utcDate.toISOString().split('T')[0]
-        emit('update:modelValue', utcDate.toISOString().split('T')[0])
+    const value = event.target.value
+    if (value) {
+        const [year, month, day] = value.split('-')
+        const localDate = new Date(year, month - 1, day)
+        inputDate.value = localDate.toISOString()
+        emit('update:modelValue', inputDate.value)
+    } else {
+        inputDate.value = ''
+        emit('update:modelValue', '')
     }
 }
 

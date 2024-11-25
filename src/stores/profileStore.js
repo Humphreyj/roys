@@ -19,7 +19,6 @@ export const useProfileStore = defineStore('profiles', () => {
 
     const getProfileList = async () => {
         const { currentAccount } = storeToRefs(useAccountStore())
-        console.log(currentAccount.value)
         const accountId = currentAccount.value.id
         axios
             .get(`${apiRoot.value}/profile/list/${accountId}`)

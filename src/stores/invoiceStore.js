@@ -4,6 +4,7 @@ import axios from 'axios'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
+import { useAccountStore } from './accountStore'
 // Routing
 import router from '@/router'
 
@@ -26,6 +27,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         axios
             .get(`${apiRoot.value}/invoice`)
             .then((res) => {
+                console.log(res.data)
                 invoiceList.value = res.data
             })
             .catch((err) => {
@@ -45,13 +47,13 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     }
 
     const createNewInvoice = async (invoiceData) => {
-        const clientId = invoiceData.client.id
-        const body = {
-            clientId: clientId,
-            ...invoiceData,
-        }
+        const { currentAccount } = storeToRefs(useAccountStore())
+        const accountId = currentAccount.value.id
+        invoiceData.accountId = accountId
+        invoiceData.clientId = invoiceData.client.id
+
         axios
-            .post(`${apiRoot.value}/invoice/create`, body)
+            .post(`${apiRoot.value}/invoice/create`, invoiceData)
             .then((res) => {
                 console.log(res.data)
 

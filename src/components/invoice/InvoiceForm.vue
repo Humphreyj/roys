@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onBeforeMount, watchEffect } from 'vue'
+import { ref, computed, onBeforeMount, watchEffect, watch } from 'vue'
 // Components
 import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
@@ -18,7 +18,7 @@ import { useSettingsStore } from '@/stores/settingsStore'
 import { v4 as uuidv4 } from 'uuid'
 import { handleFormat } from '@/utils/formatText'
 
-const { getSimpleProfileList } = useProfileStore()
+const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
 const { createNewInvoice, setSelectedInvoice, updateInvoice } =
     useInvoiceStore()
@@ -38,10 +38,10 @@ const props = defineProps({
 })
 const invoiceData = ref(
     props.invoiceData ?? {
-        client: null,
+        clientId: '',
         invoiceNumber: userSettings.value.nextInvoiceNumber,
         invoiceDate: '',
-        dueDate: null,
+        dueDate: '',
         status: 'draft',
         lineItems: [],
         invoiceTotal: 0,
@@ -106,11 +106,15 @@ const previewInvoice = async (e) => {
 }
 
 onBeforeMount(async () => {
-    await getSimpleProfileList()
+    await getProfileList()
 
     if (invoiceData.value.lineItems.length) {
         lineItems.value = invoiceData.value.lineItems
     }
+})
+
+watch(invoiceData.value, (newVal) => {
+    console.log('watch', newVal)
 })
 
 watchEffect(() => {
@@ -136,12 +140,13 @@ watchEffect(() => {
                     v-model="invoiceData.client"
                     label="Client"
                     :options="userProfiles"
+                    target-attr="full_name"
+                    target-type="object"
                 />
                 <TextInput
                     v-model="invoiceData.invoiceNumber"
                     data-test="new-invoice-number"
                     label="Invoice Number"
-                    :disabled="true"
                 />
             </div>
             <div
