@@ -8,6 +8,8 @@ import { useAccountStore } from './accountStore'
 import { useUserStore } from './userStore'
 // Routing
 import router from '@/router'
+// Utils
+import { useStorage } from '@vueuse/core'
 
 const authData = ref({
     email: '',
@@ -42,13 +44,21 @@ export const useAuthStore = defineStore('authStore', (email) => {
 
                     console.log('current user', currentUser.value)
                 }
+                localStorage.setItem(
+                    'accountData',
+                    JSON.stringify(currentAccount.value)
+                )
             })
             .catch((err) => {
                 console.log(err)
             })
     }
 
-    const actions = { userLogin }
+    const logout = async () => {
+        localStorage.removeItem('accountData')
+    }
+
+    const actions = { userLogin, logout }
     const values = { authData }
     return { ...actions, ...values }
 })

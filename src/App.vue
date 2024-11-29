@@ -7,7 +7,7 @@ import ModalContainer from '@/components/UI/ModalContainer.vue'
 
 const route = useRoute()
 
-const routeNames = ['send invoice', 'Log in', 'Sign Up']
+const routeNames = ['send invoice', 'Log In', 'Sign Up']
 const showHeader = computed(() => !routeNames.includes(route.name))
 </script>
 

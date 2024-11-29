@@ -10,12 +10,14 @@ import { storeToRefs } from 'pinia'
 import { useModalStore } from '@/stores/modalStore'
 import { useUserStore } from '@/stores/userStore'
 import { useAccountStore } from '@/stores/accountStore'
+import { useAuthStore } from '@/stores/authStore'
 
 // Modal Store
 
 const { avatarModalContent, avatarModal } = storeToRefs(useModalStore())
 const { currentUser } = storeToRefs(useUserStore())
 const { currentAccount } = storeToRefs(useAccountStore())
+const { logout } = useAuthStore()
 
 // Props
 const props = defineProps({
@@ -27,8 +29,14 @@ const props = defineProps({
 // Utils
 const classes = getStyles(props, 'notificationModal')
 
-const handleNav = () => {
-    router.push(`/account/${currentUser.value.accountId}`)
+const handleNav = async (content) => {
+    console.log(content)
+    if (content === 'Account') {
+        router.push(`/account/${currentUser.value.accountId}`)
+    } else if (content === 'Logout') {
+        await logout()
+        router.push({ name: 'Log In' })
+    }
 }
 </script>
 

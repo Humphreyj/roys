@@ -4,40 +4,32 @@ import { defineStore } from 'pinia'
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 import { useUserStore } from './userStore'
-import { useProfileStore } from './profileStore'
+
 // Routing
 import router from '@/router'
 import axios from 'axios'
+// Utils
 
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
-    const currentAccount = ref({
-        id: '5a4f695e-ab3d-11ef-864a-0242ac140003',
-        primaryContact: '5a4c4323-ab3d-11ef-864a-0242ac140003',
-        companyName: "Elvera's Business",
-        companyAddress: {
-            zip: '39098',
-            city: 'State College',
-            state: 'ga',
-            address_line_1: '18923 Ash Grove',
-            address_line_2: '',
-        },
-        companyPhone: '906-837-0109',
-        companyEmail: 'businessReuben23@hotmail.com',
-        subscriptionPlan: null,
-        billingInfo: null,
-    })
+    const currentAccount = ref()
+    const checkStoredAccount = async () => {
+        const { getCurrentUser } = useUserStore()
+        const { currentAccount } = storeToRefs(useAccountStore())
+        let accountData = localStorage.getItem('accountData')
+        if (accountData) {
+            currentAccount.value = JSON.parse(accountData)
+            await getCurrentUser(currentAccount.value.primaryContact)
+        }
+    }
 
     const getAccountById = async (id) => {
         const { getCurrentUser } = useUserStore()
         axios
             .get(`${apiRoot.value}/account/${id}`)
             .then(async (res) => {
-                console.log('res', res.data)
                 currentAccount.value = res.data
-
-                // await getCurrentUser(currentAccount.value.primaryContact)
             })
             .catch((err) => {
                 console.log(err)
@@ -106,6 +98,7 @@ export const useAccountStore = defineStore('accountStore', () => {
         createAccount,
         getAccountById,
         updateAccount,
+        checkStoredAccount,
     }
     const values = {
         currentAccount,

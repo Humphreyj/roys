@@ -7,7 +7,7 @@ const routes = [
     {
         path: '/',
         component: LoginView,
-        name: 'Log in',
+        name: 'Log In',
         meta: {
             transition: 'fade',
             order: 0,
