@@ -1,6 +1,6 @@
 <script setup>
 // Components
-import BasicSelect from '../inputs/BasicSelect.vue'
+import SearchableSelect from '../inputs/SearchableSelect.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
 // Data
 // Data
@@ -37,7 +37,7 @@ const props = defineProps({
             />
         </div>
         <div class="grid items-center w-full grid-cols-1 gap-6 lg:grid-cols-2">
-            <BasicSelect
+            <SearchableSelect
                 v-model="addressData.state"
                 data-test="address-state"
                 label="State"

@@ -127,9 +127,9 @@ watchEffect(() => {
     <Card container-class="w-full gap-1 mx-auto md:w-10/12 lg:w-3/4 min-w-60">
         <div class="w-full flex-ic-jb">
             <h4 class="mb-2 title-text">{{ title }}</h4>
-            <div class="p-1 border rounded-lg">
+            <!-- <div class="p-1 border rounded-lg">
                 {{ handleFormat(invoiceData.status, 'title') }}
-            </div>
+            </div> -->
         </div>
         <section class="w-full gap-1 px-4 mx-auto flex-col-ic-js">
             <div

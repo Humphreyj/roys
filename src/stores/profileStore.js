@@ -45,14 +45,17 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const getProfileById = async (id) => {
+        let result
         axios
             .get(`${apiRoot.value}/profile/${id}`)
             .then((res) => {
                 selectedUser.value = res.data
+                result = res.data
             })
             .catch((err) => {
                 console.log(err)
             })
+        return result
     }
 
     const createNewProfile = async (newUser) => {

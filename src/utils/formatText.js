@@ -1,7 +1,9 @@
 export function format(input) {
     let text = input
+
     return {
         title: function () {
+            console.log(text)
             // This function should take a string like `user_name`
             // and transform it to 'User Name'
             text = text
@@ -62,13 +64,14 @@ export function format(input) {
                     year: 'numeric',
                 }
             }
-            const date = new Date(text)
+            const date = new Date(text.substring(0, 10))
 
             text = new Intl.DateTimeFormat('en-US', options).format(date)
 
             return text
         },
         address: function () {
+            console.log('address', text)
             const { address_line_1, city, state, zip } = text
             let result = `${address_line_1} ${city}, ${state.toUpperCase()} ${zip}`
             text = result

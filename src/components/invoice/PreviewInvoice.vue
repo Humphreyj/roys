@@ -17,7 +17,7 @@ const { configOptions } = storeToRefs(useRuntimeStore())
 const route = useRoute()
 
 watchEffect(async () => {
-    if (!selectedInvoice.value) {
+    if (!selectedInvoice.value.id) {
         await getInvoiceById(route.params.id)
     }
 })
@@ -25,7 +25,7 @@ watchEffect(async () => {
 
 <template>
     <main class="w-full py-6 bg-white flex-col-is-js">
-        <div v-if="!selectedInvoice">Loading</div>
+        <div v-if="!selectedInvoice.id">Loading</div>
         <div v-else class="w-full">
             <section class="w-full px-4 flex-col-is-js">
                 <div class="w-full gap-3 flex-ic-jb">
@@ -47,7 +47,10 @@ watchEffect(async () => {
                         </p>
                         <p class="w-max">
                             {{
-                                handleFormat(selectedInvoice.client, 'address')
+                                handleFormat(
+                                    selectedInvoice.client.address,
+                                    'address'
+                                )
                             }}
                         </p>
                         <p>{{ selectedInvoice.client.email }}</p>
@@ -55,25 +58,25 @@ watchEffect(async () => {
                     <div class="gap-1 mt-8 flex-col-ie-js">
                         <div class="gap-2 flex-is-js">
                             <p>Date:</p>
-                            <!-- <p>
+                            <p>
                                 {{
                                     handleFormat(
                                         selectedInvoice.invoiceDate,
                                         'date'
                                     )
                                 }}
-                            </p> -->
+                            </p>
                         </div>
                         <div class="gap-2 flex-ic-js">
                             <p>Due Date:</p>
-                            <!-- <p>
+                            <p>
                                 {{
                                     handleFormat(
                                         selectedInvoice.dueDate,
                                         'date'
                                     )
                                 }}
-                            </p> -->
+                            </p>
                         </div>
                     </div>
                 </section>

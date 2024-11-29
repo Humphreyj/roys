@@ -36,7 +36,7 @@ const emit = defineEmits(['select-order'])
             <p>
                 {{ handleFormat(order.scheduled_delivery, 'date') }}
             </p>
-            <p>{{ handleFormat(order.status, 'title') }}</p>
+
             <p>
                 {{ handleFormat(order.order_total, 'currency') }}
             </p>

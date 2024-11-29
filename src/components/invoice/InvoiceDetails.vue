@@ -22,13 +22,15 @@ const { selectedInvoice, invoiceBeingEdited } = storeToRefs(useInvoiceStore())
 
 const route = useRoute()
 const goBack = () => {
+    Ô
     router.push({ name: 'Invoice List' })
 }
 
 watchEffect(async () => {
-    if (!selectedInvoice.value) {
+    if (!selectedInvoice.value.id) {
         await getInvoiceById(route.params.id)
     }
+    console.log(selectedInvoice.value)
 })
 
 const handleSendInvoice = async (id) => {
@@ -64,7 +66,7 @@ const handleSendInvoice = async (id) => {
         />
         <PreviewInvoice v-else />
         <div class="w-full gap-3 flex-ic-jend">
-            <p>
+            <p v-if="selectedInvoice.lastSentDate">
                 Last sent:
                 {{ handleFormat(selectedInvoice.lastSentDate, 'date') }}
             </p>
