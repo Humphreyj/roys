@@ -12,10 +12,13 @@ import { useInvoiceStore } from '@/stores/invoiceStore'
 // const emit = defineEmits()
 
 const { invoiceList } = storeToRefs(useInvoiceStore())
-const { getInvoiceList } = useInvoiceStore()
+const { getInvoiceList, getInvoiceNumber } = useInvoiceStore()
 onBeforeMount(async () => {
     if (!invoiceList.value.length) {
         await getInvoiceList()
+    }
+    if (!getInvoiceNumber.value) {
+        await getInvoiceNumber()
     }
 })
 </script>

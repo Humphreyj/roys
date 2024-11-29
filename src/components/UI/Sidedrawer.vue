@@ -89,12 +89,12 @@ const classes = getStyles(props, 'sidebar')
                         @click="handleNavigation"
                         >Profiles</RouterLink
                     >
-                    <RouterLink
+                    <!-- <RouterLink
                         :to="`/settings/${currentUser.role}`"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
                         >Settings</RouterLink
-                    >
+                    > -->
                 </div>
             </section>
         </section>

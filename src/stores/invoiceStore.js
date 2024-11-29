@@ -16,6 +16,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
 
     const selectedInvoice = ref(null)
     const invoiceList = ref([])
+    const nextInvoiceNumber = ref(null)
 
     const invoiceBeingEdited = ref(false)
 
@@ -23,9 +24,23 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         selectedInvoice.value = invoice
     }
 
-    const getInvoiceList = async () => {
+    const getInvoiceNumber = async () => {
         axios
-            .get(`${apiRoot.value}/invoice`)
+            .get(`${apiRoot.value}/settings`)
+            .then((res) => {
+                console.log(res.data.nextInvoiceNumber)
+                nextInvoiceNumber.value = res.data.nextInvoiceNumber
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const getInvoiceList = async () => {
+        const { currentAccount } = storeToRefs(useAccountStore())
+        const accountId = currentAccount.value.id
+        axios
+            .get(`${apiRoot.value}/invoice/list/${accountId}`)
             .then((res) => {
                 console.log(res.data)
                 invoiceList.value = res.data
@@ -105,12 +120,14 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         setSelectedInvoice,
         sendInvoice,
         updateInvoice,
+        getInvoiceNumber,
     }
     const values = {
         invoiceBeingEdited,
         invoiceList,
         selectedInvoice,
         invoiceData,
+        nextInvoiceNumber,
     }
     return { ...actions, ...values }
 })

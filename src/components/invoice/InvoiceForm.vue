@@ -22,9 +22,8 @@ const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
 const { createNewInvoice, setSelectedInvoice, updateInvoice } =
     useInvoiceStore()
-const { invoiceBeingEdited } = storeToRefs(useInvoiceStore())
+const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal } = storeToRefs(useModalStore())
-const { userSettings } = storeToRefs(useSettingsStore())
 
 const props = defineProps({
     title: { type: String, default: 'New Invoice' },
@@ -39,7 +38,7 @@ const props = defineProps({
 const invoiceData = ref(
     props.invoiceData ?? {
         clientId: '',
-        invoiceNumber: userSettings.value.nextInvoiceNumber,
+        invoiceNumber: nextInvoiceNumber.value,
         invoiceDate: '',
         dueDate: '',
         status: 'draft',
@@ -119,7 +118,7 @@ watch(invoiceData.value, (newVal) => {
 
 watchEffect(() => {
     if (props.newInvoice) {
-        invoiceData.invoiceNumber = userSettings.value.nextInvoiceNumber
+        invoiceData.invoiceNumber = nextInvoiceNumber.value
     }
 })
 </script>

@@ -13,7 +13,14 @@ import axios from 'axios'
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
-    const currentAccount = ref()
+    const currentAccount = ref({
+        primaryContact: '',
+        companyName: '',
+        companyAddress: {},
+        companyPhone: '',
+        companyEmail: '',
+    })
+
     const checkStoredAccount = async () => {
         const { getCurrentUser } = useUserStore()
         const { currentAccount } = storeToRefs(useAccountStore())
@@ -25,7 +32,6 @@ export const useAccountStore = defineStore('accountStore', () => {
     }
 
     const getAccountById = async (id) => {
-        const { getCurrentUser } = useUserStore()
         axios
             .get(`${apiRoot.value}/account/${id}`)
             .then(async (res) => {
@@ -46,9 +52,6 @@ export const useAccountStore = defineStore('accountStore', () => {
                 currentUser.value = res.data
                 currentAccount.value.primaryContact = currentUser.value.id
                 await createAccount(currentAccount.value)
-                // currentUser.value.accountId = currentAccount.value.id
-
-                // await updateUserProfile(currentUser.value)
             })
             .catch((err) => {
                 console.log(err)
@@ -57,17 +60,13 @@ export const useAccountStore = defineStore('accountStore', () => {
 
     const createAccount = async (newAccount) => {
         const { currentUser } = storeToRefs(useUserStore())
-        const { getCurrentUser, updateUserProfile } = useUserStore()
+        const { updateUserProfile } = useUserStore()
 
         newAccount.primaryContact = currentUser.value.id
         axios
             .post(`${apiRoot.value}/account/create`, newAccount)
             .then(async (res) => {
                 currentAccount.value = res.data
-                console.log('currentAccount', currentAccount.value)
-                // if (!currentUser.value) {
-                //     await getCurrentUser(newAccount.primaryContact)
-                // }
                 currentUser.value.accountId = currentAccount.value.id
                 await updateUserProfile(currentUser.value)
 
