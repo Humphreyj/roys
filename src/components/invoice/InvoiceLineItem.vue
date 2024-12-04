@@ -13,6 +13,9 @@ const props = defineProps({
     lineItem: {
         type: Object,
     },
+    itemIndex: {
+        type: Number,
+    },
 })
 const options = [
     { label: 'Hours', value: 'Hours' },
@@ -32,25 +35,25 @@ const lineItemTotal = computed(() => {
     >
         <TextInput
             v-model="lineItem.description"
-            data-test="item-description"
+            :data-test="'item-description-' + itemIndex"
             placeholder="Description of item"
             container-class="col-span-3 md:col-span-2"
         />
         <TextInput
             v-model.float="lineItem.quantity"
-            data-test="item-quantity"
+            :data-test="`item-quantity-${itemIndex}`"
             placeholder="Qty"
         />
         <BasicSelect
             v-model="lineItem.unitType"
-            data-test="item-unit"
+            :data-test="`item-unit-${itemIndex}`"
             :options="options"
             placeholder="Unit"
             container-class="w-20"
         />
         <TextInput
             v-model.float="lineItem.unitPrice"
-            data-test="item-price"
+            :data-test="`item-price-${itemIndex}`"
             placeholder="Price"
             container-class="w-20"
         />

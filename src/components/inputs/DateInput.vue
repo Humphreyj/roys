@@ -1,10 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import { getStyles } from '@/composables/getStyles'
-// Components
-// Utils
-import { format } from 'date-fns'
-import { handleFormat } from '@/utils/formatText'
+import { format, parse } from 'date-fns'
 
 const props = defineProps({
     modelValue: {
@@ -19,6 +16,7 @@ const props = defineProps({
     },
     format: {
         type: String,
+        default: 'yyyy-MM-dd', // Default to ISO format for native input compatibility
     },
     maxLength: {
         type: String,
@@ -49,17 +47,23 @@ const classes = ref(getStyles(props, 'textInput'))
 const inputDate = ref(props.modelValue)
 
 const formattedDate = computed(() => {
-    return inputDate.value
-        ? format(new Date(inputDate.value), 'yyyy-MM-dd')
-        : ''
+    if (!inputDate.value) return ''
+    const date = new Date(inputDate.value)
+    return isNaN(date.getTime()) ? '' : format(date, props.format)
 })
 
 const onInput = (event) => {
     const value = event.target.value
-    if (value) {
-        const [year, month, day] = value.split('-')
-        const localDate = new Date(year, month - 1, day)
-        inputDate.value = localDate.toISOString()
+    let parsedDate
+    // Try parsing the input using the specified format and fallback formats
+    if (props.format === 'yyyy-MM-dd') {
+        parsedDate = parse(value, 'yyyy-MM-dd', new Date())
+    } else {
+        parsedDate = parse(value, 'MM/dd/yyyy', new Date())
+    }
+
+    if (!isNaN(parsedDate.getTime())) {
+        inputDate.value = parsedDate.toISOString()
         emit('update:modelValue', inputDate.value)
     } else {
         inputDate.value = ''
@@ -77,9 +81,9 @@ watch(
 
 <template>
     <div :class="classes.containerClass">
-        <label v-if="label" :for="inputName" :class="classes.labelClass">{{
-            label
-        }}</label>
+        <label v-if="label" :for="inputName" :class="classes.labelClass">
+            {{ label }}
+        </label>
         <input
             :name="inputName"
             :value="formattedDate"

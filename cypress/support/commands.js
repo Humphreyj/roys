@@ -34,11 +34,11 @@ Cypress.Commands.add('createInvoice', (invoice) => {
     cy.getElement('invoice-submit').click()
 })
 
-Cypress.Commands.add('createInvoiceLineItem', (lineItem) => {
+Cypress.Commands.add('createInvoiceLineItem', (lineItem, index) => {
     // cy.getElement('add-line-item').click()
-    cy.getElement('item-description').type(lineItem.description)
+    cy.getElement(`item-description-${index}`).type(lineItem.description)
 
-    cy.getElement('item-unit').type(lineItem.unitType)
-    cy.getElement('item-quantity').type(lineItem.quantity)
-    cy.getElement('item-price').type(lineItem.unitPrice)
+    cy.getElement(`item-unit-${index}`).type(lineItem.unitType)
+    cy.getElement(`item-quantity-${index}`).type(lineItem.quantity)
+    cy.getElement(`item-price-${index}`).type(lineItem.unitPrice)
 })

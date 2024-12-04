@@ -171,10 +171,11 @@ watchEffect(() => {
         <section class="w-full gap-1 p-4 flex-col-is-js">
             <h3>Line Items</h3>
             <InvoiceLineItem
-                v-for="item in lineItems"
+                v-for="(item, i) in lineItems"
                 :key="item.id"
                 :line-item="item"
                 @delete-line-item="deleteLineItem"
+                :item-index="i"
             />
 
             <Button
