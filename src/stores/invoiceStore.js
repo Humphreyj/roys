@@ -42,7 +42,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     const getInvoiceList = async () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         const accountId = currentAccount.value.id
-        console.log(accountId)
+
         axios
             .get(`${apiRoot.value}/invoice/list/${accountId}`)
             .then((res) => {
@@ -68,24 +68,28 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     }
 
     const createNewInvoice = async (invoiceData) => {
-        const { currentAccount } = storeToRefs(useAccountStore())
-        const accountId = currentAccount.value.id
-        invoiceData.accountId = accountId
-        invoiceData.clientId = invoiceData.client.id
+        // const { currentAccount } = storeToRefs(useAccountStore())
+        // const accountId = currentAccount.value.id
+        try {
+            // invoiceData.accountId = accountId
+            invoiceData.clientId = invoiceData.client.id
+            axios
+                .post(`${apiRoot.value}/invoice/create`, invoiceData)
+                .then((res) => {
+                    console.log(res.data)
+                    selectedInvoice.value = res.data
 
-        axios
-            .post(`${apiRoot.value}/invoice/create`, invoiceData)
-            .then((res) => {
-                console.log(res.data)
-
-                router.push({
-                    name: 'Invoice Details',
-                    params: { id: res.data.id },
+                    router.push({
+                        name: 'Invoice Details',
+                        params: { id: res.data.id },
+                    })
                 })
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+                .catch((err) => {
+                    console.log(err)
+                })
+        } catch (error) {
+            console.log('Pre-request error creating invoice ', error)
+        }
     }
     const updateInvoice = async (invoiceData) => {
         const clientId = invoiceData.client.id

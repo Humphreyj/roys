@@ -22,7 +22,6 @@ const { selectedInvoice, invoiceBeingEdited } = storeToRefs(useInvoiceStore())
 
 const route = useRoute()
 const goBack = () => {
-    Ô
     router.push({ name: 'Invoice List' })
 }
 
@@ -30,7 +29,6 @@ watchEffect(async () => {
     if (!selectedInvoice.value.id) {
         await getInvoiceById(route.params.id)
     }
-    console.log(selectedInvoice.value)
 })
 
 const handleSendInvoice = async (id) => {

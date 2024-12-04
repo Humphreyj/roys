@@ -48,18 +48,18 @@ const handleSubmit = (e) => {
 
             <TextInput
                 v-model="userData.email"
-                data-test="user_email"
+                data-test="user-email"
                 label="Email"
             />
             <TextInput
                 v-model="userData.phone"
-                data-test="user_phone"
+                data-test="user-phone"
                 label="Phone Number"
                 format="phone"
                 max-length="12"
             />
             <Button
-                data-test="basic-form-submit"
+                data-test="profile-submit"
                 text="Submit"
                 button-class="mt-6 bg-green-500"
                 @click="($event) => handleSubmit($event)"

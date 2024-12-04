@@ -32,18 +32,25 @@ const lineItemTotal = computed(() => {
     >
         <TextInput
             v-model="lineItem.description"
+            data-test="item-description"
             placeholder="Description of item"
             container-class="col-span-3 md:col-span-2"
         />
-        <TextInput v-model.float="lineItem.quantity" placeholder="Qty" />
+        <TextInput
+            v-model.float="lineItem.quantity"
+            data-test="item-quantity"
+            placeholder="Qty"
+        />
         <BasicSelect
             v-model="lineItem.unitType"
+            data-test="item-unit"
             :options="options"
             placeholder="Unit"
             container-class="w-20"
         />
         <TextInput
             v-model.float="lineItem.unitPrice"
+            data-test="item-price"
             placeholder="Price"
             container-class="w-20"
         />

@@ -26,7 +26,7 @@ watchEffect(async () => {
 <template>
     <main class="w-full py-6 bg-white flex-col-is-js">
         <div v-if="!selectedInvoice.id">Loading</div>
-        <div v-else class="w-full">
+        <div v-else class="w-full h-screen">
             <section class="w-full px-4 flex-col-is-js">
                 <div class="w-full gap-3 flex-ic-jb">
                     <h3 class="text-3xl font-semibold text-center">

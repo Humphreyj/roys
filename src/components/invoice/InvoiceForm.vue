@@ -13,7 +13,7 @@ import { storeToRefs } from 'pinia'
 import { useProfileStore } from '@/stores/profileStore'
 import { useInvoiceStore } from '@/stores/invoiceStore'
 import { useModalStore } from '@/stores/modalStore'
-import { useSettingsStore } from '@/stores/settingsStore'
+import { useAccountStore } from '@/stores/accountStore'
 // Utils
 import { v4 as uuidv4 } from 'uuid'
 import { handleFormat } from '@/utils/formatText'
@@ -24,6 +24,7 @@ const { createNewInvoice, setSelectedInvoice, updateInvoice } =
     useInvoiceStore()
 const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal } = storeToRefs(useModalStore())
+const { currentAccount } = storeToRefs(useAccountStore())
 
 const props = defineProps({
     title: { type: String, default: 'New Invoice' },
@@ -37,6 +38,7 @@ const props = defineProps({
 })
 const invoiceData = ref(
     props.invoiceData ?? {
+        accountId: currentAccount.value.id,
         clientId: '',
         invoiceNumber: nextInvoiceNumber.value,
         invoiceDate: '',
@@ -99,8 +101,8 @@ const previewInvoice = async (e) => {
     e.preventDefault()
     invoiceData.value.lineItems = lineItems.value
     invoiceData.value.invoiceTotal = invoiceTotal.value
-    showInvoice.value = true
     setSelectedInvoice(invoiceData.value)
+    showInvoice.value = true
     invoicePreviewModal.value.show()
 }
 
@@ -127,9 +129,9 @@ watchEffect(() => {
     <Card container-class="w-full gap-1 mx-auto md:w-10/12 lg:w-3/4 min-w-60">
         <div class="w-full flex-ic-jb">
             <h4 class="mb-2 title-text">{{ title }}</h4>
-            <!-- <div class="p-1 border rounded-lg">
+            <div class="p-1 border rounded-lg">
                 {{ handleFormat(invoiceData.status, 'title') }}
-            </div> -->
+            </div>
         </div>
         <section class="w-full gap-1 px-4 mx-auto flex-col-ic-js">
             <div
@@ -137,6 +139,7 @@ watchEffect(() => {
             >
                 <BasicSelect
                     v-model="invoiceData.client"
+                    data-test="invoice-client"
                     label="Client"
                     :options="userProfiles"
                     target-attr="full_name"
@@ -153,14 +156,13 @@ watchEffect(() => {
             >
                 <DateInput
                     v-model="invoiceData.invoiceDate"
-                    data-test="new-invoice-date"
+                    data-test="invoice-date"
                     label="Invoice Date"
                     type="date"
-                    format="date"
                 />
                 <DateInput
                     v-model.date="invoiceData.dueDate"
-                    data-test="new-invoice-due-date"
+                    data-test="invoice-due-date"
                     label="Invoice Due Date"
                     type="date"
                 />
@@ -177,6 +179,7 @@ watchEffect(() => {
 
             <Button
                 text="Add Item"
+                data-test="add-line-item"
                 button-class="align-self-start"
                 @click="addLineItem"
             />
@@ -185,6 +188,7 @@ watchEffect(() => {
         <div class="w-full flex-ic-jb">
             <Button
                 :text="newInvoice ? `Submit` : `Save`"
+                data-test="submit-invoice"
                 @click="($event) => submitInvoice($event)"
             />
             <Button

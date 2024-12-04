@@ -7,7 +7,6 @@ describe('Account Flow', () => {
         const businessEmail = `business${userEmail}`
         const accountState = faker.location.state()
         const businessName = `${userFirstName}'s Business`
-
         cy.visit('/')
         cy.getElement('create-account').click()
         cy.getElement('first-name').type(userFirstName)
@@ -30,5 +29,14 @@ describe('Account Flow', () => {
         cy.contains(accountState).click()
         cy.getElement('address-zip').type(faker.location.zipCode())
         cy.getElement('save-settings').click()
+
+        // create a fake profile
+        cy.getElement('profiles-link').click()
+        cy.getElement('create-profile').click()
+        cy.createFakeProfile()
+        cy.getElement('create-profile').click()
+        cy.createFakeProfile()
+        cy.getElement('create-profile').click()
+        cy.createFakeProfile()
     })
 })

@@ -35,20 +35,24 @@ const handleLogin = async (authData) => {
                 <div class="gap-4 flex-col-ic-jc">
                     <TextInput
                         v-model="authData.email"
+                        data-test="email"
                         label="Email"
                         type="email"
                         placeholder="Email"
-                        data-test="email"
                     />
                     <TextInput
                         v-model="authData.password"
+                        data-test="password"
                         label="Password"
                         type="password"
                         placeholder="password"
-                        data-test="password"
                     />
                     <RouterLink :to="{ name: 'Dashboard' }">
-                        <Button text="Login" @click="handleLogin(authData)" />
+                        <Button
+                            text="Login"
+                            data-test="login-button"
+                            @click="handleLogin(authData)"
+                        />
                     </RouterLink>
                     <RouterLink :to="{ name: 'Sign Up' }">
                         <Button

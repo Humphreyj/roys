@@ -43,6 +43,7 @@ onBeforeMount(async () => {
                 </h4>
                 <!-- <RouterLink to="/profiles/new" class="border-none"> -->
                 <h2
+                    data-test="create-profile"
                     class="border-gray-700 cursor-pointer hover:border-b"
                     @click="profileFormModal.show"
                 >

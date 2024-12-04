@@ -71,13 +71,15 @@ const classes = getStyles(props, 'sidebar')
                 </h3>
                 <div :class="classes.navContainerClass">
                     <RouterLink
-                        to="/"
+                        to="/dashboard"
+                        data-test="dashboard-link"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
                         >Home</RouterLink
                     >
                     <RouterLink
                         to="/invoice"
+                        data-test="invoices-link"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
                         >Invoices</RouterLink
@@ -85,6 +87,7 @@ const classes = getStyles(props, 'sidebar')
 
                     <RouterLink
                         to="/profiles"
+                        data-test="profiles-link"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
                         >Profiles</RouterLink

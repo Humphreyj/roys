@@ -1,28 +1,44 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import { faker } from '@faker-js/faker'
+
 Cypress.Commands.add('getElement', (key) => {
     cy.get(`[data-test=${key}]`)
+})
+
+Cypress.Commands.add('createProfile', (profile) => {
+    cy.getElement('first-name').type(profile.first_name)
+    cy.getElement('last-name').type(profile.last_name)
+    cy.getElement('user-email').type(profile.email)
+    cy.getElement('user-phone').type(profile.phone)
+    cy.getElement('profile-submit').click()
+})
+Cypress.Commands.add('createFakeProfile', () => {
+    cy.getElement('first-name').type(faker.person.firstName())
+    cy.getElement('last-name').type(faker.person.lastName())
+
+    cy.getElement('address-1').type(faker.location.streetAddress())
+    cy.getElement('address-city').type(faker.location.city())
+    cy.getElement('address-state').click()
+    cy.contains(faker.location.state()).click()
+    cy.getElement('address-zip').type(faker.location.zipCode())
+    cy.getElement('user-email').type(faker.internet.email())
+    cy.getElement('user-phone').type(faker.phone.number())
+
+    cy.getElement('profile-submit').click()
+})
+
+Cypress.Commands.add('createInvoice', (invoice) => {
+    cy.getElement('invoice-client').click()
+    cy.contains(invoice.client).click()
+    cy.getElement('invoice-date').type(invoice.invoiceDate)
+    cy.getElement('invoice-due-date').type(invoice.dueDate)
+    cy.getElement('invoice-submit').click()
+})
+
+Cypress.Commands.add('createInvoiceLineItem', (lineItem) => {
+    // cy.getElement('add-line-item').click()
+    cy.getElement('item-description').type(lineItem.description)
+
+    cy.getElement('item-unit').type(lineItem.unitType)
+    cy.getElement('item-quantity').type(lineItem.quantity)
+    cy.getElement('item-price').type(lineItem.unitPrice)
 })

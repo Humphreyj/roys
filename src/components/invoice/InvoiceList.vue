@@ -36,6 +36,7 @@ const handleInvoicePreview = (invoice) => {
                 </h4>
                 <!-- <RouterLink to="/profiles/new" class="border-none"> -->
                 <RouterLink
+                    data-test="create-invoice"
                     class="border-gray-700 cursor-pointer hover:border-b"
                     :to="{ name: 'Create New Invoice' }"
                 >
