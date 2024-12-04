@@ -6,20 +6,20 @@ describe('Invoice Flow', () => {
             {
                 description: faker.commerce.productName(),
                 unitType: 'hour',
-                quantity: '10',
-                unitPrice: '100',
+                quantity: faker.number.int({ max: 10 }),
+                unitPrice: faker.number.float({ max: 1000 }),
             },
             {
                 description: faker.commerce.productName(),
                 unitType: 'hour',
-                quantity: '5',
-                unitPrice: '50',
+                quantity: faker.number.int({ max: 10 }),
+                unitPrice: faker.number.float({ max: 1000 }),
             },
             {
                 description: faker.commerce.productName(),
                 unitType: 'hour',
-                quantity: '7',
-                unitPrice: '70',
+                quantity: faker.number.int({ max: 10 }),
+                unitPrice: faker.number.float({ max: 1000 }),
             },
         ]
 

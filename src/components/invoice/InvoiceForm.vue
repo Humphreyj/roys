@@ -126,7 +126,9 @@ watchEffect(() => {
 </script>
 
 <template>
-    <Card container-class="w-full gap-1 mx-auto md:w-10/12 lg:w-3/4 min-w-60">
+    <Card
+        container-class="w-full gap-1 px-4 mx-auto md:w-10/12 lg:w-3/4 min-w-60"
+    >
         <div class="w-full flex-ic-jb">
             <h4 class="mb-2 title-text">{{ title }}</h4>
             <div class="p-1 border rounded-lg">
@@ -185,7 +187,11 @@ watchEffect(() => {
                 @click="addLineItem"
             />
         </section>
-        <p>{{ handleFormat(invoiceTotal, 'currency') }}</p>
+        <div class="w-full mb-3 flex-ic-jend">
+            <p class="text-xl font-semibold">
+                {{ handleFormat(invoiceTotal, 'currency') }}
+            </p>
+        </div>
         <div class="w-full flex-ic-jb">
             <Button
                 :text="newInvoice ? `Submit` : `Save`"

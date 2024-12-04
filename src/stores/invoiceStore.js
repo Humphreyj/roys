@@ -73,11 +73,13 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         try {
             // invoiceData.accountId = accountId
             invoiceData.clientId = invoiceData.client.id
+            selectedInvoice.value = null
             axios
                 .post(`${apiRoot.value}/invoice/create`, invoiceData)
                 .then((res) => {
                     console.log(res.data)
                     selectedInvoice.value = res.data
+                    invoiceList.value.push(res.data)
 
                     router.push({
                         name: 'Invoice Details',
