@@ -38,6 +38,9 @@ describe('Invoice Flow', () => {
                 cy.getElement('add-line-item').click()
             }
         })
+        cy.getElement('invoice-comments').type(
+            faker.lorem.lines({ min: 1, max: 3 })
+        )
         cy.getElement('submit-invoice').click()
     })
 })

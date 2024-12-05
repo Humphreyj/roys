@@ -31,7 +31,6 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         axios
             .get(`${apiRoot.value}/settings/${accountId}`)
             .then((res) => {
-                console.log(res.data.nextInvoiceNumber)
                 nextInvoiceNumber.value = res.data.nextInvoiceNumber
             })
             .catch((err) => {
@@ -46,7 +45,6 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         axios
             .get(`${apiRoot.value}/invoice/list/${accountId}`)
             .then((res) => {
-                console.log(res.data)
                 invoiceList.value = res.data
             })
             .catch((err) => {
@@ -58,8 +56,6 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         axios
             .get(`${apiRoot.value}/invoice/${id}`)
             .then(async (res) => {
-                console.log(res.data)
-
                 selectedInvoice.value = res.data
             })
             .catch((err) => {
@@ -77,7 +73,6 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             axios
                 .post(`${apiRoot.value}/invoice/create`, invoiceData)
                 .then((res) => {
-                    console.log(res.data)
                     selectedInvoice.value = res.data
                     invoiceList.value.push(res.data)
 

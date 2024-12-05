@@ -3,7 +3,6 @@ export function format(input) {
 
     return {
         title: function () {
-            console.log(text)
             // This function should take a string like `user_name`
             // and transform it to 'User Name'
             text = text
@@ -71,7 +70,6 @@ export function format(input) {
             return text
         },
         address: function () {
-            console.log('address', text)
             const { address_line_1, city, state, zip } = text
             let result = `${address_line_1} ${city}, ${state.toUpperCase()} ${zip}`
             text = result

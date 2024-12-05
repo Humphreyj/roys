@@ -7,6 +7,7 @@ import DateInput from '../inputs/DateInput.vue'
 import InvoiceLineItem from './InvoiceLineItem.vue'
 import BasicSelect from '@/components/inputs/BasicSelect.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
+import TextArea from '../inputs/TextArea.vue'
 
 // Pinia
 import { storeToRefs } from 'pinia'
@@ -41,11 +42,12 @@ const invoiceData = ref(
         accountId: currentAccount.value.id,
         clientId: '',
         invoiceNumber: nextInvoiceNumber.value,
-        invoiceDate: '',
+        invoiceDate: new Date().toISOString().split('T')[0],
         dueDate: '',
         status: 'draft',
         lineItems: [],
         invoiceTotal: 0,
+        comments: '',
     }
 )
 const showInvoice = ref(false)
@@ -187,6 +189,11 @@ watchEffect(() => {
                 @click="addLineItem"
             />
         </section>
+        <TextArea
+            v-model="invoiceData.comments"
+            data-test="invoice-comments"
+            label="Additional Comments"
+        />
         <div class="w-full mb-3 flex-ic-jend">
             <p class="text-xl font-semibold">
                 {{ handleFormat(invoiceTotal, 'currency') }}

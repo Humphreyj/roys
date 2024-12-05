@@ -26,7 +26,7 @@ watchEffect(async () => {
 <template>
     <main class="w-full py-6 bg-white flex-col-is-js">
         <div v-if="!selectedInvoice.id">Loading</div>
-        <div v-else class="w-full h-screen">
+        <div v-else class="w-full">
             <section class="w-full px-4 flex-col-is-js">
                 <div class="w-full gap-3 flex-ic-jb">
                     <h3 class="text-3xl font-semibold text-center">
@@ -118,6 +118,18 @@ watchEffect(async () => {
                     </p>
                 </div>
             </section>
+            <section
+                v-if="selectedInvoice.comments"
+                class="w-full my-3 flex-col-is-js"
+            >
+                <h3 class="text-lg font-semibold">Additional Comments</h3>
+                <div class="">
+                    <p class="">
+                        {{ selectedInvoice.comments }}
+                    </p>
+                </div>
+            </section>
+
             <div class="w-full pr-4 mt-4 flex-ic-jend">
                 <p class="text-xl font-bold text-right">
                     Total:
