@@ -86,6 +86,12 @@ export function format(input) {
             }).format(text)
             return text
         },
+        float: function () {
+            text = text / 100
+            console.log('number', text)
+
+            return text
+        },
     }
 }
 
@@ -113,6 +119,9 @@ export const handleFormat = (input, type, showTime) => {
             break
         case 'currency':
             result = formatText.currency()
+            break
+        case 'float':
+            result = formatText.float()
             break
         default:
             return input

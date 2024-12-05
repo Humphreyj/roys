@@ -54,20 +54,21 @@ const inputValue = ref(props.modelValue)
 
 const handleInput = (e, type) => {
     inputValue.value = e.target.value
-    // let result = handleFormat(inputValue.value, type)
 
-    // emit('update:modelValue', result)
+    let result = handleFormat(inputValue.value, props.format)
+
+    emit('update:modelValue', result)
 }
 
-watch(inputValue, (newVal) => {
-    inputValue.value = handleFormat(newVal, props.format)
-    emit('update:modelValue', inputValue.value)
-})
+// watch(inputValue, (newVal) => {
+//     inputValue.value = handleFormat(newVal, props.format)
+//     emit('update:modelValue', inputValue.value)
+// })
 
-watchEffect(() => {
-    inputValue.value = handleFormat(props.modelValue, props.format)
-    emit('update:modelValue', inputValue.value)
-})
+// watchEffect(() => {
+//     inputValue.value = handleFormat(props.modelValue, props.format)
+//     emit('update:modelValue', inputValue.value)
+// })
 </script>
 
 <template>

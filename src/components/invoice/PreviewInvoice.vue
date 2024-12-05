@@ -131,10 +131,28 @@ watchEffect(async () => {
             </section>
 
             <div class="w-full pr-4 mt-4 flex-ic-jend">
-                <p class="text-xl font-bold text-right">
-                    Total:
-                    {{ handleFormat(selectedInvoice.invoiceTotal, 'currency') }}
-                </p>
+                <div class="gap-3 flex-col-is-je">
+                    <div class="w-full flex-ic-jend">
+                        Discount:
+                        {{
+                            handleFormat(
+                                selectedInvoice.totalDiscount,
+                                'currency'
+                            )
+                        }}
+                    </div>
+                    <div>
+                        <p class="text-xl font-bold text-right">
+                            Total:
+                            {{
+                                handleFormat(
+                                    selectedInvoice.invoiceTotal,
+                                    'currency'
+                                )
+                            }}
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

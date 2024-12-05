@@ -48,9 +48,13 @@ const invoiceData = ref(
         lineItems: [],
         invoiceTotal: 0,
         comments: '',
+        discount: null,
+        totalDiscount: 0,
     }
 )
 const showInvoice = ref(false)
+
+
 
 const lineItems = ref([
     {
@@ -84,6 +88,10 @@ const invoiceTotal = computed(() => {
     lineItems.value.forEach((item) => {
         result += item.lineItemTotal
     })
+    if (invoiceData.value.discount) {
+        invoiceData.value.totalDiscount = result * invoiceData.value.discount
+        result -= invoiceData.value.discount
+    }
     return result
 })
 
@@ -120,7 +128,8 @@ watch(invoiceData.value, (newVal) => {
     console.log('watch', newVal)
 })
 
-watchEffect(() => {
+watchEffect(async () => {
+    
     if (props.newInvoice) {
         invoiceData.invoiceNumber = nextInvoiceNumber.value
     }
@@ -189,15 +198,38 @@ watchEffect(() => {
                 @click="addLineItem"
             />
         </section>
-        <TextArea
-            v-model="invoiceData.comments"
-            data-test="invoice-comments"
-            label="Additional Comments"
-        />
+        <section class="gap-4 flex-is-jb">
+            <TextArea
+                v-model="invoiceData.comments"
+                data-test="invoice-comments"
+                label="Additional Comments"
+            />
+            <TextInput
+                v-model.number="invoiceData.discount"
+                container-class="w-1/2"
+                data-test="invoice-discount"
+                label="Discount"
+                type="number"
+                format="float"
+            />
+        </section>
         <div class="w-full mb-3 flex-ic-jend">
-            <p class="text-xl font-semibold">
-                {{ handleFormat(invoiceTotal, 'currency') }}
-            </p>
+            <div class="flex-col-is-je">
+                <div v-if="invoiceData.totalDiscount">
+                    <p>Discount</p>
+                    <p class="text-xl font-semibold">
+                        {{ handleFormat(invoiceData.totalDiscount, 'currency') }}
+                    </p>
+
+                </div>
+                <div>
+
+                    <p class="text-xl font-semibold">
+                        <p>Total</p>
+                        {{ handleFormat(invoiceTotal, 'currency') }}
+                    </p>
+                </div>
+            </div>
         </div>
         <div class="w-full flex-ic-jb">
             <Button

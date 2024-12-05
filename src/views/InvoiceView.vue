@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount } from 'vue'
+import { onMounted, onBeforeMount } from 'vue'
 // Components
 // Routing
 import { RouterView } from 'vue-router'
@@ -11,13 +11,16 @@ import { useInvoiceStore } from '@/stores/invoiceStore'
 // const props = defineProps({})
 // const emit = defineEmits()
 
-const { invoiceList } = storeToRefs(useInvoiceStore())
+const { invoiceList, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { getInvoiceList, getInvoiceNumber } = useInvoiceStore()
 onBeforeMount(async () => {
     if (!invoiceList.value.length) {
         await getInvoiceList()
     }
-    if (!getInvoiceNumber.value) {
+})
+
+onMounted(async () => {
+    if (!nextInvoiceNumber.value) {
         await getInvoiceNumber()
     }
 })
