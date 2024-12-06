@@ -36,10 +36,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
-    gapHeight : {
+    gapHeight: {
         type: String,
-        default: '24'
-    }
+        default: '24',
+    },
 })
 // const emit = defineEmits()
 const classes = ref(getStyles(props, 'metricCard'))
@@ -56,16 +56,13 @@ const classes = ref(getStyles(props, 'metricCard'))
                     <Cog6ToothIcon class="-mt-1 cursor-pointer size-6" />
                 </slot>
             </div>
-            <div class="h-24" v-if="metricValue !== 'Metric Value'">
-                <p :class="classes.cardContentClass" >
+            <div class="h-max" v-if="metricValue !== 'Metric Value'">
+                <p :class="classes.cardContentClass">
                     {{ handleFormat(metricValue, metricType) }}
                 </p>
             </div>
-            
+
             <slot></slot>
-            <div class="p-1 text-xs text-white rounded-xl bg-primary-400">
-                Status
-            </div>
         </section>
     </Card>
 </template>

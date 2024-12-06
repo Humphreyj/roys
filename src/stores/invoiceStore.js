@@ -17,6 +17,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
 
     const selectedInvoice = ref({})
     const invoiceList = ref([])
+    const totalInvoiced = ref(0)
     const nextInvoiceNumber = ref(null)
 
     const invoiceBeingEdited = ref(false)
@@ -32,6 +33,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             .get(`${apiRoot.value}/settings/${accountId}`)
             .then((res) => {
                 nextInvoiceNumber.value = res.data.nextInvoiceNumber
+                totalInvoiced.value = res.data.totalInvoiced
             })
             .catch((err) => {
                 console.log(err)
@@ -135,6 +137,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         selectedInvoice,
         invoiceData,
         nextInvoiceNumber,
+        totalInvoiced,
     }
     return { ...actions, ...values }
 })
