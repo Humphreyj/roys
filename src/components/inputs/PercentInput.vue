@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, watchEffect } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { getStyles } from '@/composables/getStyles'
 // Components
 // Utils
@@ -62,14 +62,18 @@ const handleInput = (e, type) => {
 
 watch(inputValue, (newVal) => {
     if (newVal === props.modelValue) return
-    inputValue.value = handleFormat(newVal, props.format)
-    emit('update:modelValue', inputValue.value)
+    inputValue.value = newVal
+    emit('update:modelValue', handleFormat(inputValue.value, props.format))
 })
 
 // watchEffect(() => {
 //     inputValue.value = handleFormat(props.modelValue, props.format)
 //     emit('update:modelValue', inputValue.value)
 // })
+
+onMounted(() => {
+    inputValue.value = props.modelValue * 100
+})
 </script>
 
 <template>

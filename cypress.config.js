@@ -5,6 +5,7 @@ export default defineConfig({
         chromeWebSecurity: false,
         specPattern: 'cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}',
         baseUrl: 'http://localhost:3030/',
+        // baseUrl: 'https://ezpdf.netlify.app/',
         viewportHeight: 932,
         viewportWidth: 1440,
     },

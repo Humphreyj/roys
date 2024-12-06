@@ -24,13 +24,13 @@ describe('Invoice Flow', () => {
         ]
 
         cy.visit('/')
-        cy.getElement('email').type('business@mail.com')
+        cy.getElement('email').type('businessadmin@mail.com')
         cy.getElement('login-button').click()
         cy.getElement('invoices-link').click()
         cy.getElement('create-invoice').click()
         cy.getElement('invoice-client').click()
-        cy.contains('Kevin Dunkus').click()
-        cy.getElement('invoice-date').type('2024-12-12')
+        cy.contains('Joshua Humphrey').click()
+        // cy.getElement('invoice-date').type('2024-12-12')
         cy.getElement('invoice-due-date').type('2024-12-19')
         lineItems.forEach((lineItem, i) => {
             cy.createInvoiceLineItem(lineItem, i)

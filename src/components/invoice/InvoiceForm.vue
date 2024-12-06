@@ -7,6 +7,7 @@ import DateInput from '../inputs/DateInput.vue'
 import InvoiceLineItem from './InvoiceLineItem.vue'
 import BasicSelect from '@/components/inputs/BasicSelect.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
+import PercentInput from '@/components/inputs/PercentInput.vue'
 import TextArea from '../inputs/TextArea.vue'
 
 // Pinia
@@ -124,9 +125,6 @@ onBeforeMount(async () => {
     }
 })
 
-watch(invoiceData.value, (newVal) => {
-    console.log('watch', newVal)
-})
 
 watchEffect(async () => {
     
@@ -204,9 +202,9 @@ watchEffect(async () => {
                 data-test="invoice-comments"
                 label="Additional Comments"
             />
-            <TextInput
+            <PercentInput
                 v-model.number="invoiceData.discount"
-                container-class="w-1/2"
+                container-class="relative w-1/2"
                 data-test="invoice-discount"
                 label="Discount"
                 type="number"

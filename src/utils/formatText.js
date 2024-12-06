@@ -88,8 +88,6 @@ export function format(input) {
         },
         float: function () {
             text = text / 100
-            console.log('number', text)
-
             return text
         },
     }
