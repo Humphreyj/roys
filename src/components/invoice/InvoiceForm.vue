@@ -19,10 +19,14 @@ import { useAccountStore } from '@/stores/accountStore'
 // Utils
 import { v4 as uuidv4 } from 'uuid'
 import { handleFormat } from '@/utils/formatText'
+import { parse } from 'date-fns'
+// Validation
+import useValidate from '@vuelidate/core'
+import { invoiceRules } from '@/validation/invoiceValidation'
 
 const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
-const { createNewInvoice, setSelectedInvoice, updateInvoice } =
+const { createNewInvoice, setSelectedInvoice, updateInvoice, getInvoiceNumber } =
     useInvoiceStore()
 const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal } = storeToRefs(useModalStore())
@@ -42,8 +46,10 @@ const invoiceData = ref(
     props.invoiceData ?? {
         accountId: currentAccount.value.id,
         clientId: '',
+        client: 'Select Client',
         invoiceNumber: nextInvoiceNumber.value,
-        invoiceDate: new Date().toISOString().split('T')[0],
+        // invoiceDate: new Date().toISOString().split('T')[0],
+        invoiceDate: parse(new Date().toISOString().split('T')[0], 'yyyy-MM-dd', new Date()),
         dueDate: '',
         status: 'draft',
         lineItems: [],
@@ -53,6 +59,9 @@ const invoiceData = ref(
         totalDiscount: 0,
     }
 )
+
+const v$ = useValidate(invoiceRules, invoiceData.value)
+
 const showInvoice = ref(false)
 
 
@@ -100,6 +109,11 @@ const submitInvoice = async (e) => {
     e.preventDefault()
     invoiceData.value.lineItems = lineItems.value
     invoiceData.value.invoiceTotal = invoiceTotal.value
+    const isFormCorrect = await v$.value.$validate()
+    console.log("isFormCorrect", isFormCorrect)
+    if (!isFormCorrect) {
+        return
+    }
     showInvoice.value = true
     if (props.newInvoice) {
         await createNewInvoice(invoiceData.value)
@@ -131,6 +145,9 @@ watchEffect(async () => {
     if (props.newInvoice) {
         invoiceData.invoiceNumber = nextInvoiceNumber.value
     }
+    if(!invoiceData.value.invoiceNumber){
+        invoiceData.value.invoiceNumber = nextInvoiceNumber.value
+    }
 })
 </script>
 
@@ -153,8 +170,12 @@ watchEffect(async () => {
                     data-test="invoice-client"
                     label="Client"
                     :options="userProfiles"
+                    placeholder="Select Client"
                     target-attr="full_name"
                     target-type="object"
+                    :error="v$.client.$error"
+                    :error-messages="v$.client.$silentErrors"
+
                 />
                 <TextInput
                     v-model="invoiceData.invoiceNumber"
@@ -170,12 +191,18 @@ watchEffect(async () => {
                     data-test="invoice-date"
                     label="Invoice Date"
                     type="date"
+
+                    :error="v$.invoiceDate.$error"
+                    :error-messages="v$.invoiceDate.$silentErrors"
                 />
                 <DateInput
                     v-model.date="invoiceData.dueDate"
                     data-test="invoice-due-date"
                     label="Invoice Due Date"
                     type="date"
+                    container-class="relative"
+                    :error="v$.dueDate.$error"
+                    :error-messages="v$.dueDate.$silentErrors"
                 />
             </div>
         </section>
@@ -195,6 +222,12 @@ watchEffect(async () => {
                 button-class="align-self-start"
                 @click="addLineItem"
             />
+            <p
+            v-if="v$.lineItems.$error && v$.lineItems.$silentErrors.length"
+            class="mt-1 text-xs text-red-700 dark:text-red-400"
+        >
+            {{ v$.lineItems.$silentErrors[0].$message }}
+        </p>
         </section>
         <section class="gap-4 flex-is-jb">
             <TextArea

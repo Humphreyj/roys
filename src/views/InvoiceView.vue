@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onBeforeMount } from 'vue'
+import { watchEffect, onBeforeMount } from 'vue'
 // Components
 // Routing
 import { RouterView } from 'vue-router'
@@ -19,7 +19,7 @@ onBeforeMount(async () => {
     }
 })
 
-onMounted(async () => {
+watchEffect(async () => {
     if (!nextInvoiceNumber.value) {
         await getInvoiceNumber()
     }

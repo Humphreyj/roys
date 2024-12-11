@@ -13,6 +13,9 @@ import { useAccountStore } from '@/stores/accountStore'
 import { useUserStore } from '@/stores/userStore'
 // Routing
 import { useRoute } from 'vue-router'
+// Validation
+import useValidate from '@vuelidate/core'
+import { accountRules } from '@/validation/accountValidation'
 
 // const props = defineProps({
 //     settingsData: {
@@ -25,6 +28,8 @@ const { currentAccount } = storeToRefs(useAccountStore())
 const { getAccountById, updateAccount } = useAccountStore()
 const route = useRoute()
 
+const v$ = useValidate(accountRules, currentAccount.value)
+
 const taxRates = [
     {
         label: '8.25%',
@@ -34,6 +39,11 @@ const taxRates = [
 
 const handleAccountUpdate = async (e, account) => {
     e.preventDefault()
+    const isFormCorrect = await v$.value.$validate()
+    console.log('isFormCorrect', isFormCorrect)
+    if (!isFormCorrect) {
+        return
+    }
     await updateAccount(account)
 }
 
@@ -61,6 +71,8 @@ watchEffect(async () => {
                     container-class="col-span-2"
                     data-test="company-name"
                     label="Company Name"
+                    :error="v$.companyName.$error"
+                    :error-messages="v$.companyName.$silentErrors"
                 />
                 <div
                     class="w-full gap-6 flex-col-ic-js md:flex-ic-js md:flex-row"
@@ -71,11 +83,15 @@ watchEffect(async () => {
                         label="Phone"
                         format="phone"
                         max-length="12"
+                        :error="v$.companyPhone.$error"
+                        :error-messages="v$.companyPhone.$silentErrors"
                     />
                     <TextInput
                         v-model="currentAccount.companyEmail"
                         data-test="company-email"
                         label="Email"
+                        :error="v$.companyEmail.$error"
+                        :error-messages="v$.companyEmail.$silentErrors"
                     />
                 </div>
 
@@ -89,7 +105,7 @@ watchEffect(async () => {
                         :address-data="currentAccount.companyAddress"
                     />
                 </section>
-                <section class="w-full flex-col-is-js">
+                <!-- <section class="w-full flex-col-is-js">
                     <h4
                         class="my-2 font-bold text-gray-900 dark:text-white dark:opacity-95"
                     >
@@ -110,7 +126,7 @@ watchEffect(async () => {
                             label="Last Name"
                         />
                     </div>
-                </section>
+                </section> -->
             </section>
 
             <section class="w-full md:w-1/3 flex-col-is-js">

@@ -84,13 +84,12 @@ const messages = computed(() => {
 })
 watchEffect(() => {
     let found = props.options.find(
-        (option) =>
-            option[props.targetAttr] === props.modelValue[props.targetAttr]
+        (option) => option[props.targetAttr] === props.modelValue
     )
     if (found) {
         if (props.targetType === 'object') {
+            selectedValue.value = found[props.targetAttr]
         }
-        selectedValue.value = found[props.targetAttr]
     }
 })
 

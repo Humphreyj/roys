@@ -86,6 +86,10 @@ export const useAccountStore = defineStore('accountStore', () => {
             .put(`${apiRoot.value}/account/update/${id}`, updatedAccount)
             .then((res) => {
                 currentAccount.value = res.data
+                localStorage.setItem(
+                    'accountData',
+                    JSON.stringify(currentAccount.value)
+                )
             })
             .catch((err) => {
                 console.log(err)
