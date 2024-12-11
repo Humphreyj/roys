@@ -19,13 +19,14 @@ import { useAccountStore } from '@/stores/accountStore'
 // Utils
 import { v4 as uuidv4 } from 'uuid'
 import { handleFormat } from '@/utils/formatText'
+import { parse } from 'date-fns'
 // Validation
 import useValidate from '@vuelidate/core'
 import { invoiceRules } from '@/validation/invoiceValidation'
 
 const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
-const { createNewInvoice, setSelectedInvoice, updateInvoice } =
+const { createNewInvoice, setSelectedInvoice, updateInvoice, getInvoiceNumber } =
     useInvoiceStore()
 const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal } = storeToRefs(useModalStore())
@@ -45,9 +46,10 @@ const invoiceData = ref(
     props.invoiceData ?? {
         accountId: currentAccount.value.id,
         clientId: '',
-        client: '',
+        client: 'Select Client',
         invoiceNumber: nextInvoiceNumber.value,
-        invoiceDate: new Date().toISOString().split('T')[0],
+        // invoiceDate: new Date().toISOString().split('T')[0],
+        invoiceDate: parse(new Date().toISOString().split('T')[0], 'yyyy-MM-dd', new Date()),
         dueDate: '',
         status: 'draft',
         lineItems: [],
@@ -143,6 +145,9 @@ watchEffect(async () => {
     if (props.newInvoice) {
         invoiceData.invoiceNumber = nextInvoiceNumber.value
     }
+    if(!invoiceData.value.invoiceNumber){
+        invoiceData.value.invoiceNumber = nextInvoiceNumber.value
+    }
 })
 </script>
 
@@ -165,6 +170,7 @@ watchEffect(async () => {
                     data-test="invoice-client"
                     label="Client"
                     :options="userProfiles"
+                    placeholder="Select Client"
                     target-attr="full_name"
                     target-type="object"
                     :error="v$.client.$error"
@@ -185,6 +191,7 @@ watchEffect(async () => {
                     data-test="invoice-date"
                     label="Invoice Date"
                     type="date"
+
                     :error="v$.invoiceDate.$error"
                     :error-messages="v$.invoiceDate.$silentErrors"
                 />
@@ -193,6 +200,7 @@ watchEffect(async () => {
                     data-test="invoice-due-date"
                     label="Invoice Due Date"
                     type="date"
+                    container-class="relative"
                     :error="v$.dueDate.$error"
                     :error-messages="v$.dueDate.$silentErrors"
                 />

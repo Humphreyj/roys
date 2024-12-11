@@ -103,7 +103,7 @@ watch(
         />
         <p
             v-if="error && errorMessages.length"
-            class="mt-1 text-xs text-red-700 dark:text-red-400"
+            class="absolute bottom-0 text-xs text-red-700 translate-y-5 dark:text-red-400"
         >
             {{ errorMessages[0].$message }}
         </p>
