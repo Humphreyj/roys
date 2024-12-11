@@ -41,6 +41,14 @@ const props = defineProps({
         type: String,
         default: 'text',
     },
+    error: {
+        type: Boolean,
+        default: false,
+    },
+    errorMessages: {
+        type: Array,
+        default: () => [],
+    },
 })
 const emit = defineEmits(['update:modelValue'])
 const classes = ref(getStyles(props, 'textInput'))
@@ -93,5 +101,11 @@ watch(
             :class="classes.inputClass"
             @input="onInput"
         />
+        <p
+            v-if="error && errorMessages.length"
+            class="mt-1 text-xs text-red-700 dark:text-red-400"
+        >
+            {{ errorMessages[0].$message }}
+        </p>
     </div>
 </template>

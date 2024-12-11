@@ -46,6 +46,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    error: {
+        type: Boolean,
+        default: false,
+    },
+    errorMessages: {
+        type: Array,
+        default: () => [],
+    },
 })
 const emit = defineEmits(['update:modelValue'])
 const classes = ref(getStyles(props, 'textInput'))
@@ -87,5 +95,11 @@ watch(inputValue, (newVal) => {
             :disabled="disabled"
             @input="($event) => handleInput($event, format)"
         />
+        <p
+            v-if="error && errorMessages.length"
+            class="mt-1 text-xs text-red-700 dark:text-red-400"
+        >
+            {{ errorMessages[0].$message }}
+        </p>
     </div>
 </template>
