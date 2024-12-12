@@ -65,6 +65,14 @@ const handleSubmit = async (e) => {
                 :error-messages="v$.email.$silentErrors"
             />
             <TextInput
+                v-model="userData.password"
+                data-test="user-password"
+                label="Password"
+                type="password"
+                :error="v$.password.$error"
+                :error-messages="v$.password.$silentErrors"
+            />
+            <TextInput
                 v-model="userData.phone"
                 data-test="user-phone"
                 label="Phone Number"

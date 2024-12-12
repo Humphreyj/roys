@@ -62,7 +62,7 @@ export const useProfileStore = defineStore('profiles', () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         newUser.accountId = currentAccount.value.id
         axios
-            .post(`${apiRoot.value}/profile/create`, newUser)
+            .post(`${apiRoot.value}/profile/create-client`, newUser)
             .then((res) => {
                 userProfiles.value.unshift(res.data)
             })

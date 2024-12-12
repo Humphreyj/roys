@@ -48,6 +48,7 @@ export const useAuthStore = defineStore('authStore', (email) => {
                     'accountData',
                     JSON.stringify(currentAccount.value)
                 )
+                router.push({ name: 'Dashboard' })
             })
             .catch((err) => {
                 console.log(err)
