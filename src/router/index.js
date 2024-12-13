@@ -2,6 +2,9 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+// Pinia
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 const routes = [
     {
@@ -40,6 +43,7 @@ const routes = [
             transition: 'fade',
             order: 0,
             viewLoaded: false,
+            requiresAuth: true,
         },
     },
     {
@@ -50,6 +54,7 @@ const routes = [
             transition: 'fade',
             order: 1,
             viewLoaded: false,
+            requiresAuth: true,
         },
         children: [
             {
@@ -77,39 +82,12 @@ const routes = [
         name: 'send invoice',
     },
     {
-        path: '/orders',
-        component: () => import('@/views/OrdersView.vue'),
-        name: 'Orders',
-        children: [
-            {
-                path: '',
-                name: 'Manage Orders',
-                component: () => import('@/demo/orders/OrdersList.vue'),
-            },
-            {
-                path: 'details/:id',
-                name: 'Order Details',
-                component: () => import('@/demo/orders/OrderDetails.vue'),
-            },
-        ],
-    },
-    {
-        path: '/settings',
-        component: () => import('@/views/SettingsView.vue'),
-        name: 'Settings',
-        children: [
-            {
-                path: 'admin',
-                name: 'Admin Settings',
-                component: () => import('@/components/user/SettingsForm.vue'),
-            },
-        ],
-        meta: {},
-    },
-    {
         path: '/profiles',
         component: () => import('@/views/ProfilesView.vue'),
         name: 'Profiles',
+        meta: {
+            requiresAuth: true,
+        },
         children: [
             {
                 path: '',
@@ -143,23 +121,42 @@ const router = createRouter({
     routes,
 })
 
-router.afterEach((to, from) => {
-    if (!from.name) {
-        // If there is no name, the page has loaded for the first time.
-        // return nothing so default transition plays.
-        to.meta.viewLoaded = true
-        return
-    }
-    from.meta.viewLoaded = false
+router.beforeEach(async (to, from, next) => {
+    const { isAuthenticated } = storeToRefs(useAuthStore())
 
-    let transition
-    if (to.meta.order > from.meta.order) {
-        transition = 'slide-left'
+    if (to.meta.requiresAuth && !isAuthenticated.value) {
+        // If the route requires authentication and the user is not authenticated
+        // Store the target route in local storage
+
+        localStorage.setItem('targetRoute', to.fullPath)
+        // Redirect the user to the sign-in page
+        next('/')
+    } else if (to.name === 'Log In' && isAuthenticated.value) {
+        // If the user is already authenticated and the target route is 'Login', redirect to 'Search'
+        next({ name: 'Dashboard' })
     } else {
-        transition = 'slide-right'
+        next() // go to the next route
     }
-    to.meta.viewLoaded = true
-    to.meta.transition = transition
+})
+
+router.afterEach((to, from) => {
+    // if (!from.name) {
+    //     // If there is no name, the page has loaded for the first time.
+    //     // return nothing so default transition plays.
+    //     to.meta.viewLoaded = true
+    //     return
+    // }
+    // from.meta.viewLoaded = false
+
+    // let transition
+    // if (to.meta.order > from.meta.order) {
+    //     transition = 'slide-left'
+    // } else {
+    //     transition = 'slide-right'
+    // }
+    // to.meta.viewLoaded = true
+    // to.meta.transition = transition
+    window.scrollTo(0, 0)
 })
 
 router.onError((error) => {

@@ -7,7 +7,8 @@ import App from './App.vue'
 // Pinia
 import { useRuntimeStore } from './stores/runtimeStore'
 import { storeToRefs } from 'pinia'
-import { useAccountStore } from '@/stores/accountStore'
+
+import { useAuthStore } from '@/stores/authStore'
 
 const initializeApp = async () => {
     const pinia = createPinia()
@@ -15,12 +16,11 @@ const initializeApp = async () => {
 
     // Set config vars after app is initialized.
     const { apiRoot } = storeToRefs(useRuntimeStore())
-    const { checkStoredAccount } = useAccountStore()
-    // const { getUserSettings } = useSettingsStore()
-    console.log(import.meta.env.VITE_API_ROOT)
+
+    const { refreshAccessToken } = useAuthStore()
+
     apiRoot.value = import.meta.env.VITE_API_ROOT
-    checkStoredAccount()
-    // await getUserSettings()
+    await refreshAccessToken()
 }
 
 initializeApp()

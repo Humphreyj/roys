@@ -1,4 +1,5 @@
 <script setup>
+import { watchEffect } from 'vue'
 // Components
 import MetricCard from '@/components/cards/MetricCard.vue'
 import Button from '@/components/UI/Button.vue'
@@ -12,6 +13,12 @@ import { handleFormat } from '@/utils/formatText'
 // const props = defineProps({})
 // const emit = defineEmits()
 const { nextInvoiceNumber, totalInvoiced } = storeToRefs(useInvoiceStore())
+const { getInvoiceNumber } = useInvoiceStore()
+
+watchEffect(async () => {
+    if (!nextInvoiceNumber.value) return
+    await getInvoiceNumber()
+})
 </script>
 
 <template>

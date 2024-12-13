@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, onBeforeMount } from 'vue'
+import { watchEffect } from 'vue'
 // Components
 // Routing
 import { RouterView } from 'vue-router'
@@ -13,7 +13,7 @@ import { useInvoiceStore } from '@/stores/invoiceStore'
 
 const { invoiceList, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { getInvoiceList, getInvoiceNumber } = useInvoiceStore()
-onBeforeMount(async () => {
+watchEffect(async () => {
     if (!invoiceList.value.length) {
         await getInvoiceList()
     }

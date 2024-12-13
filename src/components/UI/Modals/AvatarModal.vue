@@ -30,12 +30,10 @@ const props = defineProps({
 const classes = getStyles(props, 'notificationModal')
 
 const handleNav = async (content) => {
-    console.log(content)
     if (content === 'Account') {
         router.push(`/account/${currentUser.value.accountId}`)
     } else if (content === 'Logout') {
         await logout()
-        router.push({ name: 'Log In' })
     }
 }
 </script>
