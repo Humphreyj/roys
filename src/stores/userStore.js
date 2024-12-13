@@ -6,12 +6,12 @@ import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 import { useInvoiceStore } from './invoiceStore'
 import { useAccountStore } from './accountStore'
+import { useProfileStore } from './profileStore'
 
 export const useUserStore = defineStore('userStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
-    const { getInvoiceNumber } = useInvoiceStore()
+    const { getInvoiceNumber, getInvoiceList } = useInvoiceStore()
     const { getAccountById } = useAccountStore()
-    const { currentAccount } = storeToRefs(useAccountStore())
     const currentUser = ref({})
     const getCurrentUser = async (id) => {
         const { apiRoot } = storeToRefs(useRuntimeStore())
@@ -22,6 +22,7 @@ export const useUserStore = defineStore('userStore', () => {
                 await getAccountById(res.data.accountId)
 
                 await getInvoiceNumber()
+                await getInvoiceList()
             })
             .catch((err) => {
                 console.log(err)
