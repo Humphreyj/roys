@@ -10,6 +10,7 @@ import { useUserStore } from './userStore'
 // Routing
 import router from '@/router'
 // Utils
+import { notify } from 'notiwind'
 
 const authData = ref({
     email: '',
@@ -102,19 +103,23 @@ export const useAuthStore = defineStore('authStore', (email) => {
                 router.push({ name: 'Dashboard' })
             })
             .catch((err) => {
-                console.log(err)
+                notify(
+                    {
+                        group: 'error',
+                        title: 'Error',
+                        text: err.response.data,
+                    },
+                    4000
+                ) // 4s
             })
     }
 
     const logout = async (id) => {
         const { currentUser } = storeToRefs(useUserStore())
-
         axios
             .post(`${apiRoot.value}/auth/logout`, { id: currentUser.value.id })
             .then(async (res) => {
                 clearAccessTokens()
-
-                router.push({ name: 'Log In' })
             })
             .catch((err) => {
                 console.log(err)

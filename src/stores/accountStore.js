@@ -9,6 +9,8 @@ import { useUserStore } from './userStore'
 import router from '@/router'
 import axios from 'axios'
 // Utils
+import { notify } from 'notiwind'
+import { useNotify } from '@/utils/notificationUtils'
 
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
@@ -86,13 +88,22 @@ export const useAccountStore = defineStore('accountStore', () => {
             .put(`${apiRoot.value}/account/update/${id}`, updatedAccount)
             .then((res) => {
                 currentAccount.value = res.data
-                localStorage.setItem(
-                    'accountData',
-                    JSON.stringify(currentAccount.value)
+
+                useNotify(
+                    'success',
+                    'Account Updated',
+                    'Account details have been updated.',
+                    4000
                 )
             })
             .catch((err) => {
                 console.log(err)
+                useNotify(
+                    'error',
+                    'Error',
+                    'There was an error updating the account.',
+                    4000
+                ) // 4s
             })
     }
 

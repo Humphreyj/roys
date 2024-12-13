@@ -33,6 +33,7 @@ const handleNav = async (content) => {
     if (content === 'Account') {
         router.push(`/account/${currentUser.value.accountId}`)
     } else if (content === 'Logout') {
+        router.replace({ name: 'Log In' })
         await logout()
     }
 }
