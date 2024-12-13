@@ -5,10 +5,13 @@ import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 import { useInvoiceStore } from './invoiceStore'
+import { useAccountStore } from './accountStore'
 
 export const useUserStore = defineStore('userStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
     const { getInvoiceNumber } = useInvoiceStore()
+    const { getAccountById } = useAccountStore()
+    const { currentAccount } = storeToRefs(useAccountStore())
     const currentUser = ref({})
     const getCurrentUser = async (id) => {
         const { apiRoot } = storeToRefs(useRuntimeStore())
@@ -16,6 +19,8 @@ export const useUserStore = defineStore('userStore', () => {
             .get(`${apiRoot.value}/profile/${id}`)
             .then(async (res) => {
                 currentUser.value = res.data
+                await getAccountById(res.data.accountId)
+
                 await getInvoiceNumber()
             })
             .catch((err) => {
