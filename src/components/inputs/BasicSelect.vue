@@ -73,7 +73,6 @@ const setSelected = (value) => {
         emit('update:modelValue', value[props.targetAttr])
     }
     showOptions.value = false
-    console.log('selectedValue', selectedValue.value)
 }
 
 const messages = computed(() => {

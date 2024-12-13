@@ -9,7 +9,6 @@ import { useUserStore } from './userStore'
 import router from '@/router'
 import axios from 'axios'
 // Utils
-import { notify } from 'notiwind'
 import { useNotify } from '@/utils/notificationUtils'
 
 export const useAccountStore = defineStore('accountStore', () => {
@@ -22,16 +21,6 @@ export const useAccountStore = defineStore('accountStore', () => {
         companyPhone: '',
         companyEmail: '',
     })
-
-    const checkStoredAccount = async () => {
-        const { getCurrentUser } = useUserStore()
-        const { currentAccount } = storeToRefs(useAccountStore())
-        let accountData = localStorage.getItem('accountData')
-        if (accountData) {
-            currentAccount.value = JSON.parse(accountData)
-            await getCurrentUser(currentAccount.value.primaryContact)
-        }
-    }
 
     const getAccountById = async (id) => {
         axios
@@ -71,6 +60,7 @@ export const useAccountStore = defineStore('accountStore', () => {
                 currentAccount.value = res.data
                 currentUser.value.accountId = currentAccount.value.id
                 await updateUserProfile(currentUser.value)
+                useNotify('success', 'Success', 'Account Created.', 4000)
 
                 router.push({
                     name: 'Account Details',
@@ -112,7 +102,6 @@ export const useAccountStore = defineStore('accountStore', () => {
         createAccount,
         getAccountById,
         updateAccount,
-        checkStoredAccount,
     }
     const values = {
         currentAccount,

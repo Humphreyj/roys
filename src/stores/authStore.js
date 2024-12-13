@@ -98,7 +98,7 @@ export const useAuthStore = defineStore('authStore', (email) => {
                     jwtDecode(res.data.accessToken).exp * 1000
                 )
                 // jwtDecode(res.data.accessToken)
-                await getAccountById(currentUser.value.accountId)
+                await getAccountById(res.data.accountId)
 
                 router.push({ name: 'Dashboard' })
             })
@@ -114,7 +114,7 @@ export const useAuthStore = defineStore('authStore', (email) => {
             })
     }
 
-    const logout = async (id) => {
+    const logout = (id) => {
         const { currentUser } = storeToRefs(useUserStore())
         axios
             .post(`${apiRoot.value}/auth/logout`, { id: currentUser.value.id })

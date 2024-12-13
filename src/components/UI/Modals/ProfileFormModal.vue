@@ -1,12 +1,21 @@
 <script setup>
 import { ref } from 'vue'
 // Components
-
 import Modal from '../Modal.vue'
 import NewProfileForm from '@/components/forms/NewProfileForm.vue'
+// Pinia
+import { storeToRefs } from 'pinia'
+import { useModalStore } from '@/stores/modalStore'
+import { useProfileStore } from '@/stores/profileStore'
+import { useAccountStore } from '@/stores/accountStore'
 // const props = defineProps({})
 // const emit = defineEmits()
+
+const { profileFormModal } = storeToRefs(useModalStore())
+const { createNewProfile } = useProfileStore()
+const { currentAccount } = storeToRefs(useAccountStore())
 const newUser = ref({
+    accountId: currentAccount.value.id,
     first_name: '',
     last_name: '',
     address: {
@@ -20,19 +29,9 @@ const newUser = ref({
     phone: '',
     role: 'client',
 })
-// Pinia
-import { storeToRefs } from 'pinia'
-import { useModalStore } from '@/stores/modalStore'
-import { useProfileStore } from '@/stores/profileStore'
-import { useAccountStore } from '@/stores/accountStore'
 
-const { profileFormModal } = storeToRefs(useModalStore())
-const { createNewProfile } = useProfileStore()
-const { currentAccount } = storeToRefs(useAccountStore())
-
-const handleCreateProfile = (newProfileData) => {
-    newProfileData.accountId = currentAccount.value.id
-    createNewProfile(newProfileData)
+const handleCreateProfile = async () => {
+    await createNewProfile(newUser.value)
     profileFormModal.value.hide()
     newUser.value = {
         first_name: '',

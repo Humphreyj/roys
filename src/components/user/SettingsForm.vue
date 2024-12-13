@@ -1,16 +1,14 @@
 <script setup>
-import { watchEffect } from 'vue'
+import { watch } from 'vue'
 // Components
 import AddressFormSection from '../UI/AddressFormSection.vue'
 import Button from '../UI/Button.vue'
 import SearchableSelect from '../inputs/SearchableSelect.vue'
-import Card from '../UI/Card.vue'
-// import CompanySettingsForm from '../forms/CompanySettingsForm.vue'
 import TextInput from '@/components/inputs/TextInput.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useAccountStore } from '@/stores/accountStore'
-import { useUserStore } from '@/stores/userStore'
+
 // Routing
 import { useRoute } from 'vue-router'
 // Validation
@@ -23,12 +21,11 @@ import { accountRules } from '@/validation/accountValidation'
 //     },
 // })
 
-const { currentUser } = storeToRefs(useUserStore())
 const { currentAccount } = storeToRefs(useAccountStore())
 const { getAccountById, updateAccount } = useAccountStore()
 const route = useRoute()
 
-const v$ = useValidate(accountRules, currentAccount.value)
+const v$ = useValidate(accountRules, currentAccount)
 
 const taxRates = [
     {
@@ -40,15 +37,14 @@ const taxRates = [
 const handleAccountUpdate = async (e, account) => {
     e.preventDefault()
     const isFormCorrect = await v$.value.$validate()
-    console.log('isFormCorrect', isFormCorrect)
     if (!isFormCorrect) {
         return
     }
     await updateAccount(account)
 }
 
-watchEffect(async () => {
-    if (!currentAccount.value.id) {
+watch(currentAccount, async () => {
+    if (!currentAccount.value) {
         await getAccountById(route.params.id)
     }
 })
@@ -58,7 +54,7 @@ watchEffect(async () => {
 
 <template>
     <main class="w-full gap-8 p-2 flex-col-is-js md:flex-is-js md:flex-row">
-        <div v-if="currentAccount" class="w-full">
+        <div v-if="currentAccount.id" class="w-full">
             <section class="w-full md:w-1/3 flex-col-is-js">
                 <h4
                     class="my-2 text-lg font-bold text-gray-900 border-b border-gray-900 dark:text-white dark:opacity-95"

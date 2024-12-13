@@ -10,10 +10,11 @@ import { useProfileStore } from './profileStore'
 
 export const useUserStore = defineStore('userStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
-    const { getInvoiceNumber, getInvoiceList } = useInvoiceStore()
-    const { getAccountById } = useAccountStore()
+
     const currentUser = ref({})
     const getCurrentUser = async (id) => {
+        const { getInvoiceNumber, getInvoiceList } = useInvoiceStore()
+        const { getAccountById } = useAccountStore()
         const { apiRoot } = storeToRefs(useRuntimeStore())
         axios
             .get(`${apiRoot.value}/profile/${id}`)
