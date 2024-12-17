@@ -16,8 +16,9 @@ const { nextInvoiceNumber, totalInvoiced } = storeToRefs(useInvoiceStore())
 const { getInvoiceNumber } = useInvoiceStore()
 
 watchEffect(async () => {
-    if (!nextInvoiceNumber.value) return
-    await getInvoiceNumber()
+    if (!nextInvoiceNumber.value || !totalInvoiced.value) {
+        await getInvoiceNumber()
+    }
 })
 </script>
 

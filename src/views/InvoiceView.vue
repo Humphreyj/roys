@@ -14,7 +14,7 @@ import { useInvoiceStore } from '@/stores/invoiceStore'
 const { invoiceList, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { getInvoiceList, getInvoiceNumber } = useInvoiceStore()
 watchEffect(async () => {
-    if (!invoiceList.value.length) {
+    if (!invoiceList.value) {
         await getInvoiceList()
     }
 })

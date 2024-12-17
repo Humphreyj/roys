@@ -21,7 +21,7 @@ const goBack = () => {
 watch(
     () => userProfiles.value,
     async () => {
-        if (!userProfiles.value.length) {
+        if (!userProfiles.value) {
             await getProfileList()
         }
     }
