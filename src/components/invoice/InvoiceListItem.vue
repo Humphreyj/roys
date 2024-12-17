@@ -46,7 +46,7 @@ const emit = defineEmits(['setSelectedInvoice'])
         </RouterLink>
     </section>
     <section
-        class="grid justify-between w-full grid-cols-2 gap-4 p-2 shadow dark:shadow-slate-600 dark:shadow-sm"
+        class="grid justify-between w-full grid-cols-2 gap-4 p-2 shadow md:hidden dark:shadow-slate-600 dark:shadow-sm"
     >
         <div class="gap-2 cursor-pointer flex-col-is-js">
             <p class="font-semibold">Invoice</p>
