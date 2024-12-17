@@ -8,12 +8,19 @@ import { useAccountStore } from '@/stores/accountStore'
 // const props = defineProps({})
 // const emit = defineEmits()
 
-const { currentAccount } = storeToRefs(useAccountStore())
+const { currentAccount, editingCurrentAccount } = storeToRefs(useAccountStore())
+const toggleAccountEditing = () => {
+    editingCurrentAccount.value = !editingCurrentAccount.value
+}
 </script>
 
 <template>
     <div>
-        <CompanyDetailsCard :currentAccount="currentAccount" />
-        <SettingsForm />
+        <SettingsForm v-if="editingCurrentAccount" />
+        <CompanyDetailsCard
+            v-else
+            :currentAccount="currentAccount"
+            @toggle-editing="toggleAccountEditing"
+        />
     </div>
 </template>

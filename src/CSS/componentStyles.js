@@ -51,8 +51,7 @@ export const componentStyles = {
     },
     textBlock: {
         containerClass: 'flex-col-is-js w-full',
-        labelClass:
-            'font-bold primary-text opacity-80 text-lg text-center dark:text-white',
+        labelClass: 'font-semibold primary-text text-center dark:text-white',
         contentClass: 'font-bold dark:text-white text-xl',
     },
 
