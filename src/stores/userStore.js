@@ -15,6 +15,7 @@ export const useUserStore = defineStore('userStore', () => {
     const getCurrentUser = async (id) => {
         const { getInvoiceNumber, getInvoiceList } = useInvoiceStore()
         const { getAccountById } = useAccountStore()
+        const { currentAccount } = storeToRefs(useAccountStore())
         const { apiRoot } = storeToRefs(useRuntimeStore())
         axiosAuth
             .get(`${apiRoot.value}/profile/${id}`)
