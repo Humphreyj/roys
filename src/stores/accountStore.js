@@ -23,6 +23,8 @@ export const useAccountStore = defineStore('accountStore', () => {
         companyEmail: '',
     })
 
+    const editingCurrentAccount = ref(false)
+
     const getAccountById = async (id) => {
         axiosAuth
             .get(`${apiRoot.value}/account/${id}`)
@@ -86,6 +88,7 @@ export const useAccountStore = defineStore('accountStore', () => {
                     'Account details have been updated.',
                     4000
                 )
+                editingCurrentAccount.value = false
             })
             .catch((err) => {
                 console.log(err)
@@ -106,6 +109,7 @@ export const useAccountStore = defineStore('accountStore', () => {
     }
     const values = {
         currentAccount,
+        editingCurrentAccount,
     }
     return { ...actions, ...values }
 })

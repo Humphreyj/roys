@@ -21,6 +21,8 @@ describe('Account Flow', () => {
         cy.getElement('user-phone').type(faker.phone.number())
         cy.getElement('profile-submit').click()
 
+        cy.getElement('edit-account').click()
+
         cy.getElement('company-name').type(businessName)
         cy.getElement('company-phone').type(faker.phone.number())
         cy.getElement('company-email').type(businessEmail)

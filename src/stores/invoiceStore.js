@@ -29,6 +29,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     const getInvoiceNumber = async () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         const accountId = currentAccount.value.id
+        if (!accountId) return
         axios
             .get(`${apiRoot.value}/settings/${accountId}`)
             .then((res) => {
@@ -43,7 +44,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     const getInvoiceList = async () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         const accountId = currentAccount.value.id
-
+        if (!accountId) return
         axios
             .get(`${apiRoot.value}/invoice/list/${accountId}`)
             .then((res) => {

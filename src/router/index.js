@@ -31,7 +31,7 @@ const routes = [
             {
                 path: ':id',
                 name: 'Account Details',
-                component: () => import('@/components/user/SettingsForm.vue'),
+                component: () => import('@/components/user/AccountPage.vue'),
             },
         ],
     },
