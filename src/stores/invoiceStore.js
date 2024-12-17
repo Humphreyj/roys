@@ -8,8 +8,8 @@ import { useAccountStore } from './accountStore'
 import { useProfileStore } from './profileStore'
 // Routing
 import router from '@/router'
-
-// Mock Data
+// Utils
+import { useNotify } from '@/utils/notificationUtils'
 
 export const useInvoiceStore = defineStore('invoiceStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
@@ -61,6 +61,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
                 selectedInvoice.value = res.data
             })
             .catch((err) => {
+                useNotify('error', 'Error', err.response.data, 3000)
                 console.log(err)
             })
     }
@@ -75,6 +76,12 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             axios
                 .post(`${apiRoot.value}/invoice/create`, invoiceData)
                 .then((res) => {
+                    useNotify(
+                        'success',
+                        'Success',
+                        `Invoice created for ${invoiceData.client.full_name}`,
+                        3000
+                    )
                     selectedInvoice.value = res.data
                     invoiceList.value.push(res.data)
 
@@ -85,6 +92,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
                 })
                 .catch((err) => {
                     console.log(err)
+                    useNotify('error', 'Error', err.response.data, 3000)
                 })
         } catch (error) {
             console.log('Pre-request error creating invoice ', error)
@@ -98,11 +106,13 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         }
         axios
             .put(`${apiRoot.value}/invoice/update`, body)
-            .then((res) => {
-                console.log(res.data)
+            .then(async (res) => {
+                useNotify('success', 'Success', 'Invoice updated', 3000)
+                await getInvoiceList()
             })
             .catch((err) => {
                 console.log(err)
+                useNotify('error', 'Error', err.response.data, 3000)
             })
     }
 
@@ -119,6 +129,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             })
             .catch((err) => {
                 console.log(err)
+                useNotify('error', 'Error', err.response.data, 3000)
             })
     }
 

@@ -17,6 +17,7 @@ describe('Account Flow', () => {
         cy.contains(accountState).click()
         cy.getElement('address-zip').type(faker.location.zipCode())
         cy.getElement('user-email').type(userEmail)
+        cy.getElement('user-password').type('p@55word')
         cy.getElement('user-phone').type(faker.phone.number())
         cy.getElement('profile-submit').click()
 

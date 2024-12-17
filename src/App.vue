@@ -1,10 +1,11 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
+// Components
 import Sidedrawer from '@/components/UI/Sidedrawer.vue'
 import AppHeader from '@/components/UI/AppHeader.vue'
 import ModalContainer from '@/components/UI/ModalContainer.vue'
-
+import NotificationsGroup from './components/Notifications/NotificationsGroup.vue'
 const route = useRoute()
 
 const routeNames = ['send invoice', 'Log In', 'Sign Up']
@@ -20,6 +21,7 @@ const showHeader = computed(() => !routeNames.includes(route.name))
 
         <section class="w-full overflow-y-scroll">
             <AppHeader v-if="showHeader" />
+            <NotificationsGroup />
             <RouterView v-slot="{ Component, route }">
                 <!-- Use a custom transition or fallback to `fade` -->
                 <!-- <transition :name="route.meta.transition || 'fade'"> -->

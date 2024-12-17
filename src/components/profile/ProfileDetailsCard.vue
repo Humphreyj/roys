@@ -42,6 +42,7 @@ const emit = defineEmits(['toggle-editing'])
                 content-class="my-2 text-2xl"
             />
             <TextBlock
+                v-if="user.address.address_line_1"
                 label="Address"
                 :text-content="handleFormat(user.address, 'address')"
                 container-class="flex-col-ic-jc"

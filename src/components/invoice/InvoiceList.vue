@@ -45,7 +45,7 @@ const handleInvoicePreview = (invoice) => {
                 <!-- </RouterLink> -->
             </header>
             <div class="w-full gap-2 py-3 flex-col-ic-js">
-                <thead
+                <section
                     class="grid justify-between w-full grid-cols-6 gap-4 p-2 font-semibold shadow dark:shadow-slate-600 dark:shadow-sm"
                 >
                     <p>Invoice</p>
@@ -53,7 +53,7 @@ const handleInvoicePreview = (invoice) => {
                     <p>Due Date</p>
                     <p>Total</p>
                     <p>Status</p>
-                </thead>
+                </section>
                 <section
                     v-for="invoice in invoiceList"
                     :key="invoice.id"

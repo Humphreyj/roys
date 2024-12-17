@@ -29,7 +29,7 @@ const { userProfiles } = storeToRefs(useProfileStore())
 const { createNewInvoice, setSelectedInvoice, updateInvoice, getInvoiceNumber } =
     useInvoiceStore()
 const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
-const { invoicePreviewModal } = storeToRefs(useModalStore())
+const { invoicePreviewModal, profileFormModal } = storeToRefs(useModalStore())
 const { currentAccount } = storeToRefs(useAccountStore())
 
 const props = defineProps({
@@ -165,9 +165,12 @@ watchEffect(async () => {
             <div
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
+            <div class="w-full gap-2 flex-ic-js">
+
                 <BasicSelect
                     v-model="invoiceData.client"
                     data-test="invoice-client"
+                    container-class="w-2/3"
                     label="Client"
                     :options="userProfiles"
                     placeholder="Select Client"
@@ -177,6 +180,15 @@ watchEffect(async () => {
                     :error-messages="v$.client.$silentErrors"
 
                 />
+                <!-- <Button
+                    text="New Client"
+                    button-class="text-xs w-max"
+                    data-test="create-client"
+                    @click="profileFormModal.show"
+                /> -->
+
+
+            </div>
                 <TextInput
                     v-model="invoiceData.invoiceNumber"
                     data-test="new-invoice-number"

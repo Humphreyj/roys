@@ -9,6 +9,7 @@ import { useUserStore } from './userStore'
 import router from '@/router'
 import axios from 'axios'
 // Utils
+import { useNotify } from '@/utils/notificationUtils'
 
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
@@ -20,16 +21,6 @@ export const useAccountStore = defineStore('accountStore', () => {
         companyPhone: '',
         companyEmail: '',
     })
-
-    const checkStoredAccount = async () => {
-        const { getCurrentUser } = useUserStore()
-        const { currentAccount } = storeToRefs(useAccountStore())
-        let accountData = localStorage.getItem('accountData')
-        if (accountData) {
-            currentAccount.value = JSON.parse(accountData)
-            await getCurrentUser(currentAccount.value.primaryContact)
-        }
-    }
 
     const getAccountById = async (id) => {
         axios
@@ -69,6 +60,7 @@ export const useAccountStore = defineStore('accountStore', () => {
                 currentAccount.value = res.data
                 currentUser.value.accountId = currentAccount.value.id
                 await updateUserProfile(currentUser.value)
+                useNotify('success', 'Success', 'Account Created.', 4000)
 
                 router.push({
                     name: 'Account Details',
@@ -86,13 +78,22 @@ export const useAccountStore = defineStore('accountStore', () => {
             .put(`${apiRoot.value}/account/update/${id}`, updatedAccount)
             .then((res) => {
                 currentAccount.value = res.data
-                localStorage.setItem(
-                    'accountData',
-                    JSON.stringify(currentAccount.value)
+
+                useNotify(
+                    'success',
+                    'Account Updated',
+                    'Account details have been updated.',
+                    4000
                 )
             })
             .catch((err) => {
                 console.log(err)
+                useNotify(
+                    'error',
+                    'Error',
+                    'There was an error updating the account.',
+                    4000
+                ) // 4s
             })
     }
 
@@ -101,7 +102,6 @@ export const useAccountStore = defineStore('accountStore', () => {
         createAccount,
         getAccountById,
         updateAccount,
-        checkStoredAccount,
     }
     const values = {
         currentAccount,

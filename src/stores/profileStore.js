@@ -6,11 +6,12 @@ import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 import { useAccountStore } from './accountStore'
 // Utils
+import { useNotify } from '@/utils/notificationUtils'
 
 export const useProfileStore = defineStore('profiles', () => {
     const selectedUser = ref(null)
     const userProfiles = ref([])
-    const currentUser = ref('c847868d-dffb-4d1e-a385-74dd578c46a7')
+    const currentUser = ref(null)
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
     const handleUserSelect = (user) => {
@@ -65,25 +66,43 @@ export const useProfileStore = defineStore('profiles', () => {
             .post(`${apiRoot.value}/profile/create-client`, newUser)
             .then((res) => {
                 userProfiles.value.unshift(res.data)
+                useNotify(
+                    'success',
+                    'Profile Created',
+                    'The profile was created successfully',
+                    3000
+                )
             })
             .catch((err) => {
-                console.log(err)
+                useNotify('error', 'Error', err.response.data, 3000)
             })
     }
 
     const updateSelectedProfile = async (selectedProfile) => {
         axios
             .put(`${apiRoot.value}/profile/update`, selectedProfile)
-            .then((res) => {})
+            .then(() => {
+                useNotify(
+                    'success',
+                    'Success!',
+                    'The profile was updated successfully',
+                    3000
+                )
+            })
             .catch((err) => {
-                console.log(err)
+                useNotify('error', 'Error', err.response.data, 3000)
             })
     }
 
     const deleteSelectedProfile = async (id) => {
         axios
             .delete(`${apiRoot.value}/profile/delete/${id}`)
-            .then((res) => {})
+            .then((res) => {
+                userProfiles.value = userProfiles.value.filter(
+                    (profile) => profile.id !== id
+                )
+                useNotify('success', 'Success!', 'Profile deleted.', 3000)
+            })
             .catch((err) => {
                 console.log(err)
             })
