@@ -114,12 +114,13 @@ export const useAuthStore = defineStore('authStore', (email) => {
             })
     }
 
-    const logout = (id) => {
+    const logout = () => {
         const { currentUser } = storeToRefs(useUserStore())
         axios
             .post(`${apiRoot.value}/auth/logout`, { id: currentUser.value.id })
             .then(async (res) => {
                 clearAccessTokens()
+                window.location.reload()
             })
             .catch((err) => {
                 console.log(err)

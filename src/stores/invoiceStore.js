@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import axiosAuth from '@/utils/axiosAuth'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
@@ -29,7 +30,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     const getInvoiceNumber = async () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         const accountId = currentAccount.value.id
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/settings/${accountId}`)
             .then((res) => {
                 nextInvoiceNumber.value = res.data.nextInvoiceNumber
