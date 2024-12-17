@@ -50,6 +50,7 @@ export const useAuthStore = defineStore('authStore', (email) => {
                 const decodedRefreshToken = jwtDecode(refreshToken.value)
                 const currentTime = Math.floor(Date.now() / 1000)
                 if (currentTime > decodedRefreshToken.exp) {
+                    console.log('Refresh token expired')
                     logout()
                     return false
                 } else {
@@ -66,6 +67,7 @@ export const useAuthStore = defineStore('authStore', (email) => {
         if (!refreshToken.value && !accessToken.value) {
             return
         }
+
         axios
             .post(`${apiRoot.value}/auth/refresh-token`, {
                 refreshToken: refreshToken.value,
@@ -114,12 +116,13 @@ export const useAuthStore = defineStore('authStore', (email) => {
             })
     }
 
-    const logout = (id) => {
+    const logout = () => {
         const { currentUser } = storeToRefs(useUserStore())
         axios
             .post(`${apiRoot.value}/auth/logout`, { id: currentUser.value.id })
             .then(async (res) => {
                 clearAccessTokens()
+                window.location.reload()
             })
             .catch((err) => {
                 console.log(err)

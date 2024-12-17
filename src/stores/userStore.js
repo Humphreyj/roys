@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axiosAuth from '@/utils/axiosAuth'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
@@ -16,7 +16,7 @@ export const useUserStore = defineStore('userStore', () => {
         const { getInvoiceNumber, getInvoiceList } = useInvoiceStore()
         const { getAccountById } = useAccountStore()
         const { apiRoot } = storeToRefs(useRuntimeStore())
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/profile/${id}`)
             .then(async (res) => {
                 currentUser.value = res.data
@@ -31,7 +31,7 @@ export const useUserStore = defineStore('userStore', () => {
     }
 
     const updateUserProfile = async (selectedProfile) => {
-        axios
+        axiosAuth
             .put(`${apiRoot.value}/profile/update`, selectedProfile)
             .then((res) => {})
             .catch((err) => {
