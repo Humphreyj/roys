@@ -13,22 +13,21 @@ export const useUserStore = defineStore('userStore', () => {
 
     const currentUser = ref({})
     const getCurrentUser = async (id) => {
-        const { getInvoiceNumber, getInvoiceList } = useInvoiceStore()
+        const { getInvoiceList } = useInvoiceStore()
         const { getAccountById } = useAccountStore()
-        const { currentAccount } = storeToRefs(useAccountStore())
+
         const { apiRoot } = storeToRefs(useRuntimeStore())
         axiosAuth
             .get(`${apiRoot.value}/profile/${id}`)
             .then(async (res) => {
                 currentUser.value = res.data
                 await getAccountById(res.data.accountId)
-
-                await getInvoiceNumber()
                 await getInvoiceList()
             })
             .catch((err) => {
                 console.log(err)
             })
+            .finally(async () => {})
     }
 
     const updateUserProfile = async (selectedProfile) => {

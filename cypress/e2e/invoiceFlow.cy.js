@@ -5,31 +5,32 @@ describe('Invoice Flow', () => {
         let lineItems = [
             {
                 description: faker.commerce.productName(),
-                unitType: 'hour',
+                unitType: 'Hours',
                 quantity: faker.number.int({ max: 10 }),
                 unitPrice: faker.number.float({ max: 1000 }),
             },
             {
                 description: faker.commerce.productName(),
-                unitType: 'hour',
+                unitType: 'Each',
                 quantity: faker.number.int({ max: 10 }),
                 unitPrice: faker.number.float({ max: 1000 }),
             },
             {
                 description: faker.commerce.productName(),
-                unitType: 'hour',
+                unitType: 'Hours',
                 quantity: faker.number.int({ max: 10 }),
                 unitPrice: faker.number.float({ max: 1000 }),
             },
         ]
 
         cy.visit('/')
-        cy.getElement('email').type('businessadmin@mail.com')
+        cy.getElement('email').type('joshhumphrey1@gmail.com')
+        cy.getElement('password').type('Dotto3!!')
         cy.getElement('login-button').click()
         cy.getElement('invoices-link').click()
         cy.getElement('create-invoice').click()
         cy.getElement('invoice-client').click()
-        cy.contains('Joshua Humphrey').click()
+        cy.contains('Grogg').click()
         // cy.getElement('invoice-date').type('2024-12-12')
         cy.getElement('invoice-due-date').type('2024-12-19')
         lineItems.forEach((lineItem, i) => {

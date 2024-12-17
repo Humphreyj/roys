@@ -38,7 +38,8 @@ Cypress.Commands.add('createInvoiceLineItem', (lineItem, index) => {
     // cy.getElement('add-line-item').click()
     cy.getElement(`item-description-${index}`).type(lineItem.description)
 
-    cy.getElement(`item-unit-${index}`).type(lineItem.unitType)
+    cy.getElement(`item-unit-${index}`).click()
+    cy.contains(lineItem.unitType).click()
     cy.getElement(`item-quantity-${index}`).type(lineItem.quantity)
     cy.getElement(`item-price-${index}`).type(lineItem.unitPrice)
 })

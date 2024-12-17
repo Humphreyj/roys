@@ -15,12 +15,14 @@ const toggleAccountEditing = () => {
 </script>
 
 <template>
-    <div>
-        <SettingsForm v-if="editingCurrentAccount" />
-        <CompanyDetailsCard
-            v-else
-            :currentAccount="currentAccount"
-            @toggle-editing="toggleAccountEditing"
-        />
-    </div>
+    <section class="p-4">
+        <div class="">
+            <SettingsForm v-if="editingCurrentAccount" />
+            <CompanyDetailsCard
+                v-else
+                :currentAccount="currentAccount"
+                @toggle-editing="toggleAccountEditing"
+            />
+        </div>
+    </section>
 </template>
