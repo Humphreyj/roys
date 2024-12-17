@@ -41,6 +41,7 @@ axiosAuth.interceptors.response.use(null, async (err) => {
 
             // Attempt to refresh access token
             try {
+                console.log('Refreshing access token...')
                 await refreshAccessToken()
 
                 // Retry the original request

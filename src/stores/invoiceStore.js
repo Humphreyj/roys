@@ -45,7 +45,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         const accountId = currentAccount.value.id
 
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/invoice/list/${accountId}`)
             .then((res) => {
                 invoiceList.value = res.data
@@ -56,7 +56,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     }
 
     const getInvoiceById = async (id) => {
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/invoice/${id}`)
             .then(async (res) => {
                 selectedInvoice.value = res.data
@@ -74,7 +74,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             // invoiceData.accountId = accountId
             invoiceData.clientId = invoiceData.client.id
             selectedInvoice.value = null
-            axios
+            axiosAuth
                 .post(`${apiRoot.value}/invoice/create`, invoiceData)
                 .then((res) => {
                     useNotify(
@@ -105,7 +105,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             clientId: clientId,
             ...invoiceData,
         }
-        axios
+        axiosAuth
             .put(`${apiRoot.value}/invoice/update`, body)
             .then(async (res) => {
                 useNotify('success', 'Success', 'Invoice updated', 3000)
@@ -123,7 +123,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
             client: invoice.client,
             invoiceNumber: invoice.invoiceNumber,
         }
-        axios
+        axiosAuth
             .post(`${apiRoot.value}/invoice/send-invoice`, invoiceRequest)
             .then((res) => {
                 console.log(res.data)

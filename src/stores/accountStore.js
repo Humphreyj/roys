@@ -7,8 +7,9 @@ import { useUserStore } from './userStore'
 
 // Routing
 import router from '@/router'
-import axios from 'axios'
+
 // Utils
+import axiosAuth from '@/utils/axiosAuth'
 import { useNotify } from '@/utils/notificationUtils'
 
 export const useAccountStore = defineStore('accountStore', () => {
@@ -23,7 +24,7 @@ export const useAccountStore = defineStore('accountStore', () => {
     })
 
     const getAccountById = async (id) => {
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/account/${id}`)
             .then(async (res) => {
                 currentAccount.value = res.data
@@ -37,7 +38,7 @@ export const useAccountStore = defineStore('accountStore', () => {
         const { apiRoot } = storeToRefs(useRuntimeStore())
         const { currentUser } = storeToRefs(useUserStore())
 
-        axios
+        axiosAuth
             .post(`${apiRoot.value}/profile/create`, newUser)
             .then(async (res) => {
                 currentUser.value = res.data
@@ -54,7 +55,7 @@ export const useAccountStore = defineStore('accountStore', () => {
         const { updateUserProfile } = useUserStore()
 
         newAccount.primaryContact = currentUser.value.id
-        axios
+        axiosAuth
             .post(`${apiRoot.value}/account/create`, newAccount)
             .then(async (res) => {
                 currentAccount.value = res.data
@@ -74,7 +75,7 @@ export const useAccountStore = defineStore('accountStore', () => {
 
     const updateAccount = async (updatedAccount) => {
         let id = updatedAccount.id
-        axios
+        axiosAuth
             .put(`${apiRoot.value}/account/update/${id}`, updatedAccount)
             .then((res) => {
                 currentAccount.value = res.data

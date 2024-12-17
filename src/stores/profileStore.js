@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axiosAuth from '@/utils/axiosAuth'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
@@ -21,7 +21,7 @@ export const useProfileStore = defineStore('profiles', () => {
     const getProfileList = async () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         const accountId = currentAccount.value.id
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/profile/list/${accountId}`)
             .then((res) => {
                 userProfiles.value = res.data
@@ -35,7 +35,7 @@ export const useProfileStore = defineStore('profiles', () => {
         const { currentAccount } = storeToRefs(useAccountStore())
         console.log(currentAccount.value)
         const accountId = currentAccount.value.id
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/profile/list/${accountId}/simple`)
             .then((res) => {
                 userProfiles.value = res.data
@@ -47,7 +47,7 @@ export const useProfileStore = defineStore('profiles', () => {
 
     const getProfileById = async (id) => {
         let result
-        axios
+        axiosAuth
             .get(`${apiRoot.value}/profile/${id}`)
             .then((res) => {
                 selectedUser.value = res.data
@@ -62,7 +62,7 @@ export const useProfileStore = defineStore('profiles', () => {
     const createNewProfile = async (newUser) => {
         const { currentAccount } = storeToRefs(useAccountStore())
         newUser.accountId = currentAccount.value.id
-        axios
+        axiosAuth
             .post(`${apiRoot.value}/profile/create-client`, newUser)
             .then((res) => {
                 userProfiles.value.unshift(res.data)
@@ -79,7 +79,7 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const updateSelectedProfile = async (selectedProfile) => {
-        axios
+        axiosAuth
             .put(`${apiRoot.value}/profile/update`, selectedProfile)
             .then(() => {
                 useNotify(
@@ -95,7 +95,7 @@ export const useProfileStore = defineStore('profiles', () => {
     }
 
     const deleteSelectedProfile = async (id) => {
-        axios
+        axiosAuth
             .delete(`${apiRoot.value}/profile/delete/${id}`)
             .then((res) => {
                 userProfiles.value = userProfiles.value.filter(
