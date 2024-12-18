@@ -36,7 +36,7 @@ const handleSubmit = async (e) => {
 </script>
 
 <template>
-    <Card container-class="w-11/12 gap-1 p-4 mx-auto min-w-60">
+    <Card container-class="w-11/12 gap-1 p-4 mx-auto md:w-1/3 min-w-60">
         <section class="w-full gap-1 p-4 mx-auto flex-col-ic-js">
             <h4 class="my-2 title-text">{{ formTitle }}</h4>
             <TextInput
@@ -55,7 +55,7 @@ const handleSubmit = async (e) => {
                 :error="v$.last_name.$error"
                 :error-messages="v$.last_name.$silentErrors"
             />
-            <AddressFormSection :address-data="userData.address" />
+            <!-- <AddressFormSection :address-data="userData.address" /> -->
 
             <TextInput
                 v-model="userData.email"
@@ -72,7 +72,7 @@ const handleSubmit = async (e) => {
                 :error="v$.password.$error"
                 :error-messages="v$.password.$silentErrors"
             />
-            <TextInput
+            <!-- <TextInput
                 v-model="userData.phone"
                 data-test="user-phone"
                 label="Phone Number"
@@ -80,7 +80,7 @@ const handleSubmit = async (e) => {
                 max-length="12"
                 :error="v$.phone.$error"
                 :error-messages="v$.phone.$silentErrors"
-            />
+            /> -->
             <Button
                 data-test="profile-submit"
                 text="Submit"

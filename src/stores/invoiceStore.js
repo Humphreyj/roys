@@ -16,7 +16,7 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
     const invoiceData = ref({})
 
     const selectedInvoice = ref({})
-    const invoiceList = ref([])
+    const invoiceList = ref(null)
     const totalInvoiced = ref(0)
     const nextInvoiceNumber = ref(null)
 

@@ -35,7 +35,7 @@ const createNewAccount = async (contact) => {
 <template>
     <div class="w-full pt-6">
         <ProfileForm
-            form-title="Primary Contact"
+            form-title="Contact Information"
             :data="newUser"
             @handle-submit="createNewAccount"
         />

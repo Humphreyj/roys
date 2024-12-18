@@ -14,7 +14,7 @@ import { useInvoiceStore } from '@/stores/invoiceStore'
 const { invoiceList, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { getInvoiceList, getInvoiceNumber } = useInvoiceStore()
 watchEffect(async () => {
-    if (!invoiceList.value.length) {
+    if (!invoiceList.value) {
         await getInvoiceList()
     }
 })
@@ -30,6 +30,7 @@ watchEffect(async () => {
     <section
         class="w-full max-w-[75rem] mx-auto primary-text px-2 font-display flex-col-ic-js"
     >
-        <RouterView />
+        <div v-if="!nextInvoiceNumber"></div>
+        <RouterView v-else />
     </section>
 </template>

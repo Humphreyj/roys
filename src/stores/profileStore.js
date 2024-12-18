@@ -10,7 +10,7 @@ import { useNotify } from '@/utils/notificationUtils'
 
 export const useProfileStore = defineStore('profiles', () => {
     const selectedUser = ref(null)
-    const userProfiles = ref([])
+    const userProfiles = ref(null)
     const currentUser = ref(null)
     const { apiRoot } = storeToRefs(useRuntimeStore())
 

@@ -31,13 +31,6 @@ export const profileRules = {
             (value) => /(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value)
         ),
     },
-    phone: {
-        required: helpers.withMessage('Phone number is required', required),
-        regex: helpers.withMessage(
-            'Phone number must be in ###-###-#### format',
-            helpers.regex(/^(\d{3})[-](\d{3})[-](\d{4})(?:x(\d+))?$/i)
-        ),
-    },
 }
 export const newClientRules = {
     first_name: {

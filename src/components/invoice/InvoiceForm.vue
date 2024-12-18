@@ -132,7 +132,7 @@ const previewInvoice = async (e) => {
 }
 
 onBeforeMount(async () => {
-    await getProfileList()
+    // await getProfileList()
 
     if (invoiceData.value.lineItems.length) {
         lineItems.value = invoiceData.value.lineItems

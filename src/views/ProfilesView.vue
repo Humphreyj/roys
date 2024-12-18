@@ -18,14 +18,14 @@ const goBack = () => {
     router.push({ name: 'Manage Profiles' })
 }
 
-watch(
-    () => userProfiles.value,
-    async () => {
-        if (!userProfiles.value) {
-            await getProfileList()
-        }
-    }
-)
+// watch(
+//     () => userProfiles.value,
+//     async () => {
+//         if (!userProfiles.value.length) {
+//             await getProfileList()
+//         }
+//     }
+// )
 </script>
 
 <template>

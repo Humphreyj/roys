@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeMount } from 'vue'
+import { computed, watchEffect } from 'vue'
 // Components
 import Avatar from '@/components/UI/Avatar.vue'
 import Card from '@/components/UI/Card.vue'
@@ -27,10 +27,10 @@ const { height } = useWindowSize()
 
 const listContainerHeight = computed(() => height.value * 0.6)
 
-onBeforeMount(async () => {
-    // if (!userProfiles.value.length) {
-    await getProfileList()
-    // }
+watchEffect(async () => {
+    if (!userProfiles.value) {
+        await getProfileList()
+    }
 })
 </script>
 
@@ -51,7 +51,7 @@ onBeforeMount(async () => {
                 </h2>
                 <!-- </RouterLink> -->
             </header>
-            <div class="w-full gap-2 py-3 flex-col-ic-js">
+            <div v-if="userProfiles" class="w-full gap-2 py-3 flex-col-ic-js">
                 <section
                     v-for="user in userProfiles.slice(0, 6)"
                     :key="user.id"
