@@ -3,6 +3,11 @@ import { storeToRefs } from 'pinia'
 import { RouterLink } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 // Components
+import {
+    HomeIcon,
+    DocumentCurrencyDollarIcon,
+    UserGroupIcon,
+} from '@heroicons/vue/24/outline'
 
 // Pinia
 import { usePrimaryStore } from '@/stores/primaryStore'
@@ -75,23 +80,34 @@ const classes = getStyles(props, 'sidebar')
                         data-test="dashboard-link"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
-                        >Home</RouterLink
+                        ><div class="gap-1 flex-is-js">
+                            <HomeIcon class="w-6 h-6" />
+                            <p>Dashboard</p>
+                        </div></RouterLink
                     >
                     <RouterLink
                         to="/invoice"
                         data-test="invoices-link"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
-                        >Invoices</RouterLink
                     >
+                        <div class="gap-1 flex-is-js">
+                            <DocumentCurrencyDollarIcon class="w-6 h-6" />
+                            <p>Invoices</p>
+                        </div>
+                    </RouterLink>
 
                     <RouterLink
                         to="/profiles"
                         data-test="profiles-link"
                         :class="classes.navLinkClass"
                         @click="handleNavigation"
-                        >Profiles</RouterLink
                     >
+                        <div class="gap-1 flex-is-js">
+                            <UserGroupIcon class="w-6 h-6" />
+                            <p>Clients</p>
+                        </div>
+                    </RouterLink>
                     <!-- <RouterLink
                         :to="`/settings/${currentUser.role}`"
                         :class="classes.navLinkClass"

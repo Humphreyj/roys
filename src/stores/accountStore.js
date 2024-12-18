@@ -21,6 +21,7 @@ export const useAccountStore = defineStore('accountStore', () => {
         companyAddress: {},
         companyPhone: '',
         companyEmail: '',
+        billingInfo: {},
     })
 
     const editingCurrentAccount = ref(false)

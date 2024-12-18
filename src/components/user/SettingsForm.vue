@@ -133,7 +133,7 @@ watch(currentAccount, async () => {
                         Billing Info
                     </h4>
                     <SearchableSelect
-                        v-model="currentAccount.taxRate"
+                        v-model="currentAccount.billingInfo.taxRate"
                         label="Tax Rate"
                         :options="taxRates"
                         target-type="object"
