@@ -31,7 +31,6 @@ export const useAccountStore = defineStore('accountStore', () => {
             .get(`${apiRoot.value}/account/${id}`)
             .then(async (res) => {
                 currentAccount.value = res.data
-                console.log(currentAccount.value)
             })
             .catch((err) => {
                 console.log(err)

@@ -3,6 +3,7 @@ import { ref, computed, onBeforeMount, watchEffect, watch } from 'vue'
 // Components
 import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
+import CustomCheckbox from '../inputs/CustomCheckbox.vue'
 import DateInput from '../inputs/DateInput.vue'
 import InvoiceLineItem from './InvoiceLineItem.vue'
 import BasicSelect from '@/components/inputs/BasicSelect.vue'
@@ -26,8 +27,12 @@ import { invoiceRules } from '@/validation/invoiceValidation'
 
 const { getProfileList } = useProfileStore()
 const { userProfiles } = storeToRefs(useProfileStore())
-const { createNewInvoice, setSelectedInvoice, updateInvoice, getInvoiceNumber } =
-    useInvoiceStore()
+const {
+    createNewInvoice,
+    setSelectedInvoice,
+    updateInvoice,
+    getInvoiceNumber,
+} = useInvoiceStore()
 const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
 const { invoicePreviewModal, profileFormModal } = storeToRefs(useModalStore())
 const { currentAccount } = storeToRefs(useAccountStore())
@@ -48,8 +53,11 @@ const invoiceData = ref(
         clientId: '',
         client: 'Select Client',
         invoiceNumber: nextInvoiceNumber.value,
-        // invoiceDate: new Date().toISOString().split('T')[0],
-        invoiceDate: parse(new Date().toISOString().split('T')[0], 'yyyy-MM-dd', new Date()),
+        invoiceDate: parse(
+            new Date().toISOString().split('T')[0],
+            'yyyy-MM-dd',
+            new Date()
+        ),
         dueDate: '',
         status: 'draft',
         lineItems: [],
@@ -57,6 +65,8 @@ const invoiceData = ref(
         comments: '',
         discount: null,
         totalDiscount: 0,
+        taxable: false,
+        taxRate: currentAccount.value.billingInfo.taxRate.value ?? 0,
     }
 )
 
@@ -64,7 +74,11 @@ const v$ = useValidate(invoiceRules, invoiceData.value)
 
 const showInvoice = ref(false)
 
+const taxRate = ref(currentAccount.value.billingInfo.taxRate.value)
 
+const taxTotal = computed(() => {
+    return invoiceTotal.value * taxRate.value
+})
 
 const lineItems = ref([
     {
@@ -110,7 +124,6 @@ const submitInvoice = async (e) => {
     invoiceData.value.lineItems = lineItems.value
     invoiceData.value.invoiceTotal = invoiceTotal.value
     const isFormCorrect = await v$.value.$validate()
-    console.log("isFormCorrect", isFormCorrect)
     if (!isFormCorrect) {
         return
     }
@@ -132,20 +145,19 @@ const previewInvoice = async (e) => {
 }
 
 onBeforeMount(async () => {
-    // await getProfileList()
-
     if (invoiceData.value.lineItems.length) {
         lineItems.value = invoiceData.value.lineItems
     }
 })
 
-
 watchEffect(async () => {
-    
+    if (!userProfiles.value) {
+        await getProfileList()
+    }
     if (props.newInvoice) {
         invoiceData.invoiceNumber = nextInvoiceNumber.value
     }
-    if(!invoiceData.value.invoiceNumber){
+    if (!invoiceData.value.invoiceNumber) {
         invoiceData.value.invoiceNumber = nextInvoiceNumber.value
     }
 })
@@ -165,30 +177,27 @@ watchEffect(async () => {
             <div
                 class="w-full gap-4 lg:gap-8 flex-col-is-js md:flex-ic-jb md:flex-row"
             >
-            <div class="w-full gap-2 flex-ic-js">
-
-                <BasicSelect
-                    v-model="invoiceData.client"
-                    data-test="invoice-client"
-                    container-class="w-2/3"
-                    label="Client"
-                    :options="userProfiles"
-                    placeholder="Select Client"
-                    target-attr="full_name"
-                    target-type="object"
-                    :error="v$.client.$error"
-                    :error-messages="v$.client.$silentErrors"
-
-                />
-                <!-- <Button
+                <div class="w-full gap-2 flex-ic-js">
+                    <BasicSelect
+                        v-if="userProfiles"
+                        v-model="invoiceData.client"
+                        data-test="invoice-client"
+                        container-class="w-2/3"
+                        label="Client"
+                        :options="userProfiles"
+                        placeholder="Select Client"
+                        target-attr="full_name"
+                        target-type="object"
+                        :error="v$.client.$error"
+                        :error-messages="v$.client.$silentErrors"
+                    />
+                    <!-- <Button
                     text="New Client"
                     button-class="text-xs w-max"
                     data-test="create-client"
                     @click="profileFormModal.show"
                 /> -->
-
-
-            </div>
+                </div>
                 <TextInput
                     v-model="invoiceData.invoiceNumber"
                     data-test="new-invoice-number"
@@ -203,7 +212,6 @@ watchEffect(async () => {
                     data-test="invoice-date"
                     label="Invoice Date"
                     type="date"
-
                     :error="v$.invoiceDate.$error"
                     :error-messages="v$.invoiceDate.$silentErrors"
                 />
@@ -217,6 +225,13 @@ watchEffect(async () => {
                     :error-messages="v$.dueDate.$silentErrors"
                 />
             </div>
+        </section>
+        <section class="w-full flex-ic-jend">
+            <CustomCheckbox
+                v-model="invoiceData.taxable"
+                data-test="invoice-taxable"
+                label="Taxable?"
+            />
         </section>
         <section class="w-full gap-1 p-4 flex-col-is-js">
             <h3>Line Items</h3>
@@ -235,11 +250,11 @@ watchEffect(async () => {
                 @click="addLineItem"
             />
             <p
-            v-if="v$.lineItems.$error && v$.lineItems.$silentErrors.length"
-            class="mt-1 text-xs text-red-700 dark:text-red-400"
-        >
-            {{ v$.lineItems.$silentErrors[0].$message }}
-        </p>
+                v-if="v$.lineItems.$error && v$.lineItems.$silentErrors.length"
+                class="mt-1 text-xs text-red-700 dark:text-red-400"
+            >
+                {{ v$.lineItems.$silentErrors[0].$message }}
+            </p>
         </section>
         <section class="gap-4 flex-is-jb">
             <TextArea
@@ -261,16 +276,20 @@ watchEffect(async () => {
                 <div v-if="invoiceData.totalDiscount">
                     <p>Discount</p>
                     <p class="text-xl font-semibold">
-                        {{ handleFormat(invoiceData.totalDiscount, 'currency') }}
+                        {{
+                            handleFormat(invoiceData.totalDiscount, 'currency')
+                        }}
                     </p>
-
                 </div>
-                <div>
-
-                    <p class="text-xl font-semibold">
+                <div class="flex-col-ie-js">
+                    <div v-if="invoiceData.taxable" class="font-semibold">
+                        <p>Tax</p>
+                        {{ handleFormat(taxTotal, 'currency') }}
+                    </div>
+                    <div class="text-xl font-semibold">
                         <p>Total</p>
                         {{ handleFormat(invoiceTotal, 'currency') }}
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>

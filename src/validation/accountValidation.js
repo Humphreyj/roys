@@ -5,7 +5,7 @@ export const accountRules = {
         required: helpers.withMessage('A company name is required', required),
         regex: helpers.withMessage(
             'Value must be alphabetical',
-            helpers.regex(/^[a-zA-Z\s-]+$/)
+            helpers.regex(/^[a-zA-Z\s'-]+$/)
         ),
     },
     companyPhone: {

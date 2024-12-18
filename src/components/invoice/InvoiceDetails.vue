@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { watchEffect } from 'vue'
 // Components
 import InvoiceForm from './InvoiceForm.vue'
 import PreviewInvoice from './PreviewInvoice.vue'
@@ -63,7 +63,7 @@ const handleSendInvoice = async (id) => {
             :new-invoice="false"
         />
         <PreviewInvoice v-else />
-        <div class="w-full gap-3 flex-ic-jend">
+        <div v-if="!invoiceBeingEdited" class="w-full gap-3 flex-ic-jend">
             <p v-if="selectedInvoice.lastSentDate">
                 Last sent:
                 {{ handleFormat(selectedInvoice.lastSentDate, 'date') }}
