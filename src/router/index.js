@@ -116,7 +116,7 @@ const routes = [
 
 const router = createRouter({
     linkActiveClass:
-        'font-bold  bg-primary-400 rounded-lg text-white dark:bg-secondary-400 shadow-md',
+        'font-bold  bg-primary-400 rounded-lg text-white dark:bg-secondary-400 shadow-md hover:border-0',
     history: createWebHistory(),
     routes,
 })
