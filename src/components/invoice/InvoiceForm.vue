@@ -77,7 +77,7 @@ const showInvoice = ref(false)
 const taxRate = ref(currentAccount.value.billingInfo.taxRate.value)
 
 const taxTotal = computed(() => {
-    return invoiceTotal.value * taxRate.value
+    return invoiceSubtotal.value * taxRate.value
 })
 
 const lineItems = ref([
@@ -108,13 +108,24 @@ const deleteLineItem = (id) => {
 }
 
 const invoiceTotal = computed(() => {
+    let result = invoiceSubtotal.value
+
+    if (invoiceData.value.taxable && taxTotal.value) {
+        result += taxTotal.value
+    }
+    return result
+})
+
+const invoiceSubtotal = computed(() => {
     let result = 0
     lineItems.value.forEach((item) => {
         result += item.lineItemTotal
     })
-    if (invoiceData.value.discount) {
+    if (invoiceData.value.discount > 0) {
         invoiceData.value.totalDiscount = result * invoiceData.value.discount
         result -= invoiceData.value.discount
+    } else {
+        invoiceData.value.totalDiscount = 0
     }
     return result
 })
@@ -273,7 +284,7 @@ watchEffect(async () => {
         </section>
         <div class="w-full mb-3 flex-ic-jend">
             <div class="flex-col-is-je">
-                <div v-if="invoiceData.totalDiscount">
+                <div v-if="invoiceData.totalDiscount > 0">
                     <p>Discount</p>
                     <p class="text-xl font-semibold">
                         {{
@@ -281,14 +292,24 @@ watchEffect(async () => {
                         }}
                     </p>
                 </div>
-                <div class="flex-col-ie-js">
-                    <div v-if="invoiceData.taxable" class="font-semibold">
+                <div class="flex-col-ie-js *:w-40 *:gap-2">
+                    <div
+                        v-if="invoiceData.taxable"
+                        class="font-semibold flex-ic-jb"
+                    >
                         <p>Tax</p>
-                        {{ handleFormat(taxTotal, 'currency') }}
+                        <p>{{ handleFormat(taxTotal, 'currency') }}</p>
                     </div>
-                    <div class="text-xl font-semibold">
+                    <div
+                        v-if="invoiceData.taxable"
+                        class="font-semibold flex-ic-jb"
+                    >
+                        <p>Subtotal</p>
+                        <p>{{ handleFormat(invoiceSubtotal, 'currency') }}</p>
+                    </div>
+                    <div class="text-lg font-semibold flex-ic-jb">
                         <p>Total</p>
-                        {{ handleFormat(invoiceTotal, 'currency') }}
+                        <p>{{ handleFormat(invoiceTotal, 'currency') }}</p>
                     </div>
                 </div>
             </div>
