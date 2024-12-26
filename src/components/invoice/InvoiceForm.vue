@@ -134,6 +134,7 @@ const submitInvoice = async (e) => {
     e.preventDefault()
     invoiceData.value.lineItems = lineItems.value
     invoiceData.value.invoiceTotal = invoiceTotal.value
+    invoiceData.value.totalTax = taxTotal.value
     const isFormCorrect = await v$.value.$validate()
     if (!isFormCorrect) {
         return
@@ -237,13 +238,7 @@ watchEffect(async () => {
                 />
             </div>
         </section>
-        <section class="w-full flex-ic-jend">
-            <CustomCheckbox
-                v-model="invoiceData.taxable"
-                data-test="invoice-taxable"
-                label="Taxable?"
-            />
-        </section>
+
         <section class="w-full gap-1 p-4 flex-col-is-js">
             <h3>Line Items</h3>
             <InvoiceLineItem
@@ -273,14 +268,21 @@ watchEffect(async () => {
                 data-test="invoice-comments"
                 label="Additional Comments"
             />
-            <PercentInput
-                v-model.number="invoiceData.discount"
-                container-class="relative w-1/2"
-                data-test="invoice-discount"
-                label="Discount"
-                type="number"
-                format="float"
-            />
+            <section class="w-full flex-ic-je">
+                <PercentInput
+                    v-model.number="invoiceData.discount"
+                    container-class="relative w-1/2"
+                    data-test="invoice-discount"
+                    label="Discount"
+                    type="number"
+                    format="float"
+                />
+                <CustomCheckbox
+                    v-model="invoiceData.taxable"
+                    data-test="invoice-taxable"
+                    label="Taxable?"
+                />
+            </section>
         </section>
         <div class="w-full mb-3 flex-ic-jend">
             <div class="flex-col-is-je">
@@ -297,15 +299,15 @@ watchEffect(async () => {
                         v-if="invoiceData.taxable"
                         class="font-semibold flex-ic-jb"
                     >
-                        <p>Tax</p>
-                        <p>{{ handleFormat(taxTotal, 'currency') }}</p>
+                        <p>Subtotal</p>
+                        <p>{{ handleFormat(invoiceSubtotal, 'currency') }}</p>
                     </div>
                     <div
                         v-if="invoiceData.taxable"
                         class="font-semibold flex-ic-jb"
                     >
-                        <p>Subtotal</p>
-                        <p>{{ handleFormat(invoiceSubtotal, 'currency') }}</p>
+                        <p>Tax</p>
+                        <p>{{ handleFormat(taxTotal, 'currency') }}</p>
                     </div>
                     <div class="text-lg font-semibold flex-ic-jb">
                         <p>Total</p>
