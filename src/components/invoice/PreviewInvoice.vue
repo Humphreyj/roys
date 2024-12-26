@@ -130,27 +130,60 @@ watchEffect(async () => {
                 </div>
             </section>
 
-            <div class="w-full pr-4 mt-4 flex-ic-jend">
-                <div class="gap-3 flex-col-is-je">
-                    <div class="w-full flex-ic-jend">
-                        Discount:
-                        {{
-                            handleFormat(
-                                selectedInvoice.totalDiscount,
-                                'currency'
-                            )
-                        }}
-                    </div>
-                    <div>
-                        <p class="text-xl font-bold text-right">
-                            Total:
+            <div class="w-full mb-3 flex-ic-jend">
+                <div class="flex-col-is-je">
+                    <div v-if="selectedInvoice.totalDiscount > 0">
+                        <p>Discount</p>
+                        <p class="text-xl font-semibold">
                             {{
                                 handleFormat(
-                                    selectedInvoice.invoiceTotal,
+                                    selectedInvoice.totalDiscount,
                                     'currency'
                                 )
                             }}
                         </p>
+                    </div>
+                    <div class="flex-col-ie-js *:w-40 *:gap-2">
+                        <div
+                            v-if="selectedInvoice.taxable"
+                            class="font-semibold flex-ic-jb"
+                        >
+                            <p>Subtotal</p>
+                            <p>
+                                {{
+                                    handleFormat(
+                                        selectedInvoice.invoiceTotal -
+                                            selectedInvoice.totalTax,
+                                        'currency'
+                                    )
+                                }}
+                            </p>
+                        </div>
+                        <div
+                            v-if="selectedInvoice.taxable"
+                            class="font-semibold flex-ic-jb"
+                        >
+                            <p>Tax</p>
+                            <p>
+                                {{
+                                    handleFormat(
+                                        selectedInvoice.totalTax,
+                                        'currency'
+                                    )
+                                }}
+                            </p>
+                        </div>
+                        <div class="text-lg font-semibold flex-ic-jb">
+                            <p>Total</p>
+                            <p>
+                                {{
+                                    handleFormat(
+                                        selectedInvoice.invoiceTotal,
+                                        'currency'
+                                    )
+                                }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
