@@ -8,7 +8,7 @@ import ModalContainer from '@/components/UI/ModalContainer.vue'
 import NotificationsGroup from './components/Notifications/NotificationsGroup.vue'
 const route = useRoute()
 
-const routeNames = ['send invoice', 'Log In', 'Sign Up']
+const routeNames = ['send invoice', 'Log In', 'Sign Up', 'Request Access']
 const showHeader = computed(() => !routeNames.includes(route.name))
 </script>
 

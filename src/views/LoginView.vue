@@ -54,10 +54,16 @@ const handleLogin = async (authData) => {
                         @click="handleLogin(authData)"
                     />
 
-                    <RouterLink :to="{ name: 'Sign Up' }">
+                    <!-- <RouterLink :to="{ name: 'Sign Up' }">
                         <Button
                             text="Create Account"
                             data-test="create-account"
+                        />
+                    </RouterLink> -->
+                    <RouterLink :to="{ name: 'Request Access' }">
+                        <Button
+                            text="Request Access"
+                            data-test="request-access"
                         />
                     </RouterLink>
                 </div>

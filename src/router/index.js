@@ -24,7 +24,7 @@ const routes = [
         meta: {},
         children: [
             {
-                path: '',
+                path: 'new/:requestId',
                 name: 'Sign Up',
                 component: () => import('@/components/profile/NewUser.vue'),
             },
@@ -32,6 +32,12 @@ const routes = [
                 path: ':id',
                 name: 'Account Details',
                 component: () => import('@/components/user/AccountPage.vue'),
+            },
+            {
+                path: 'request-access',
+                name: 'Request Access',
+                component: () =>
+                    import('@/components/account/RequestAccess.vue'),
             },
         ],
     },

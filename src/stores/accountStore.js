@@ -15,6 +15,11 @@ import { useNotify } from '@/utils/notificationUtils'
 export const useAccountStore = defineStore('accountStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
 
+    const accessRequested = ref(
+        localStorage.getItem('accessRequested') ?? false
+    )
+    const newAccountEmail = ref('')
+
     const currentAccount = ref({
         primaryContact: '',
         companyName: '',
@@ -25,6 +30,36 @@ export const useAccountStore = defineStore('accountStore', () => {
     })
 
     const editingCurrentAccount = ref(false)
+
+    const requestAppAccess = async (email) => {
+        axiosAuth
+            .post(`${apiRoot.value}/account/request-access`, { email: email })
+            .then(async (res) => {
+                localStorage.setItem('accessRequested', true)
+                accessRequested.value = true
+                useNotify(
+                    'success',
+                    'Request Sent',
+                    'Your request for access has been sent.',
+                    4000
+                )
+            })
+            .catch((err) => {
+                console.log(err)
+                useNotify('error', 'Error', err.response.data.message, 4000)
+            })
+    }
+
+    const getAccessRequest = (id) => {
+        axiosAuth
+            .get(`${apiRoot.value}/account/new/${id}`)
+            .then(async (res) => {
+                newAccountEmail.value = res.data.email
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     const getAccountById = async (id) => {
         axiosAuth
@@ -107,10 +142,14 @@ export const useAccountStore = defineStore('accountStore', () => {
         createAccount,
         getAccountById,
         updateAccount,
+        requestAppAccess,
+        getAccessRequest,
     }
     const values = {
         currentAccount,
         editingCurrentAccount,
+        newAccountEmail,
+        accessRequested,
     }
     return { ...actions, ...values }
 })
