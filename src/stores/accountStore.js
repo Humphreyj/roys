@@ -35,7 +35,7 @@ export const useAccountStore = defineStore('accountStore', () => {
         axiosAuth
             .post(`${apiRoot.value}/account/request-access`, { email: email })
             .then(async (res) => {
-                localStorage.setItem('accessRequested', true)
+                // localStorage.setItem('accessRequested', true)
                 accessRequested.value = true
                 useNotify(
                     'success',

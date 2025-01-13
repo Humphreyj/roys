@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onBeforeMount, watchEffect, watch } from 'vue'
+import { ref, computed, onBeforeMount, watchEffect } from 'vue'
 // Components
 import Button from '@/components/UI/Button.vue'
 import Card from '@/components/UI/Card.vue'
@@ -26,15 +26,17 @@ import useValidate from '@vuelidate/core'
 import { invoiceRules } from '@/validation/invoiceValidation'
 
 const { getProfileList } = useProfileStore()
-const { userProfiles } = storeToRefs(useProfileStore())
+const { userProfiles, addClientToInvoice } = storeToRefs(useProfileStore())
 const {
     createNewInvoice,
     setSelectedInvoice,
     updateInvoice,
     getInvoiceNumber,
 } = useInvoiceStore()
-const { invoiceBeingEdited, nextInvoiceNumber } = storeToRefs(useInvoiceStore())
-const { invoicePreviewModal, profileFormModal } = storeToRefs(useModalStore())
+const { invoiceBeingEdited, nextInvoiceNumber, newInvoice } = storeToRefs(
+    useInvoiceStore()
+)
+const { invoicePreviewModal, invoiceClientModal } = storeToRefs(useModalStore())
 const { currentAccount } = storeToRefs(useAccountStore())
 
 const props = defineProps({
@@ -147,6 +149,12 @@ const submitInvoice = async (e) => {
         invoiceBeingEdited.value = false
     }
 }
+
+const handleNewClient = async () => {
+    addClientToInvoice.value = true
+    invoiceClientModal.value.show()
+}
+
 const previewInvoice = async (e) => {
     e.preventDefault()
     invoiceData.value.lineItems = lineItems.value
@@ -168,6 +176,7 @@ watchEffect(async () => {
     }
     if (props.newInvoice) {
         invoiceData.invoiceNumber = nextInvoiceNumber.value
+        newInvoice.value = invoiceData.value
     }
     if (!invoiceData.value.invoiceNumber) {
         invoiceData.value.invoiceNumber = nextInvoiceNumber.value
@@ -203,12 +212,12 @@ watchEffect(async () => {
                         :error="v$.client.$error"
                         :error-messages="v$.client.$silentErrors"
                     />
-                    <!-- <Button
-                    text="New Client"
-                    button-class="text-xs w-max"
-                    data-test="create-client"
-                    @click="profileFormModal.show"
-                /> -->
+                    <Button
+                        text="New Client"
+                        button-class="text-xs w-max"
+                        data-test="create-client"
+                        @click="handleNewClient"
+                    />
                 </div>
                 <TextInput
                     v-model="invoiceData.invoiceNumber"

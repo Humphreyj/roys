@@ -5,6 +5,7 @@ import axiosAuth from '@/utils/axiosAuth'
 import { storeToRefs } from 'pinia'
 import { useRuntimeStore } from './runtimeStore'
 import { useAccountStore } from './accountStore'
+import { useInvoiceStore } from './invoiceStore'
 // Utils
 import { useNotify } from '@/utils/notificationUtils'
 
@@ -13,6 +14,8 @@ export const useProfileStore = defineStore('profiles', () => {
     const userProfiles = ref(null)
     const currentUser = ref(null)
     const { apiRoot } = storeToRefs(useRuntimeStore())
+
+    const addClientToInvoice = ref(false)
 
     const handleUserSelect = (user) => {
         selectedUser.value = user
@@ -61,11 +64,17 @@ export const useProfileStore = defineStore('profiles', () => {
 
     const createNewProfile = async (newUser) => {
         const { currentAccount } = storeToRefs(useAccountStore())
+
         newUser.accountId = currentAccount.value.id
         axiosAuth
             .post(`${apiRoot.value}/profile/create-client`, newUser)
             .then((res) => {
                 userProfiles.value.unshift(res.data)
+                // if (addClientToInvoice.value) {
+                //     newInvoice.client = res.data
+                //     newInvoice.clientId = res.data.id
+                //     addClientToInvoice.value = false
+                // }
                 useNotify(
                     'success',
                     'Profile Created',
@@ -121,6 +130,7 @@ export const useProfileStore = defineStore('profiles', () => {
         selectedUser,
         userProfiles,
         currentUser,
+        addClientToInvoice,
     }
     return { ...actions, ...values }
 })

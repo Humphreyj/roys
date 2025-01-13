@@ -10,12 +10,15 @@ import { useProfileStore } from './profileStore'
 import router from '@/router'
 // Utils
 import { useNotify } from '@/utils/notificationUtils'
+// Services
+import { createNewClient } from '@/services/clientServices'
 
 export const useInvoiceStore = defineStore('invoiceStore', () => {
     const { apiRoot } = storeToRefs(useRuntimeStore())
     const invoiceData = ref({})
 
     const selectedInvoice = ref({})
+    const newInvoice = ref({})
     const invoiceList = ref(null)
     const totalInvoiced = ref(0)
     const nextInvoiceNumber = ref(null)
@@ -65,6 +68,14 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
                 useNotify('error', 'Error', err.response.data, 3000)
                 console.log(err)
             })
+    }
+
+    const addClientToInvoice = async (client) => {
+        const newClient = await createNewClient(client)
+        if (newClient) {
+            newInvoice.value.client = newClient
+            newInvoice.value.clientId = newClient.id
+        }
     }
 
     const createNewInvoice = async (invoiceData) => {
@@ -142,11 +153,13 @@ export const useInvoiceStore = defineStore('invoiceStore', () => {
         sendInvoice,
         updateInvoice,
         getInvoiceNumber,
+        addClientToInvoice,
     }
     const values = {
         invoiceBeingEdited,
         invoiceList,
         selectedInvoice,
+        newInvoice,
         invoiceData,
         nextInvoiceNumber,
         totalInvoiced,

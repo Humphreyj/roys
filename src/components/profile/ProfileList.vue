@@ -7,6 +7,7 @@ import Card from '@/components/UI/Card.vue'
 import { storeToRefs } from 'pinia'
 import { useProfileStore } from '@/stores/profileStore'
 import { useModalStore } from '@/stores/modalStore'
+import { useAccountStore } from '@/stores/accountStore'
 // Assets
 import { ChevronDoubleRightIcon } from '@heroicons/vue/24/solid'
 // Utils
@@ -18,6 +19,7 @@ import { useWindowSize } from '@vueuse/core'
 const { userProfiles } = storeToRefs(useProfileStore())
 const { handleUserSelect, getProfileList } = useProfileStore()
 const { profileFormModal } = storeToRefs(useModalStore())
+const { currentAccount } = storeToRefs(useAccountStore())
 
 const handleNavigation = async (user) => {
     await handleUserSelect(user)
@@ -28,7 +30,7 @@ const { height } = useWindowSize()
 const listContainerHeight = computed(() => height.value * 0.6)
 
 watchEffect(async () => {
-    if (!userProfiles.value) {
+    if (!userProfiles.value && currentAccount.value.id) {
         await getProfileList()
     }
 })
@@ -51,9 +53,12 @@ watchEffect(async () => {
                 </h2>
                 <!-- </RouterLink> -->
             </header>
-            <div v-if="userProfiles" class="w-full gap-2 py-3 flex-col-ic-js">
+            <div
+                v-if="userProfiles"
+                class="w-full gap-2 py-3 overflow-y-scroll flex-col-ic-js max-h-[calc(90vh-10rem)]"
+            >
                 <section
-                    v-for="user in userProfiles.slice(0, 6)"
+                    v-for="user in userProfiles"
                     :key="user.id"
                     class="w-full px-3 py-2 shadow dark:shadow-slate-600 dark:shadow-sm flex-is-jb"
                 >

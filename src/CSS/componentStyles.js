@@ -27,6 +27,16 @@ export const componentStyles = {
         navLinkClass:
             'text-lg text-gray-800 dark:text-gray-200 font-display min-w-32 p-1 rounded-md hover:bg-gray-300 hover:dark:bg-gray-600 hover:border border-gray-700 hover:border-opacity-40',
     },
+    actionDrawer: {
+        backdropClass:
+            'absolute w-screen h-screen md:hidden z-[5] bg-black opacity-45',
+        containerClass:
+            'min-w-40 overflow-x-hidden min-h-screen h-full absolute md:relative bg-sidebarBackground dark:bg-sidebarBackgroundDark py-3 px-2 z-10 border-r',
+        titleClass: 'primary-text font-bold font-display text-xl mb-4',
+        navContainerClass: 'flex-col-is-js gap-2',
+        navLinkClass:
+            'text-lg text-gray-800 dark:text-gray-200 font-display min-w-32 p-1 rounded-md hover:bg-gray-300 hover:dark:bg-gray-600 hover:border border-gray-700 hover:border-opacity-40',
+    },
     modal: {
         backdropClass: 'absolute w-screen h-screen z-[11] cursor-pointer ',
         containerClass:

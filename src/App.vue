@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 // Components
 import Sidedrawer from '@/components/UI/Sidedrawer.vue'
+import ActionDrawer from '@/components/UI/ActionDrawer.vue'
 import AppHeader from '@/components/UI/AppHeader.vue'
 import ModalContainer from '@/components/UI/ModalContainer.vue'
 import NotificationsGroup from './components/Notifications/NotificationsGroup.vue'
@@ -17,6 +18,7 @@ const showHeader = computed(() => !routeNames.includes(route.name))
         class="overflow-y-auto h-dvh bg-appBackground dark:bg-appBackgroundDark flex-is-js"
     >
         <Sidedrawer v-if="showHeader" />
+
         <ModalContainer />
 
         <section class="w-full overflow-y-scroll">
@@ -29,6 +31,7 @@ const showHeader = computed(() => !routeNames.includes(route.name))
                 <!-- </transition> -->
             </RouterView>
         </section>
+        <!-- <ActionDrawer /> -->
     </div>
 </template>
 

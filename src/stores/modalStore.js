@@ -29,6 +29,7 @@ export const useModalStore = defineStore('modalStore', () => {
     // Invoice Modals
     const invoiceFormModal = ref(handleModal(false))
     const invoicePreviewModal = ref(handleModal(false))
+    const invoiceClientModal = ref(handleModal(false))
 
     // Array of objects to pass into the Modal component so that it can stay dynamic
     // This implementation of the modal is in AppHeader to handle the notification dropdown
@@ -71,6 +72,7 @@ export const useModalStore = defineStore('modalStore', () => {
         selectedTeamMember,
         invoicePreviewModal,
         invoiceFormModal,
+        invoiceClientModal,
     }
     return { ...actions, ...values }
 })

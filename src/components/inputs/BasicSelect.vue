@@ -60,6 +60,17 @@ watch(
     }
 )
 
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        if (props.targetType === 'object') {
+            selectedValue.value = newVal[props.targetAttr]
+        } else {
+            selectedValue.value = newVal
+        }
+    }
+)
+
 const toggleOptions = () => {
     showOptions.value = !showOptions.value
 }
