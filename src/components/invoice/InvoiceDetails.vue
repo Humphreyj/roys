@@ -62,7 +62,9 @@ const handleSendInvoice = async (id) => {
             :invoice-data="selectedInvoice"
             :new-invoice="false"
         />
-        <PreviewInvoice v-else />
+        <div v-else class="my-2 border rounded-sm border-slate-400">
+            <PreviewInvoice />
+        </div>
         <div v-if="!invoiceBeingEdited" class="w-full gap-3 flex-ic-jend">
             <p v-if="selectedInvoice.lastSentDate">
                 Last sent:

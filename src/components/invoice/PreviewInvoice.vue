@@ -45,7 +45,10 @@ watchEffect(async () => {
                         <p class="">
                             {{ selectedInvoice.client.full_name }}
                         </p>
-                        <p class="w-max">
+                        <p
+                            v-if="selectedInvoice.client.address.line_1"
+                            class="w-max"
+                        >
                             {{
                                 handleFormat(
                                     selectedInvoice.client.address,
@@ -120,7 +123,7 @@ watchEffect(async () => {
             </section>
             <section
                 v-if="selectedInvoice.comments"
-                class="w-full my-3 flex-col-is-js"
+                class="w-full px-2 my-3 flex-col-is-js"
             >
                 <h3 class="text-lg font-semibold">Additional Comments</h3>
                 <div class="">
@@ -130,7 +133,7 @@ watchEffect(async () => {
                 </div>
             </section>
 
-            <div class="w-full mb-3 flex-ic-jend">
+            <div class="w-full px-2 mb-3 flex-ic-jend">
                 <div class="flex-col-is-je">
                     <div v-if="selectedInvoice.totalDiscount > 0">
                         <p>Discount</p>

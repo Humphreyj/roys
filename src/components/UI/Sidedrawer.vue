@@ -71,9 +71,7 @@ const classes = getStyles(props, 'sidebar')
             ></div>
 
             <section v-if="showSidebar" :class="classes.containerClass">
-                <h3 :class="classes.titleClass">
-                    {{ configOptions.clientName }}
-                </h3>
+                <h3 :class="classes.titleClass">EZPDF</h3>
                 <div :class="classes.navContainerClass">
                     <RouterLink
                         to="/dashboard"

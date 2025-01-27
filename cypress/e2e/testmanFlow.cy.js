@@ -46,8 +46,8 @@ describe('Set up testman profiles/invoices', () => {
 
         cy.visit('/')
 
-        cy.getElement('email').type('system@ezpdf.app')
-        cy.getElement('password').type('p@55word!')
+        cy.getElement('email').type('joshhumphrey1@gmail.com')
+        cy.getElement('password').type('Dotto3!!')
         // cy.getElement('user-phone').type(faker.phone.number())
         cy.getElement('login-button').click()
 

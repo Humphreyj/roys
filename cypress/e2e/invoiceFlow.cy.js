@@ -30,7 +30,7 @@ describe('Invoice Flow', () => {
         cy.getElement('invoices-link').click()
         cy.getElement('create-invoice').click()
         cy.getElement('invoice-client').click()
-        cy.contains('Grogg').click()
+        cy.contains('Terrance').click()
         // cy.getElement('invoice-date').type('2024-12-12')
         cy.getElement('invoice-due-date').type('2024-12-19')
         lineItems.forEach((lineItem, i) => {

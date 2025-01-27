@@ -46,13 +46,13 @@ const handleInvoicePreview = (invoice) => {
             </MetricCard>
             <MetricCard
                 metric-title="Payments"
-                :metric-value="`${nextInvoiceNumber - 1}`"
+                :metric-value="1"
                 metric-type="number"
             >
                 <section class="flex-col-is-js">
                     <div></div>
                     <p>Total Paid</p>
-                    <p>{{ handleFormat(totalInvoiced, 'currency') }}</p>
+                    <p>{{ handleFormat(1527.36, 'currency') }}</p>
                 </section>
             </MetricCard>
         </section>
